@@ -3,9 +3,27 @@ import java.util.Scanner;
 
 /**
  * Class for managing high-level game logic
+ * split into manager and inputAsker class? to separate logic from output (single responsibility rule) - would make it easier to add in graphical application later
+ *
+ * manager should:
+ * -get configurations from player (high-level)
+ * -save this
+ * -create new game with provided configs
+ * -
+ * i'm not sure if it should control interactions between classes directly or if those classes handle things themselves
+ * but it can kickstart whatever ig
+ *
+ * game loop essentially consists of:
+ * -moving between islands
+ * -encountering anything
+ * -selling items at new island
+ *
+ * either check for game end state directly, or get notified or it from another class
+ * whatever it does, tell player game is over
+ *
  * */
 
-public class GameManager { //moving all code to a new class so can call sub-functions without having to make everything static
+public class GameManager {
 
 	public GameManager() {
 
