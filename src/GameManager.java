@@ -28,6 +28,7 @@ public class GameManager { //moving all code to a new class so can call sub-func
 		int duration = askForBoundedInt("Enter game duration between 20 and 50:", 20, 50, scanner);
 
 		Ship ship = selectShip(scanner);
+		createIslands();
 
 		// Player user = new Player(username, duration); //doesn't work for me bc no Player class in the project - ?
 
@@ -79,6 +80,14 @@ public class GameManager { //moving all code to a new class so can call sub-func
 			}
 		}
 		return ans;
+	}
+
+	private void createIslands() {
+		Island fracturedisle = new Island("Fractured Isle", 9, 7);	// ]
+		Island smithscordrefuge = new Island("Smithscord Refuge", 5, 1); // ]
+		Island penlycay = new Island("Penly Cay", 2, -10); // ] ------------------------Creating all the island objects for the game
+		Island valganisland = new Island("Valgan Island", -4, -2); // ]
+		Island stockstallenclave = new Island("Stockstall Enclave", -8, -8); // ]
 	}
 
 }
