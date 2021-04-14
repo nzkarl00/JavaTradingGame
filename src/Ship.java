@@ -22,10 +22,10 @@ public class Ship {
 	private float dailyCrewMemberCost = 10;
 	private float maxHealth;
 
+	/**
+	 * Create a new Ship object with provided name, speed, capacity, crew size, and max health
+	 * */
 	public Ship(String _name, float _speed, int _maxCapacity, int _crewSize, float _maxHealth) {
-		/**
-		 * Create a new Ship object with provided name, speed, capacity, crew size, and max health
-		 * */
 		name = _name;
 		speed = _speed;
 		maxCapacity = _maxCapacity;
@@ -33,10 +33,10 @@ public class Ship {
 		maxHealth = _maxHealth;
 	}
 
+	/**
+	 * @return String An easy-to-read overview of this Ship's properties
+	 * */
 	public String toString() {
-		/**
-		 * @return String An easy-to-read overview of this Ship's properties
-		 * */
 		String output = "Name: " + name + "\n"
 			+ "Speed: " + speed + "\n"
 			+ "Capacity: " + maxCapacity + "\n"

@@ -34,12 +34,12 @@ public class GameManager {
 
 	}
 
+	/**
+	 * Main function run when a new game is being created
+	 * Ask player for username, game duration, and ship type
+	 * These properties will be saved somewhere for future reference when game is actually started
+	 * */
 	public void configureAdventure() {
-		/**
-		 * Main function run when a new game is being created
-		 * Ask player for username, game duration, and ship type
-		 * These properties will be saved somewhere for future reference when game is actually started
-		 * */
 		Scanner scanner = new Scanner(System.in);
 
 		String username = "1";
@@ -59,12 +59,12 @@ public class GameManager {
 		mainLoop(scanner);
 	}
 
+	/**
+	 * Ask player to choose from 4 base ships
+	 * @param Scanner is needed for command-line user input to be processed correctly
+	 * @return Returns Ship object that player has chosen
+	 * */
 	Ship selectShip(Scanner scanner) {
-		/**
-		 * Ask player to choose from 4 base ships
-		 * @param Scanner is needed for command-line user input to be processed correctly
-		 * @return Returns Ship object that player has chosen
-		 * */
 		Ship sloop = new Ship("Sloop", 10, 5, 3, 20);
 		Ship brigantine = new Ship("Brigantine", 50, 20, 5, 10);
 		Ship galleon = new Ship("Galleon", 30, 20, 10, 15);
@@ -89,12 +89,12 @@ public class GameManager {
 		return chosen;
 	}
 
+	/**
+	 * Prompts user to enter int between lowerBound and upperBound
+	 * Will keep asking user to enter number until they get it right
+	 * @return parsed int between lowerBound and upperBound player has chosen
+	 * */
 	int askForBoundedInt(String message, int lowerBound, int upperBound, Scanner scanner) {
-		/**
-		 * Prompts user to enter int between lowerBound and upperBound
-		 * Will keep asking user to enter number until they get it right
-		 * @return parsed int between lowerBound and upperBound player has chosen
-		 * */
 		int ans = lowerBound - 1;
 		while ((ans < lowerBound) || (ans > upperBound)) {
 			try {
