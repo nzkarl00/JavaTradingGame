@@ -3,7 +3,7 @@ import java.util.*;
 /**
  * Handles interaction with Store
  * Store has items that can be sold and items that can be bought
- * item's value is 0.9 * value for buying and 1.1 * value for selling
+ * item's value is 1.1 * value for buying and 0.9 * value for selling
  * so contains two inventories full of inventory items - one for selling one for buying
  * Inventory vs InventoryItem?
  * 

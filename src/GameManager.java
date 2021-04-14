@@ -1,5 +1,6 @@
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /**
  * Class for managing high-level game logic
@@ -10,8 +11,8 @@ import java.util.Scanner;
  * -save this
  * -create new game with provided configs
  * -
- * i'm not sure if it should control interactions between classes directly or if those classes handle things themselves
- * but it can kickstart whatever ig
+ * I'm not sure if it should control interactions between classes directly or if those classes handle things themselves
+ * but it can kickstart whatever it needs to here
  *
  * game loop essentially consists of:
  * -moving between islands
@@ -24,6 +25,10 @@ import java.util.Scanner;
  * */
 
 public class GameManager {
+
+	private Player player;
+	private ArrayList<Island> islands;
+	private Island currentIsland;
 
 	public GameManager() {
 
@@ -47,9 +52,11 @@ public class GameManager {
 
 		Ship ship = selectShip(scanner);
 		createIslands();
+		createRoutes(3);
+		currentIsland = islands.get(0);
+		player = new Player(username, ship, currentIsland, 200);
 
-		// Player user = new Player(username, duration); //doesn't work for me bc no Player class in the project - ?
-
+		mainLoop(scanner);
 	}
 
 	Ship selectShip(Scanner scanner) {
@@ -106,6 +113,84 @@ public class GameManager {
 		Island penlycay = new Island("Penly Cay", 2, -10); // ] ------------------------Creating all the island objects for the game
 		Island valganisland = new Island("Valgan Island", -4, -2); // ]
 		Island stockstallenclave = new Island("Stockstall Enclave", -8, -8); // ]
+
+
+		islands = new ArrayList<Island>();
+		islands.add(fracturedisle);
+		islands.add(smithscordrefuge);
+		islands.add(penlycay);
+		islands.add(valganisland);
+		islands.add(stockstallenclave);
+		
+	}
+
+	/**
+	 * for each island, make a route from itself to every other island on the map
+	 * this route will be added to island's internal list of routes
+	 * */
+	private void createRoutes(int numSimilarRoutes) {
+
+		for (int i = 0; i < islands.size(); i++) {
+			Island startIsland = islands.get(i);
+
+			for (int j = 0; j < islands.size(); j++) {
+				Island endIsland = islands.get(j);
+				if (j == i) continue;
+
+				for (int k = 0; k < numSimilarRoutes; k++) {
+					float directness = (1f / numSimilarRoutes) * (k + 1);
+					startIsland.addRoute(endIsland, directness);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Main game loop where high-level game logic (moving between islands, sellings itmes, etc) is managed
+	 * */
+	private void mainLoop(Scanner scanner) {
+		IslandRoute chosenRoute = chooseIslandRoute(player.getCurrentIsland(), scanner);
+		sailToIsland(chosenRoute);
+		mainLoop(scanner);
+	}
+
+	/**
+	* prints out list of routes that can be taken to other islands from specified island
+	* is currently called when choosing routes to travel from an island
+	* could also be called when you want to view routes from another island 
+	* @param island Island that is the starting point for routes that will be printed out
+	* */
+	private void giveIslandRoutesInformation(Island island) {
+		System.out.println("From island " + island.getName() + " you can go to: ");
+		ArrayList<IslandRoute> routes = island.getRoutes();
+		for (int i = 0; i < routes.size(); i++) {
+			IslandRoute route = routes.get(i);
+			int routeTravelTime = route.getDaysToTravel(player.getShip().getSpeed());
+			System.out.println("Route " + (i + 1) + ": " + route.getString() + ", will take " + routeTravelTime + " days");
+		}
+	}
+
+	/**
+	* Asks player for route to choose from list of routes
+	* if route is selected, start move towards that island
+	* @param fromIsland Island that is the starting point for any possible routes
+	* @param scanner Scanner object to handle command-line input
+	* @return IslandRoute describing selected route from current island to new one
+	* */
+	private IslandRoute chooseIslandRoute(Island fromIsland, Scanner scanner) {
+		giveIslandRoutesInformation(fromIsland);
+		
+		String askMessage = "press <n> for number route to go to";
+
+		int routeIndex = askForBoundedInt(askMessage, 1, fromIsland.getRoutes().size(), scanner);
+		routeIndex -= 1;
+		return fromIsland.getRoutes().get(routeIndex);
+	}
+
+	private void sailToIsland(IslandRoute route) {
+		//details managed by Player class
+		System.out.println("sail using route " + route.getString());
+		player.moveToNewIsland(route);
 	}
 
 }

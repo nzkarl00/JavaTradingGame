@@ -38,12 +38,18 @@ public class Island {
 		return (name + ", found at (" + xcoord + "," + ycoord + ")");
 	}
 
-	public void getRoutes() {
+	public ArrayList<IslandRoute> getRoutes() {
 		//routes are either calculated by the island or assigned to the island by GameManager when game is being set up
+		return routes;
 	}
 
 	public void getStore() {
 
+	}
+
+	public void addRoute(Island endIsland, float directness) {
+		IslandRoute route = new IslandRoute(this, endIsland, directness);
+		routes.add(route);
 	}
 
 

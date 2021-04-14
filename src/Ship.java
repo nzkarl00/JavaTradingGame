@@ -19,6 +19,7 @@ public class Ship {
 	private float speed;
 	private int maxCapacity;
 	private int crewSize;
+	private float dailyCrewMemberCost = 10;
 	private float maxHealth;
 
 	public Ship(String _name, float _speed, int _maxCapacity, int _crewSize, float _maxHealth) {
@@ -46,6 +47,14 @@ public class Ship {
 
 	public String getName() {
 		return name;
+	}
+
+	public float getCrewTravelCost(int numDays) {
+		return crewSize * dailyCrewMemberCost * numDays;
+	}
+
+	public float getSpeed() {
+		return speed;
 	}
 
 }
