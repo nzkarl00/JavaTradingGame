@@ -193,4 +193,12 @@ public class GameManager {
 		player.moveToNewIsland(route);
 	}
 
+	private void createItems() {
+		Item Silk = new Item(50,"Silk","A high quality textile.",2);
+		Item Linen = new Item(10,"Linen","A generic textile.",3);
+		Item Wine = new Item(20,"Wine","An alcoholic drink.",5);
+		Item Cinnamon =  new Item(30,"Cinnamon","A generic spice.",1);
+		Item Saffron = new item(100,"Saffron","An exotic spice.",1);
+	}
+
 }
