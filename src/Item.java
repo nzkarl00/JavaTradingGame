@@ -29,11 +29,11 @@ public class Item {
 		currentValue = newValue;
 	}
 
-	public void getName() {
+	public String getName() {
 		return name;
 	}
 	
-	public void getWeight() {
+	public float getWeight() {
 		return weight;
 	}
 	

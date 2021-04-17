@@ -6,5 +6,9 @@
 public class UpgradeItem extends Item {
 	
 	private float healthBoost;
+	
+	public UpgradeItem(float base, String tempname, String desc, float tempweight) {
+		super(base, tempname, desc, tempweight);
+	}
 
 }
