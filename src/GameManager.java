@@ -202,4 +202,10 @@ public class GameManager {
 		Item Saffron = new item(100,"Saffron","An exotic spice.",1);
 	}
 
+	private void generateStoreInventory() {
+		// Plan here is to implement random inventory generation, my idea for this is to use java.util.Random.nextInt(20) to give each store
+		// stock of an item in the range 0-20, this will hopefully mean every store has different prices at the start of the game using the value
+		// based on inventory quantity. Should be doable with something like for i in islands: for j in items: iStore.add(item) * randomint
+	}
+
 }
