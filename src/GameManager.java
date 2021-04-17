@@ -53,6 +53,7 @@ public class GameManager {
 		Ship ship = selectShip(scanner);
 		createIslands();
 		createRoutes(3);
+		createItems();
 		currentIsland = islands.get(0);
 		player = new Player(username, ship, currentIsland, 200);
 
