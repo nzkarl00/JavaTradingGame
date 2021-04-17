@@ -1,5 +1,3 @@
-import java.util.InputMismatchException;
-import java.util.Scanner;
 import java.util.ArrayList;
 
 /**
@@ -30,6 +28,8 @@ public class GameManager {
 	private ArrayList<Island> islands;
 	private Island currentIsland;
 
+	UI ui;
+
 	public GameManager() {
 
 	}
@@ -40,23 +40,21 @@ public class GameManager {
 	 * These properties will be saved somewhere for future reference when game is actually started
 	 * */
 	public void configureAdventure() {
-		Scanner scanner = new Scanner(System.in);
 
-		String username = "1";
-		while ((username.matches("^[A-Za-z ]*$") == false) | ((username.length() < 3) | (username.length() > 15))) {
-			System.out.println("Enter trader name:");
-			username = scanner.nextLine();
-		}
+		ui = new CommandLineInterface(); //use only command line in this version of project, should be as easy as possible to change to gui once that is all implemented
 
-		int duration = askForBoundedInt("Enter game duration between 20 and 50:", 20, 50, scanner);
+		String regex = "^[A-Za-z ]{3,15}$";
+		String username = ui.queryStringByRegex("Enter trader name", regex);
 
-		Ship ship = selectShip(scanner);
+		int duration = ui.queryIntBetweenRange("Enter game duration between 20 and 50:", 20, 50);
+
+		Ship ship = selectShip();
 		createIslands();
 		createRoutes(3);
 		currentIsland = islands.get(0);
 		player = new Player(username, ship, currentIsland, 200);
 
-		mainLoop(scanner);
+		mainLoop();
 	}
 
 	/**
@@ -64,48 +62,25 @@ public class GameManager {
 	 * @param Scanner is needed for command-line user input to be processed correctly
 	 * @return Returns Ship object that player has chosen
 	 * */
-	Ship selectShip(Scanner scanner) {
+	Ship selectShip() {
 		Ship sloop = new Ship("Sloop", 10, 5, 3, 20);
 		Ship brigantine = new Ship("Brigantine", 50, 20, 5, 10);
 		Ship galleon = new Ship("Galleon", 30, 20, 10, 15);
 		Ship caravel = new Ship("Caravel", 20, 10, 5, 20);
 		Ship[] ships = new Ship[] { sloop, brigantine, galleon, caravel };
-		
-		System.out.println("Select your ship:");
+
+		ArrayList<String> shipNames = new ArrayList<String>();
 		for (int i=0; i<ships.length; i++) {
-			System.out.println("Ship #" + (i + 1));
-			Ship ship = ships[i];
-			System.out.println(ship.toString());
-			System.out.println("");
+			shipNames.add(ships[i].getName());
 		}
 
-		String shipAskMessage = "Enter a number between 1 and " + ships.length + " to choose your ship: ";
-		int shipNum = askForBoundedInt(shipAskMessage, 1, ships.length, scanner);
-		shipNum -= 1;
-
-		Ship chosen = ships[shipNum];
-		System.out.println("You have chosen " + chosen.getName() + ".");
+		int shipIndex = ui.queryListOfOptions("Select your ship:", shipNames);
+		Ship chosen = ships[shipIndex];
+		ui.showMessage("You have chosen " + chosen.getName() + ".");
 		
 		return chosen;
 	}
 
-	/**
-	 * Prompts user to enter int between lowerBound and upperBound
-	 * Will keep asking user to enter number until they get it right
-	 * @return parsed int between lowerBound and upperBound player has chosen
-	 * */
-	int askForBoundedInt(String message, int lowerBound, int upperBound, Scanner scanner) {
-		int ans = lowerBound - 1;
-		while ((ans < lowerBound) || (ans > upperBound)) {
-			try {
-				System.out.println(message);
-				ans = scanner.nextInt();
-			} catch(InputMismatchException e) {
-				scanner.next();
-			}
-		}
-		return ans;
-	}
 
 	private void createIslands() {
 		Island fracturedisle = new Island("Fractured Isle", 9, 7);	// ]
@@ -148,49 +123,49 @@ public class GameManager {
 	/**
 	 * Main game loop where high-level game logic (moving between islands, sellings itmes, etc) is managed
 	 * */
-	private void mainLoop(Scanner scanner) {
-		IslandRoute chosenRoute = chooseIslandRoute(player.getCurrentIsland(), scanner);
+	private void mainLoop() {
+		IslandRoute chosenRoute = chooseIslandRoute(player.getCurrentIsland());
 		sailToIsland(chosenRoute);
-		mainLoop(scanner);
+		mainLoop();
 	}
 
 	/**
-	* prints out list of routes that can be taken to other islands from specified island
+	* returns list of routes that can be taken to other islands from specified island
 	* is currently called when choosing routes to travel from an island
 	* could also be called when you want to view routes from another island 
 	* @param island Island that is the starting point for routes that will be printed out
+	* @return ArrayList<String> containing descriptions for each route from island
 	* */
-	private void giveIslandRoutesInformation(Island island) {
-		System.out.println("From island " + island.getName() + " you can go to: ");
+	private ArrayList<String> getIslandRoutesInformation(Island island) {
 		ArrayList<IslandRoute> routes = island.getRoutes();
-		for (int i = 0; i < routes.size(); i++) {
-			IslandRoute route = routes.get(i);
+		
+		ArrayList<String> routeDescriptions = new ArrayList<String>();
+		for (IslandRoute route : routes) {
 			int routeTravelTime = route.getDaysToTravel(player.getShip().getSpeed());
-			System.out.println("Route " + (i + 1) + ": " + route.getString() + ", will take " + routeTravelTime + " days");
+			String description = route.getString() + ", will take " + routeTravelTime + " days";
+			routeDescriptions.add(description);
 		}
+
+		return routeDescriptions;
 	}
 
 	/**
 	* Asks player for route to choose from list of routes
-	* if route is selected, start move towards that island
+	* when route is selected, start move towards that island
 	* @param fromIsland Island that is the starting point for any possible routes
-	* @param scanner Scanner object to handle command-line input
 	* @return IslandRoute describing selected route from current island to new one
 	* */
-	private IslandRoute chooseIslandRoute(Island fromIsland, Scanner scanner) {
-		giveIslandRoutesInformation(fromIsland);
-		
-		String askMessage = "press <n> for number route to go to";
-
-		int routeIndex = askForBoundedInt(askMessage, 1, fromIsland.getRoutes().size(), scanner);
-		routeIndex -= 1;
+	private IslandRoute chooseIslandRoute(Island fromIsland) {
+		String message = "From island " + fromIsland.getName() + " you can go to: ";
+		ArrayList<String> routeDescriptions = getIslandRoutesInformation(fromIsland);
+		int routeIndex = ui.queryListOfOptions(message, routeDescriptions);
 		return fromIsland.getRoutes().get(routeIndex);
 	}
 
 	private void sailToIsland(IslandRoute route) {
 		//details managed by Player class
-		System.out.println("sail using route " + route.getString());
-		player.moveToNewIsland(route);
+		ui.showMessage("sail using route " + route.getString());
+		player.moveToNewIsland(route, ui);
 	}
 
 }

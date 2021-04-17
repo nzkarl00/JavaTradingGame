@@ -26,20 +26,22 @@ public class Player {
 	 * Moves player to new island.
 	 * The cost of paying crew members for the journey will be removed from the player's money total.
 	 * If player doesn't have enough money to make the journey, function is aborted.
+	 * @param route IslandRoute describing route to new island
+	 * @param ui UI object (currently passed in from GameManager) used for outputting info about the journey
 	 * */
-	public void moveToNewIsland(IslandRoute route) {
+	public void moveToNewIsland(IslandRoute route, UI ui) {
 		int days = route.getDaysToTravel(ship.getSpeed());
 		float crewCost = ship.getCrewTravelCost(days);
 		
 		if (money < crewCost) {
-			System.out.println("ERROR: insufficient funds to travel to island! \n");
+			ui.showMessage("ERROR: insufficient funds to travel to island!");
 			return;
 		}
 
-		System.out.println("Sailing to " + route.getEndIsland().getName() + " for " + days + " days");
+		ui.showMessage("Sailing to " + route.getEndIsland().getName() + " for " + days + " days");
 		money -= crewCost;
 		currentIsland = route.getEndIsland();
-		System.out.println("Arrived at " + currentIsland.getName() + "\n");
+		ui.showMessage("Arrived at " + currentIsland.getName());
 
 	}
 
