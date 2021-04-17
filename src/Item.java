@@ -14,5 +14,31 @@ public class Item {
 	private String description;
 	private float weight;
 	private Island islandStore;
+	
+	public Item(float base, String tempname, String desc, float tempweight) {
+		baseValue = base;
+		name = tempname;
+		description = desc;
+		weight = tempweight;
+	}
+	public float getCurrentValue() {
+		return currentValue;
+	}
+	
+	public void setCurrentValue(float newValue) {
+		currentValue = newValue;
+	}
+
+	public void getName() {
+		return name;
+	}
+	
+	public void getWeight() {
+		return weight;
+	}
+	
+	public String toString() {
+		return (name + ":\n" + description + "\nIt weighs " + weight); 		
+	}
 
 }

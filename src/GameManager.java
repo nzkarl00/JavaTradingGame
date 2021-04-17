@@ -51,6 +51,7 @@ public class GameManager {
 		Ship ship = selectShip();
 		createIslands();
 		createRoutes(3);
+		createItems();
 		currentIsland = islands.get(0);
 		player = new Player(username, ship, currentIsland, 200);
 
@@ -166,6 +167,20 @@ public class GameManager {
 		//details managed by Player class
 		ui.showMessage("sail using route " + route.getString());
 		player.moveToNewIsland(route, ui);
+	}
+
+	private void createItems() {
+		Item Silk = new Item(50,"Silk","A high quality textile.",2);
+		Item Linen = new Item(10,"Linen","A generic textile.",3);
+		Item Wine = new Item(20,"Wine","An alcoholic drink.",5);
+		Item Cinnamon =  new Item(30,"Cinnamon","A generic spice.",1);
+		Item Saffron = new item(100,"Saffron","An exotic spice.",1);
+	}
+
+	private void generateStoreInventory() {
+		// Plan here is to implement random inventory generation, my idea for this is to use java.util.Random.nextInt(20) to give each store
+		// stock of an item in the range 0-20, this will hopefully mean every store has different prices at the start of the game using the value
+		// based on inventory quantity. Should be doable with something like for i in islands: for j in items: iStore.add(item) * randomint
 	}
 
 }
