@@ -56,8 +56,31 @@ public class IslandRoute {
 
 	}
 
-	public void getEncounterChance() {
+	public float getEncounterChance() {
+		return directness;
+	}
+	
+	/*
+	 * Depending on chance of a new encounter, returns an object giving information on encounter (pirates, storm, etc).
+	*/
+	public EncounterEvent getEncounter() {
+		float encounterDeterminant = (float)Math.random();
+		float encounterChance = getEncounterChance();
+		if (encounterDeterminant > encounterChance) {
+			return null;
+		}
+		
+		float encounterChoice = (float)Math.random();
+		EncounterEvent event;
+		if (encounterChoice < 0.3f) {
+			event = new PirateEncounter(0, 3, 0, 5);
+		} else if (encounterChoice < 0.6f) {
+			event = new WeatherEncounter();
+		} else {
+			event = new SailorEncounter();
+		}
 
+		return event;
 	}
 
 	public String getString() {

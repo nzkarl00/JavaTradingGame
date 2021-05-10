@@ -14,12 +14,14 @@ public class Player {
 	private float currentPosition;
 	private Ship ship;
 	private Island currentIsland;
+	private HealthManager healthManager;
 
 	public Player(String _name, Ship _ship, Island startIsland, float startMoney) {
 		name = _name;
 		currentIsland = startIsland;
 		money = startMoney;
 		ship = _ship;
+		healthManager = new HealthManager(50, 50);
 	}
 
 	/**
@@ -41,6 +43,12 @@ public class Player {
 		ui.showMessage("Sailing to " + route.getEndIsland().getName() + " for " + days + " days");
 		money -= crewCost;
 		currentIsland = route.getEndIsland();
+
+		//check for random encounter
+		EncounterEvent en = route.getEncounter();
+		if (en != null)
+		en.StartEncounter(this, ui);
+
 		ui.showMessage("Arrived at " + currentIsland.getName());
 
 	}
@@ -52,5 +60,34 @@ public class Player {
 	public Ship getShip() {
 		return ship;
 	}
+
+	public HealthManager getHealthManager() {
+		return healthManager;
+	}
+
+	/**
+	 * interface to allow any object to give or take money from player
+	 * positive values of money indicate money is given to player
+	 * negative values mean money is taken away
+	 * returns true if transaction was successful and false if not
+	 * */
+	public boolean transferMoney(float amount, UI ui) {
+		if (amount > 0) { //player recieves money
+			money += amount;
+			ui.showMessage(amount + " coins recieved. Your balance is now " + money);
+			return true;
+		}
+
+		//player loses money
+		if (money - amount >= 0) {
+			money -= amount;
+			ui.showMessage(amount + " coins lost. Your balance is now " + money);
+			return true;
+		} else {
+			ui.showMessage("error: not enough money left!");
+			return false;
+		}
+	}
+
 
 }

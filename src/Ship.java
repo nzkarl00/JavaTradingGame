@@ -21,6 +21,7 @@ public class Ship {
 	private int crewSize;
 	private float dailyCrewMemberCost = 10;
 	private float maxHealth;
+	private float damage;
 
 	/**
 	 * Create a new Ship object with provided name, speed, capacity, crew size, and max health
@@ -31,6 +32,7 @@ public class Ship {
 		maxCapacity = _maxCapacity;
 		crewSize = _crewSize;
 		maxHealth = _maxHealth;
+		damage = 10;
 	}
 
 	/**
@@ -55,6 +57,10 @@ public class Ship {
 
 	public float getSpeed() {
 		return speed;
+	}
+
+	public float getDamage() {
+		return damage;
 	}
 
 }
