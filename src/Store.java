@@ -18,15 +18,31 @@ public class Store {
 
 	ArrayList<Item> sellables;
 	ArrayList<Item> buyables;
-
+	ArrayList<Item> storeInventory;
+	
+	public Store() {
+		sellables = new ArrayList<Item>();
+		buyables = new ArrayList<Item>();
+		storeInventory = new ArrayList<Item>();
+	}
+	
 	public void getSellableInventory() {
-
+		for(Item i : sellables) {
+			System.out.println("Sellable Inventory:");
+			System.out.println(i.getName() + "\n");
+		}
 	}
-
+	
 	public void getBuyableItems() {
-
+		for(Item i : buyables) {
+			System.out.println("Buyable Inventory:");
+			System.out.println(i.getName() + "\n");
+		}
 	}
-
+	
+	public void addItem(Item thingy) {
+		storeInventory.add(thingy);
+	}
 	public void buyFromStore() {
 
 	}
