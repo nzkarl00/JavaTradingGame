@@ -55,6 +55,7 @@ public class GameManager {
 		createIslands();
 		createRoutes(3);
 		createItems();
+		generateplayerInventory(ship);
 		generateStoreInventory();
 		currentIsland = islands.get(0);
 		player = new Player(username, ship, currentIsland, 200);
@@ -208,6 +209,12 @@ public class GameManager {
 			for(Item j : items) {
 				i.stockItem(j, rng.nextInt(20));
 			}
+		}
+	}
+	
+	private void generateplayerInventory(Ship playership) {
+		for(Item i : items) {
+			playership.playerInventory.put(i, 0);
 		}
 	}
 
