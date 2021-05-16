@@ -208,7 +208,6 @@ public class GameManager {
 			for(Item j : items) {
 				i.stockItem(j, rng.nextInt(20));
 			}
-			i.printStock();
 		}
 	}
 
