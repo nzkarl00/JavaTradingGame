@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Base class for all Ship functionality.
  * A ship can:
@@ -22,6 +25,7 @@ public class Ship {
 	private float dailyCrewMemberCost = 10;
 	private float maxHealth;
 	private float damage;
+	public Map<Item, Integer> playerInventory;
 
 	/**
 	 * Create a new Ship object with provided name, speed, capacity, crew size, and max health
@@ -33,6 +37,7 @@ public class Ship {
 		crewSize = _crewSize;
 		maxHealth = _maxHealth;
 		damage = 10;
+		playerInventory = new HashMap<Item, Integer>();
 	}
 
 	/**
@@ -61,6 +66,14 @@ public class Ship {
 
 	public float getDamage() {
 		return damage;
+	}
+	
+	public void printInventory() {
+		System.out.println("CURRENT PLAYER INVENTORY:");
+		for(Item i : GameManager.items) {
+			System.out.println(i.getName() + ": " + playerInventory.get(i));
+		}
+		System.out.println("\n");
 	}
 
 }
