@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Class for managing high-level game logic
@@ -27,6 +28,8 @@ public class GameManager {
 	private Player player;
 	private ArrayList<Island> islands;
 	private Island currentIsland;
+	public static ArrayList<Item> items;
+	private ArrayList<Store> stores;
 
 	UI ui;
 
@@ -52,6 +55,7 @@ public class GameManager {
 		createIslands();
 		createRoutes(3);
 		createItems();
+		generateStoreInventory();
 		currentIsland = islands.get(0);
 		player = new Player(username, ship, currentIsland, 200);
 
@@ -97,6 +101,20 @@ public class GameManager {
 		islands.add(penlycay);
 		islands.add(valganisland);
 		islands.add(stockstallenclave);
+		
+		Store fiStore = new Store("Fractured Isle Inventory");	// ]
+		Store srStore = new Store("Smithscord Refuge Retail");	// ]
+		Store pcStore = new Store("Penly Cay Market");	// ] --------Creating all the stores for each island, initials used for names.
+		Store viStore = new Store("Valgan Island Store");	// ]
+		Store seStore = new Store("Stockstall Enclave Bazaar");	// ]
+		
+		stores = new ArrayList<Store>();
+		stores.add(fiStore);
+		stores.add(srStore);
+		stores.add(pcStore);
+		stores.add(viStore);
+		stores.add(seStore);
+
 		
 	}
 
@@ -175,12 +193,23 @@ public class GameManager {
 		Item Wine = new Item(20,"Wine","An alcoholic drink.",5);
 		Item Cinnamon =  new Item(30,"Cinnamon","A generic spice.",1);
 		Item Saffron = new Item(100,"Saffron","An exotic spice.",1);
+		
+		items = new ArrayList<Item>();
+		items.add(Silk);
+		items.add(Wine);
+		items.add(Linen);
+		items.add(Saffron);
+		items.add(Cinnamon);	
 	}
 
 	private void generateStoreInventory() {
-		// Plan here is to implement random inventory generation, my idea for this is to use java.util.Random.nextInt(20) to give each store
-		// stock of an item in the range 0-20, this will hopefully mean every store has different prices at the start of the game using the value
-		// based on inventory quantity. Should be doable with something like for i in islands: for j in items: iStore.add(item) * randomint
+		Random rng = new Random(); 
+		for(Store i : stores) {
+			for(Item j : items) {
+				i.stockItem(j, rng.nextInt(20));
+			}
+			i.printStock();
+		}
 	}
 
 }
