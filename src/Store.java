@@ -16,14 +16,16 @@ import java.util.*;
 
 public class Store {
 
-	ArrayList<Item> sellables;
-	ArrayList<Item> buyables;
-	ArrayList<Item> storeInventory;
+	private ArrayList<Item> sellables;
+	private ArrayList<Item> buyables;
+	private Map<Item, Integer> stock;
+	private String name;
 	
-	public Store() {
+	public Store(String id) {
 		sellables = new ArrayList<Item>();
 		buyables = new ArrayList<Item>();
-		storeInventory = new ArrayList<Item>();
+		stock = new HashMap<Item, Integer>();
+		name = id;
 	}
 	
 	public void getSellableInventory() {
@@ -40,15 +42,15 @@ public class Store {
 		}
 	}
 	
-	public void addItem(Item thingy) {
-		storeInventory.add(thingy);
+	public void stockItem(Item thingy, int quantity) {
+		stock.put(thingy, quantity);
 	}
-	public void buyFromStore() {
-
-	}
-
-	public void sellToStore() {
-
+	
+	public void printStock() {
+		System.out.println(name.toUpperCase());
+		for(Item i : GameManager.items) {
+			System.out.println(i.getName() + ": " + stock.get(i));
+		}
 	}
 
 }
