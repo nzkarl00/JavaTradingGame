@@ -56,7 +56,7 @@ public class Ship {
 		return name;
 	}
 
-	public float getCrewCount() {
+	public int getCrewCount() {
 		return crewSize;
 	}
 
