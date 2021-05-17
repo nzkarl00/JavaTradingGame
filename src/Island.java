@@ -14,12 +14,14 @@ public class Island {
 	private int xcoord; //X co-ordinate of the island.
 	private int ycoord; //Y co-ordinate of the island.
 	private ArrayList<IslandRoute> routes = new ArrayList<IslandRoute>(); //ArrayList containing all possible routes from the island.
-	private ArrayList<Store> stores; //use list instead of variable for potential extensibility (if you wanted 0 or 2 stores on an island) - might score us a few more marks?? might be overkill lol
+	private Store store;
+	
 	
 	public Island(String tempname, int tempx, int tempy) { //Constructor for creating new islands.
 		name = tempname;
 		xcoord = tempx;
 		ycoord = tempy;
+		store = new Store(name); 
 	}
 	
 	public int getX() {
@@ -43,8 +45,8 @@ public class Island {
 		return routes;
 	}
 
-	public void getStore() {
-
+	public Store getStore() {
+		return store;
 	}
 
 	public void addRoute(Island endIsland, float directness) {
