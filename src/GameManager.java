@@ -185,7 +185,13 @@ public class GameManager {
 	}
 
 	private void showIslandInfo(Island island) {
-		ui.showMessage("island: " + island.getName());
+		//show island name, routes + distance + details, store item sellables, store item buyables
+		ui.showMessage(island.getName());
+		ArrayList<String> routesInfoList = getIslandRoutesInformation(island);
+		ui.showList("Routes:", routesInfoList);
+		// ArrayList<String> storeSellables = island.getStore().
+		island.getStore().getSellableInventory();
+		island.getStore().getBuyableItems();
 	}
 
 	/**
@@ -247,7 +253,10 @@ public class GameManager {
 		Random rng = new Random(); 
 		for(Island i : islands) {
 			for(Item j : items) {
-				i.getStore().stockItem(j, rng.nextInt(20));
+				Store store = i.getStore();
+				float isSellableRng = rng.nextFloat();
+				boolean isSellable = isSellableRng < 0.6f;
+				store.stockItem(j, rng.nextInt(20), isSellable);
 			}
 		}
 	}

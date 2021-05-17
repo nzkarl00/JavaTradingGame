@@ -16,5 +16,7 @@ public interface UI {
 
 	public void showMessage(String message);
 
+	public void showList(String description, ArrayList<String> items);
+
 
 }

@@ -63,6 +63,15 @@ public class CommandLineInterface implements UI {
 		return index;
 	}
 
+
+	public void showList(String description, ArrayList<String> items) {
+		System.out.println(description);
+		for (String item : items) {
+			System.out.println(item);
+		}
+		System.out.println("");
+	}
+
 	/**
 	 * Displays message to player, here printing to standard output
 	 * */

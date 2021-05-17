@@ -29,21 +29,28 @@ public class Store {
 	}
 	
 	public void getSellableInventory() {
+		System.out.println("Sellable Inventory:");
 		for(Item i : sellables) {
-			System.out.println("Sellable Inventory:");
-			System.out.println(i.getName() + "\n");
+			System.out.println(i.getName() + " Quantity: " + stock.get(i));
 		}
+		System.out.println("");
 	}
 	
 	public void getBuyableItems() {
+		System.out.println("Buyable Inventory:");
 		for(Item i : buyables) {
-			System.out.println("Buyable Inventory:");
-			System.out.println(i.getName() + "\n");
+			System.out.println(i.getName() + " Quantity: " + stock.get(i));
 		}
+		System.out.println("");
 	}
 	
-	public void stockItem(Item thingy, int quantity) {
+	public void stockItem(Item thingy, int quantity, boolean isSellable) {
 		stock.put(thingy, quantity);
+		if (isSellable) {
+			sellables.add(thingy);
+		} else {
+			buyables.add(thingy);
+		}
 	}
 	
 	public void printStock() {
@@ -52,5 +59,6 @@ public class Store {
 			System.out.println(i.getName() + ": " + stock.get(i));
 		}
 	}
+
 
 }
