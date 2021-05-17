@@ -56,6 +56,10 @@ public class Ship {
 		return name;
 	}
 
+	public float getCrewCount() {
+		return crewSize;
+	}
+
 	public float getCrewTravelCost(int numDays) {
 		return crewSize * dailyCrewMemberCost * numDays;
 	}
@@ -68,12 +72,12 @@ public class Ship {
 		return damage;
 	}
 	
-	public void printInventory() {
-		System.out.println("CURRENT PLAYER INVENTORY:");
+	public void showInventory(UI ui) {
+		ui.showMessage("CURRENT PLAYER INVENTORY:");
 		for(Item i : GameManager.items) {
-			System.out.println(i.getName() + ": " + playerInventory.get(i));
+			ui.showMessage(i.getName() + ": " + playerInventory.get(i));
 		}
-		System.out.println("\n");
+		// System.out.println("\n");
 	}
 
 }

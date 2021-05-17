@@ -30,8 +30,14 @@ public class GameManager {
 	private Island currentIsland;
 	public static ArrayList<Item> items;
 	private ArrayList<Store> stores;
+	private int daysLeft;
 
 	UI ui;
+
+
+	enum ActionType {
+		viewGameState, viewShip, viewGoods, viewIslands, visitStore, sailToIsland
+	}
 
 	public GameManager() {
 
@@ -50,6 +56,7 @@ public class GameManager {
 		String username = ui.queryStringByRegex("Enter trader name", regex);
 
 		int duration = ui.queryIntBetweenRange("Enter game duration between 20 and 50:", 20, 50);
+		daysLeft = duration;
 
 		Ship ship = selectShip();
 		createIslands();
@@ -144,9 +151,59 @@ public class GameManager {
 	 * Main game loop where high-level game logic (moving between islands, sellings itmes, etc) is managed
 	 * */
 	private void mainLoop() {
-		IslandRoute chosenRoute = chooseIslandRoute(player.getCurrentIsland());
-		sailToIsland(chosenRoute);
+		//show options for player to do
+		ActionType chosenAction = getNextAction();
+		if (chosenAction == ActionType.viewGameState) {
+			//show money + days
+			ui.showMessage("You have " + daysLeft + " days left, and $" + player.getMoney() + ".");
+		}
+		if (chosenAction == ActionType.viewShip) {
+			//show ship name, crewmembers + wage cost, capacity, ship damage + repair cost
+			Ship ship = player.getShip();
+			ui.showMessage("You are using ship " + ship.getName() + " .");
+			ui.showMessage("This ship has " + ship.getCrewCount() + " members, costing a total of $" + ship.getCrewTravelCost(1) + " per day.");
+			ui.showMessage("TODO: show ship damage");
+		}
+		if (chosenAction == ActionType.viewGoods) {
+			//show items, for each show amuont paid + amount it was sold for and where if it was sold
+			player.getShip().showInventory(ui);
+			
+		}
+		if (chosenAction == ActionType.viewIslands) {
+			//show island name, routes + distance + details, store item sellables, store item buyables
+			for (Island island : islands) {
+				showIslandInfo(island);
+			}
+		}
+		if (chosenAction == ActionType.visitStore) {
+			//view items sold, view buyables, ActionType.viewGoods, buy items, sell items multiple times
+			ui.showMessage("show stores");
+		}
+		if (chosenAction == ActionType.sailToIsland) {
+			//must repair damage to ship before can sail
+			IslandRoute chosenRoute = chooseIslandRoute(player.getCurrentIsland());
+			sailToIsland(chosenRoute);
+		}
+
 		mainLoop();
+	}
+
+	private ActionType getNextAction() {
+		ArrayList<String> options = new ArrayList<String>();
+		options.add("View game stats");
+		options.add("View ship information");
+		options.add("View inventory");
+		options.add("View islands");
+		options.add("Visit island store");
+		options.add("Sail to new island");
+
+		int index = ui.queryListOfOptions("What would you like to do now?", options);
+
+		return ActionType.values()[index];
+	}
+
+	private void showIslandInfo(Island island) {
+		ui.showMessage("island: " + island.getName());
 	}
 
 	/**

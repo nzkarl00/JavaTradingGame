@@ -51,6 +51,8 @@ public class Player {
 
 		ui.showMessage("Arrived at " + currentIsland.getName());
 
+		
+
 	}
 
 	public Island getCurrentIsland() {
@@ -63,6 +65,10 @@ public class Player {
 
 	public HealthManager getHealthManager() {
 		return healthManager;
+	}
+
+	public float getMoney() {
+		return money;
 	}
 
 	/**
