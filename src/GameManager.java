@@ -158,8 +158,9 @@ public class GameManager {
 			}
 		}
 		if (chosenAction == ActionType.visitStore) {
-			//view items sold, view buyables, ActionType.viewGoods, buy items, sell items multiple times
-			currentIsland.getStore().printStock();
+			// Store store = currentIsland.getStore();
+			// visitStore(currentIsland);
+			currentIsland.getStore().visitStore(player, ui);
 		}
 		if (chosenAction == ActionType.sailToIsland) {
 			//must repair damage to ship before can sail
