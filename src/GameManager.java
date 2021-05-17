@@ -29,7 +29,6 @@ public class GameManager {
 	private ArrayList<Island> islands;
 	private Island currentIsland;
 	public static ArrayList<Item> items;
-	private ArrayList<Store> stores;
 	private int daysLeft;
 
 	UI ui;
@@ -101,29 +100,12 @@ public class GameManager {
 		Island penlycay = new Island("Penly Cay", 2, -10); // ] ------------------------Creating all the island objects for the game
 		Island valganisland = new Island("Valgan Island", -4, -2); // ]
 		Island stockstallenclave = new Island("Stockstall Enclave", -8, -8); // ]
-
-
 		islands = new ArrayList<Island>();
 		islands.add(fracturedisle);
 		islands.add(smithscordrefuge);
 		islands.add(penlycay);
 		islands.add(valganisland);
 		islands.add(stockstallenclave);
-		
-		Store fiStore = new Store("Fractured Isle Inventory");	// ]
-		Store srStore = new Store("Smithscord Refuge Retail");	// ]
-		Store pcStore = new Store("Penly Cay Market");	// ] --------Creating all the stores for each island, initials used for names.
-		Store viStore = new Store("Valgan Island Store");	// ]
-		Store seStore = new Store("Stockstall Enclave Bazaar");	// ]
-		
-		stores = new ArrayList<Store>();
-		stores.add(fiStore);
-		stores.add(srStore);
-		stores.add(pcStore);
-		stores.add(viStore);
-		stores.add(seStore);
-
-		
 	}
 
 	/**
@@ -177,7 +159,7 @@ public class GameManager {
 		}
 		if (chosenAction == ActionType.visitStore) {
 			//view items sold, view buyables, ActionType.viewGoods, buy items, sell items multiple times
-			ui.showMessage("show stores");
+			currentIsland.getStore().printStock();
 		}
 		if (chosenAction == ActionType.sailToIsland) {
 			//must repair damage to ship before can sail
@@ -262,9 +244,9 @@ public class GameManager {
 
 	private void generateStoreInventory() {
 		Random rng = new Random(); 
-		for(Store i : stores) {
+		for(Island i : islands) {
 			for(Item j : items) {
-				i.stockItem(j, rng.nextInt(20));
+				i.getStore().stockItem(j, rng.nextInt(20));
 			}
 		}
 	}
