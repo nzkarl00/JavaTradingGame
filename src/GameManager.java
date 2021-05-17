@@ -224,6 +224,7 @@ public class GameManager {
 	private void sailToIsland(IslandRoute route) {
 		//details managed by Player class
 		ui.showMessage("sail using route " + route.getString());
+		daysLeft -= route.getDaysToTravel(player.getShip().getSpeed());
 		player.moveToNewIsland(route, ui);
 	}
 
