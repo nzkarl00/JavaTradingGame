@@ -95,6 +95,10 @@ public class Ship {
 	public void removeItem(Item item, int quantity) {
 		playerInventory.put(item, (playerInventory.get(item) - quantity));
 	}
+
+	public void clearInventory() {
+		playerInventory = new HashMap<Item, Integer>();
+	}
 	
 	public void showInventory(UI ui) {
 		ui.showMessage("CURRENT PLAYER INVENTORY:");
@@ -102,6 +106,10 @@ public class Ship {
 			ui.showMessage(i.getName() + ": " + playerInventory.get(i));
 		}
 		// System.out.println("\n");
+	}
+
+	public Map<Item, Integer> getInventory() {
+		return playerInventory;
 	}
 
 	private ArrayList<UpgradeItem> getUpgrades() {

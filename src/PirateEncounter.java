@@ -1,3 +1,4 @@
+import java.util.*;
 /**
  * Pirates can:
  * -fight the player
@@ -14,16 +15,16 @@ public class PirateEncounter extends EncounterEvent {
 	private String goodsKillMessage = "The pirates are unsatisfied with your goods. Only killing you will bring them joy.";
 
 	private float baseDamage;
-	private float satisfactoryGoodsValue;
 	private HealthManager healthManager;
 	private Ship pirateShip;
+	private float satisfactoryGoodsValue = 30;
 	
 
 	public PirateEncounter(float _baseDamageMin, float _baseDamageMax, float _goodsValueMin, float _goodsValueMax) {
 		super();
 
 		baseDamage = super.getRandomFloatInRange(_baseDamageMin, _baseDamageMax);
-		satisfactoryGoodsValue = super.getRandomFloatInRange(_goodsValueMin, _goodsValueMax);
+		// satisfactoryGoodsValue = super.getRandomFloatInRange(_goodsValueMin, _goodsValueMax);
 
 		pirateShip = new Ship("", 20, 0, 0, 10);
 
@@ -37,11 +38,15 @@ public class PirateEncounter extends EncounterEvent {
 
 		//start fight
 		boolean havePiratesWon = startCombat(player.getShip());
-		boolean killPlayer = areGoodsSatisfactory(player);
 		if (havePiratesWon) {
 			//take goods - TODO - implement inventory/items
 			ui.showMessage(loseMessage);
-			if (!killPlayer) {
+
+			float goodsValue = getGoodsValue(playerShip);
+			ui.showMessage("Your ship has $" + goodsValue + " in goods. The pirates want at least $" + satisfactoryGoodsValue);
+
+			if (goodsValue >= satisfactoryGoodsValue) {
+				playerShip.clearInventory();
 				ui.showMessage(goodsStolenMessage);
 			} else {
 				ui.showMessage(goodsKillMessage);
@@ -74,10 +79,17 @@ public class PirateEncounter extends EncounterEvent {
 		return probability;
 	}
 
-	private boolean areGoodsSatisfactory(Player player) {
-		//random for now, calculate based on player goods once implemented
-		float chance = super.getRandomFloatInRange(0, 1);
-		return chance < 0.5f;
+	private float getGoodsValue(Ship ship) {
+		float totalValue = 0;
+
+		Map<Item, Integer> inventory = ship.getInventory();
+		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
+			Item item = entry.getKey();
+			int quantity = entry.getValue();
+			totalValue += item.getBaseValue() * quantity;
+		}
+
+		return totalValue;
 	}
 	
 
