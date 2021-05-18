@@ -57,7 +57,8 @@ public class IslandRoute {
 	}
 
 	public float getEncounterChance() {
-		return directness;
+		return 1;
+		// return directness;
 	}
 	
 	/*
@@ -71,6 +72,7 @@ public class IslandRoute {
 		}
 		
 		float encounterChoice = (float)Math.random();
+		encounterChoice = 0f;
 		EncounterEvent event;
 		if (encounterChoice < 0.3f) {
 			event = new PirateEncounter(0, 3, 0, 5);

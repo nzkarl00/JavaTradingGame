@@ -17,4 +17,8 @@ public class UpgradeItem extends Item {
 		upgradeType = _upgradeType;
 	}
 
+	public UpgradeType getUpgradeType() {
+		return upgradeType;
+	}
+
 }

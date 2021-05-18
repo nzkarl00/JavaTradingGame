@@ -1,5 +1,6 @@
 import java.util.HashMap;
 import java.util.Map;
+import java.util.*;
 
 /**
  * Base class for all Ship functionality.
@@ -24,8 +25,11 @@ public class Ship {
 	private int crewSize;
 	private float dailyCrewMemberCost = 10;
 	private float maxHealth;
+	private float health;
 	private float damage;
 	public Map<Item, Integer> playerInventory;
+
+	private float damageUpgradeModifier = 10;
 
 	/**
 	 * Create a new Ship object with provided name, speed, capacity, crew size, and max health
@@ -36,6 +40,7 @@ public class Ship {
 		maxCapacity = _maxCapacity;
 		crewSize = _crewSize;
 		maxHealth = _maxHealth;
+		health = maxHealth;
 		damage = 10;
 		playerInventory = new HashMap<Item, Integer>();
 	}
@@ -69,7 +74,18 @@ public class Ship {
 	}
 
 	public float getDamage() {
-		return damage;
+		float baseDamage = damage;
+		ArrayList<UpgradeItem> upgrades = getUpgrades();
+		for (UpgradeItem item : upgrades) {
+			if (item.getUpgradeType() == UpgradeItem.UpgradeType.damage) {
+				baseDamage += damageUpgradeModifier;
+			}
+		}
+		return baseDamage;
+	}
+
+	public float getHealth() {
+		return health;
 	}
 	
 	public void addItem(Item item, int quantity) {
@@ -88,4 +104,14 @@ public class Ship {
 		// System.out.println("\n");
 	}
 
+	private ArrayList<UpgradeItem> getUpgrades() {
+		ArrayList<UpgradeItem> upgrades = new ArrayList<UpgradeItem>();
+		for (Map.Entry<Item, Integer> entry : playerInventory.entrySet()) {
+			Item item = entry.getKey();
+			if (item instanceof UpgradeItem) {
+				upgrades.add((UpgradeItem)item);
+			}
+		}
+		return upgrades;
+	}
 }
