@@ -72,6 +72,14 @@ public class Ship {
 		return damage;
 	}
 	
+	public void addItem(Item item, int quantity) {
+		playerInventory.put(item, (playerInventory.get(item) + quantity));
+	}
+	
+	public void removeItem(Item item, int quantity) {
+		playerInventory.put(item, (playerInventory.get(item) - quantity));
+	}
+	
 	public void showInventory(UI ui) {
 		ui.showMessage("CURRENT PLAYER INVENTORY:");
 		for(Item i : GameManager.items) {
