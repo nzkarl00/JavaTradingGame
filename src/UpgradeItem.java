@@ -5,10 +5,16 @@
 
 public class UpgradeItem extends Item {
 	
-	private float healthBoost;
+	public enum UpgradeType {
+		reinforcement,
+		damage
+	}
+
+	private UpgradeType upgradeType;
 	
-	public UpgradeItem(float base, String tempname, String desc, float tempweight) {
+	public UpgradeItem(float base, String tempname, String desc, float tempweight, UpgradeType _upgradeType) {
 		super(base, tempname, desc, tempweight);
+		upgradeType = _upgradeType;
 	}
 
 }

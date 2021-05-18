@@ -29,6 +29,7 @@ public class GameManager {
 	private ArrayList<Island> islands;
 	private Island currentIsland;
 	public static ArrayList<Item> items;
+	public static ArrayList<UpgradeItem> upgradeableItems;
 	private int daysLeft;
 
 	UI ui;
@@ -193,6 +194,7 @@ public class GameManager {
 		// ArrayList<String> storeSellables = island.getStore().
 		island.getStore().getSellableInventory();
 		island.getStore().getBuyableItems();
+		// island.getStore().getUpgradeItems();
 	}
 
 	/**
@@ -248,6 +250,13 @@ public class GameManager {
 		items.add(Linen);
 		items.add(Saffron);
 		items.add(Cinnamon);	
+
+
+		UpgradeItem cannon = new UpgradeItem(30, "Cannon",
+				"An extra cannon for your ship. Those pirates won't know what hit them!",
+				10, UpgradeItem.UpgradeType.damage);
+		upgradeableItems = new ArrayList<UpgradeItem>();
+		upgradeableItems.add(cannon);
 	}
 
 	private void generateStoreInventory() {
@@ -255,13 +264,22 @@ public class GameManager {
 		for(Island i : islands) {
 			for(Item j : items) {
 				Store store = i.getStore();
-				store.createItem(j, rng.nextInt(20));
+				store.addItem(j, rng.nextInt(20));
 			}
+			// store.stockItem(
 		}
+		//each upgrade is sold in one specific store
+		Store damageUpgradeStore = islands.get(0).getStore();
+		UpgradeItem damageUpgrade = upgradeableItems.get(0);
+		damageUpgradeStore.addItem(damageUpgrade, 1);
+		// damageUpgradeStore.
 	}
 	
 	private void generateplayerInventory(Ship playership) {
 		for(Item i : items) {
+			playership.playerInventory.put(i, 0);
+		}
+		for(Item i : upgradeableItems) {
 			playership.playerInventory.put(i, 0);
 		}
 	}

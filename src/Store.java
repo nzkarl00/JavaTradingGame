@@ -19,21 +19,20 @@ public class Store {
 	private String storeName;
 	private ArrayList<Item> sellables;
 	private ArrayList<Item> buyables;
+	private ArrayList<Item> upgradeItems;
 	private Map<Item, Integer> stock;
 	
 	public Store(String id) {
 		sellables = new ArrayList<Item>();
 		buyables = new ArrayList<Item>();
+		// upgradeItems = new ArrayList<Item>();
 		stock = new HashMap<Item, Integer>();
 		storeName = id;
 	}
 	
 	public void getSellableInventory() {
 		System.out.println("Sellable Inventory:");
-		for(Item i : sellables) {
-			System.out.println(i.getName() + " Quantity: " + stock.get(i));
-		}
-		System.out.println("");
+		showItemList(sellables);
 	}
 	
 	public int getPrice(Item good, boolean buying) {
@@ -49,75 +48,82 @@ public class Store {
 	
 	public void getBuyableItems() {
 		System.out.println("Buyable Inventory:");
-		for(Item i : buyables) {
+		showItemList(buyables);
+		// System.out.println("Upgrades:");
+		// showItemList(upgradeItems);
+	}
+
+	// public void getUpgradeItems() {
+	// 	showItemList(upgradeItems);
+	// }
+
+	private void showItemList(ArrayList<Item> items) {
+		for(Item i : items) {
 			System.out.println(i.getName() + " Quantity: " + stock.get(i));
 		}
 		System.out.println("");
 	}
-	
-	public void createItem(Item item, int quantity) {
+
+	public void createUpgrade(UpgradeItem item, int quantity) {
+		upgradeItems.add(item);
+		buyables.add(item);
 		stock.put(item, quantity);
-		if (stock.get(item) < 5) {
-			sellables.add(item);
-		} else if (stock.get(item) > 15) {
-			buyables.add(item);
-		} else {
-			sellables.add(item);
-			buyables.add(item);
-		}
 	}
 	
 	public void addItem(Item item, int quantity) {
-		stock.put(item, stock.get(item) + quantity);
-		if (stock.get(item) < 5) {
-			if (sellables.contains(item) == false) {
-				sellables.add(item);
-			}
-			if (buyables.contains(item) == true) {
-				buyables.remove(item);
-			}
-		} else if (stock.get(item) > 15) {
-			if (buyables.contains(item) == false) {
-				buyables.add(item);
-			}
-			if (sellables.contains(item) == true) {
-				sellables.remove(item);
-			}
+		if (stock.containsKey(item)) {
+			stock.put(item, stock.get(item) + quantity);
 		} else {
-			if (sellables.contains(item) == false) {
-			sellables.add(item);
-			}
-			if (buyables.contains(item) == false) {
-			buyables.add(item);
-			}
+			stock.put(item, quantity);
+		}
+
+		if (item instanceof UpgradeItem) {
+			addToItemList(item, buyables);
+		} else {
+			updateItemBuySellState(item, 5, 15);
 		}
 	}
+
 	
 	public void removeItem(Item item, int quantity) {
-		stock.put(item, stock.get(item) - quantity);
-		if (stock.get(item) < 5) {
-			if (sellables.contains(item) == false) {
-				sellables.add(item);
-			}
-			if (buyables.contains(item) == true) {
-				buyables.remove(item);
-			}
-		} else if (stock.get(item) > 15) {
-			if (buyables.contains(item) == false) {
-				buyables.add(item);
-			}
-			if (sellables.contains(item) == true) {
-				sellables.remove(item);
-			}
-		} else {
-			if (sellables.contains(item) == false) {
-			sellables.add(item);
-			}
-			if (buyables.contains(item) == false) {
-			buyables.add(item);
-			}
+		stock.put(item, stock.get(item) - quantity); //should probably handle what happens if quantity is already 0 (likely error)
+
+		if (!(item instanceof UpgradeItem)) {
+			updateItemBuySellState(item, 5, 15);
 		}
 	}
+
+	void updateItemBuySellState(Item item, int minStockForBuyable, int maxStockForSellable) {
+		if (stock.get(item) < minStockForBuyable) {
+			//make this item only a sellable 
+			addToItemList(item, sellables);
+			removeFromItemList(item, buyables);
+
+		} else if (stock.get(item) > maxStockForSellable) {
+			//make this item only a buyable
+			addToItemList(item, buyables);
+			removeFromItemList(item, sellables);
+
+		} else {
+			//make this item both a sellable and a buyable
+			addToItemList(item, sellables);
+			addToItemList(item, buyables);
+
+		}
+	}
+
+	void addToItemList(Item item, ArrayList<Item> list) {
+		if (!list.contains(item)) {
+			list.add(item);
+		}
+	}
+
+	void removeFromItemList(Item item, ArrayList<Item> list) {
+		if (list.contains(item)) {
+			list.remove(item);
+		}
+	}
+
 	
 	public void printStock() {
 		System.out.println(storeName + " Store:");
