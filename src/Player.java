@@ -78,16 +78,14 @@ public class Player {
 	 * returns true if transaction was successful and false if not
 	 * */
 	public boolean transferMoney(float amount, UI ui) {
-		if (amount > 0) { //player recieves money
+		if (amount > 0) { //player receives money
 			money += amount;
-			ui.showMessage(amount + " coins recieved. Your balance is now " + money);
 			return true;
 		}
 
 		//player loses money
 		if (money - amount >= 0) {
-			money -= amount;
-			ui.showMessage(amount + " coins lost. Your balance is now " + money);
+			money += amount;
 			return true;
 		} else {
 			ui.showMessage("error: not enough money left!");
