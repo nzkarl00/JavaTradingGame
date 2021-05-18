@@ -21,12 +21,13 @@ public class Item {
 		description = desc;
 		weight = tempweight;
 	}
-	public float getCurrentValue() {
-		return currentValue;
+	
+	public float getBaseValue() {
+		return baseValue;
 	}
 	
-	public void setCurrentValue(float newValue) {
-		currentValue = newValue;
+	public void setBaseValue(float newValue) {
+		baseValue = newValue;
 	}
 
 	public String getName() {
