@@ -255,9 +255,7 @@ public class GameManager {
 		for(Island i : islands) {
 			for(Item j : items) {
 				Store store = i.getStore();
-				float isSellableRng = rng.nextFloat();
-				boolean isSellable = isSellableRng < 0.6f;
-				store.stockItem(j, rng.nextInt(20), isSellable);
+				store.createItem(j, rng.nextInt(20));
 			}
 		}
 	}
