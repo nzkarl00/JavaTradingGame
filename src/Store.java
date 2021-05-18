@@ -19,7 +19,6 @@ public class Store {
 	private String storeName;
 	private ArrayList<Item> sellables;
 	private ArrayList<Item> buyables;
-	private ArrayList<Item> upgradeItems;
 	private Map<Item, Integer> stock;
 	
 	public Store(String id) {
@@ -64,12 +63,7 @@ public class Store {
 		System.out.println("");
 	}
 
-	public void createUpgrade(UpgradeItem item, int quantity) {
-		upgradeItems.add(item);
-		buyables.add(item);
-		stock.put(item, quantity);
-	}
-	
+
 	public void addItem(Item item, int quantity) {
 		if (stock.containsKey(item)) {
 			stock.put(item, stock.get(item) + quantity);
