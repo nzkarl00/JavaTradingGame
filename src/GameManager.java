@@ -286,4 +286,20 @@ public class GameManager {
 		}
 	}
 
+	public void launchMainWindow() {
+		MainWindow mainWindow = new MainWindow(this);
+	}
+	
+	public void closeMainWindow(MainWindow mainWindow) {
+		mainWindow.closeWindow();
+	}
+	
+	public void launchSetupWindow() {
+		SetupWindow setupWindow = new SetupWindow(this);
+	}
+	
+	public void closeSetupWindow(SetupWindow setupWindow) {
+		setupWindow.closeWindow();
+		launchMainWindow();
+	}
 }
