@@ -13,9 +13,7 @@ public class WeatherEncounter extends EncounterEvent {
 
 	public void StartEncounter(Player player, UI ui) {
 		ui.showMessage("You run into some nasty weather. Your ship has taken damage and will need to be repaired.");
-		//TODO: adjust player's health manager to take damage
-		player.transferMoney(-20, ui);
-	
+		player.getShip().setDamageState(true);
 	}
 	
 

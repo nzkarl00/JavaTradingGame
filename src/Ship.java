@@ -27,6 +27,7 @@ public class Ship {
 	private float maxHealth;
 	private float health;
 	private float damage;
+	private boolean isDamaged;
 	public Map<Item, Integer> playerInventory;
 
 	private float damageUpgradeModifier = 10;
@@ -42,6 +43,7 @@ public class Ship {
 		maxHealth = _maxHealth;
 		health = maxHealth;
 		damage = 10;
+		isDamaged = false;
 		playerInventory = new HashMap<Item, Integer>();
 	}
 
@@ -111,6 +113,28 @@ public class Ship {
 	public Map<Item, Integer> getInventory() {
 		return playerInventory;
 	}
+
+	public void setDamageState(boolean _isDamaged) {
+		isDamaged = _isDamaged;
+	}
+
+	public boolean getDamageState() {
+		return isDamaged;
+	}
+
+	//public float getRepairCost() {
+	//	return (maxHealth - health) * 5;
+	//}
+
+	//public void repairShip() {
+	//	health = maxHealth;
+	//}
+
+	//public void takeDamage(float amount) {
+	//	//TODO: game over if damage is enough
+	//	health -= amount;
+		
+	//}
 
 	private ArrayList<UpgradeItem> getUpgrades() {
 		ArrayList<UpgradeItem> upgrades = new ArrayList<UpgradeItem>();

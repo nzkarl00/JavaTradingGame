@@ -139,9 +139,10 @@ public class Store {
 		ArrayList<String> options = new ArrayList<String>();
 		options.add("Buy from store");
 		options.add("Sell to store");
+		options.add("Repair ship");
 		options.add("Exit store");
 
-		int optionIndex = ui.queryListOfOptions("Would you like to buy, sell, or leave the store?", options);
+		int optionIndex = ui.queryListOfOptions("Would you like to buy, sell, repair your ship, or leave the store?", options);
 		
 		String message;
 		int itemIndex = -1;
@@ -161,6 +162,20 @@ public class Store {
 				sellItem(forSale, player, ui);
 				break;
 			case 2:
+				float repairCost = 50;
+				message = "It will cost $" + repairCost + " to repair the ship. Answer 0 for no or 1 for yes.";
+				int reply = ui.queryIntBetweenRange(message, 0, 1);
+				if (reply == 1) {
+					boolean isBought = player.transferMoney(-repairCost, ui);
+					if (isBought) {
+						player.getShip().setDamageState(false);
+						ui.showMessage("Ship repaired.");
+					} else {
+						ui.showMessage("Insufficient funds.");
+					}
+				}
+				break;
+			case 3:
 				ui.showMessage("Exiting store.");
 				//exit
 				return;

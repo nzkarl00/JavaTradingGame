@@ -145,7 +145,9 @@ public class GameManager {
 			Ship ship = player.getShip();
 			ui.showMessage("You are using ship " + ship.getName() + " .");
 			ui.showMessage("This ship has " + ship.getCrewCount() + " members, costing a total of $" + ship.getCrewTravelCost(1) + " per day.");
-			ui.showMessage("TODO: show ship damage");
+			if (ship.getDamageState()) {
+				ui.showMessage("Your ship is damaged, and will need to be repaired before you can sail again.");
+			}
 		}
 		if (chosenAction == ActionType.viewGoods) {
 			//show items, for each show amuont paid + amount it was sold for and where if it was sold

@@ -72,6 +72,7 @@ public class IslandRoute {
 		
 		float encounterChoice = (float)Math.random();
 		EncounterEvent event;
+
 		if (encounterChoice < 0.3f) {
 			event = new PirateEncounter(0, 3, 0, 5);
 		} else if (encounterChoice < 0.6f) {

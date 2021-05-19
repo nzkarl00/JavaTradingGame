@@ -32,6 +32,11 @@ public class Player {
 	 * @param ui UI object (currently passed in from GameManager) used for outputting info about the journey
 	 * */
 	public void moveToNewIsland(IslandRoute route, UI ui) {
+		if (ship.getDamageState()) {
+			ui.showMessage("ERROR: ship has been damaged, you must repair your ship before you can travel!");
+			return;
+		}
+
 		int days = route.getDaysToTravel(ship.getSpeed());
 		float crewCost = ship.getCrewTravelCost(days);
 		
