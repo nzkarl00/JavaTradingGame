@@ -1,5 +1,6 @@
+package gui;
 import java.awt.EventQueue;
-
+import game.*;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -22,7 +23,7 @@ public class SetupWindow {
 
 	private JFrame window;
 	private GameManager manager;
-	private JTextField textField;
+	private JTextField txtfldName;
 	private static DefaultListModel<Ship> ships;
 	
 	/**
@@ -39,7 +40,7 @@ public class SetupWindow {
 	}
 	
 	public void finishedWindow() {
-		// manager.closeSetupWindow(this);
+		manager.closeSetupWindow(this);
 	}
 	
 	public static void addShip(Ship ship) { 	
@@ -61,36 +62,34 @@ public class SetupWindow {
 		lblName.setBounds(20, 30, 140, 25);
 		window.getContentPane().add(lblName);
 		
-		textField = new JTextField();
-		textField.setBounds(174, 30, 300, 25);
-		window.getContentPane().add(textField);
-		textField.setColumns(10);
+		txtfldName = new JTextField();
+		txtfldName.setBounds(174, 30, 300, 25);
+		window.getContentPane().add(txtfldName);
+		txtfldName.setColumns(10);
 		
 		JLabel lblDuration = new JLabel("Game duration:");
 		lblDuration.setFont(new Font("Viner Hand ITC", Font.BOLD, 18));
 		lblDuration.setBounds(20, 95, 140, 25);
 		window.getContentPane().add(lblDuration);
 		
-		JSlider slider = new JSlider();
-		slider.setSnapToTicks(true);
-		slider.setFont(new Font("Viner Hand ITC", Font.PLAIN, 11));
-		slider.setPaintLabels(true);
-		slider.setMajorTickSpacing(10);
-		slider.setPaintTicks(true);
-		slider.setMinorTickSpacing(1);
-		slider.setMinimum(20);
-		slider.setMaximum(50);
-		slider.setBounds(174, 95, 300, 40);
-		window.getContentPane().add(slider);
+		JSlider sldrDuration = new JSlider();
+		sldrDuration.setValue(20);
+		sldrDuration.setSnapToTicks(true);
+		sldrDuration.setFont(new Font("Viner Hand ITC", Font.PLAIN, 11));
+		sldrDuration.setPaintLabels(true);
+		sldrDuration.setMajorTickSpacing(10);
+		sldrDuration.setPaintTicks(true);
+		sldrDuration.setMinorTickSpacing(1);
+		sldrDuration.setMinimum(20);
+		sldrDuration.setMaximum(50);
+		sldrDuration.setBounds(174, 95, 300, 40);
+		window.getContentPane().add(sldrDuration);
 		
 		JLabel lblShip = new JLabel("Ship:");
 		lblShip.setFont(new Font("Viner Hand ITC", Font.BOLD, 18));
 		lblShip.setBounds(20, 160, 78, 25);
 		window.getContentPane().add(lblShip);
-		
-		JButton btnNewButton = new JButton("Confirm");
-		btnNewButton.setBounds(344, 213, 130, 37);
-		window.getContentPane().add(btnNewButton);
+
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
@@ -146,5 +145,46 @@ public class SetupWindow {
 		lblCaravel.setFont(new Font("Viner Hand ITC", Font.PLAIN, 14));
 		lblCaravel.setBounds(380, 150, 60, 14);
 		window.getContentPane().add(lblCaravel);
+		
+		JLabel lblNameError = new JLabel("");
+		lblNameError.setFont(new Font("Yu Gothic UI", Font.PLAIN, 10));
+		lblNameError.setForeground(Color.RED);
+		lblNameError.setBounds(174, 55, 300, 14);
+		window.getContentPane().add(lblNameError);
+		
+		JLabel lblShipError = new JLabel("");
+		lblShipError.setFont(new Font("Yu Gothic UI", Font.PLAIN, 10));
+		lblShipError.setHorizontalAlignment(SwingConstants.CENTER);
+		lblShipError.setForeground(Color.RED);
+		lblShipError.setBounds(187, 192, 147, 25);
+		window.getContentPane().add(lblShipError);
+		
+		JButton btnNewButton = new JButton("Confirm");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (txtfldName.getText().matches("^[A-Za-z ]{3,15}$") == false) {
+					lblNameError.setText("Name must contain 3-15 non-special alphabetical charcters");
+					return;
+				} else if (shipSelection.getSelection() == null) {
+					lblShipError.setText("Please select a ship");
+					lblNameError.setText("");
+					return;
+				} else {
+					closeWindow();
+					if (rdbtnSloop.isSelected()) {
+						manager.configureAdventure(txtfldName.getText(), sldrDuration.getValue(), 1);
+					} else if (rdbtnBrigantine.isSelected()) {
+						manager.configureAdventure(txtfldName.getText(), sldrDuration.getValue(), 2);
+					} else if (rdbtnGalleon.isSelected()) {
+						manager.configureAdventure(txtfldName.getText(), sldrDuration.getValue(), 3);
+					} else {
+						manager.configureAdventure(txtfldName.getText(), sldrDuration.getValue(), 4);
+					}
+				}
+			}
+		});
+		btnNewButton.setBounds(344, 213, 130, 37);
+		window.getContentPane().add(btnNewButton);
 	}
+	
 }
