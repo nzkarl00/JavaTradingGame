@@ -5,7 +5,7 @@ public class EncounterEvent {
 	public EncounterEvent() {
 	}
 
-	public void StartEncounter(Player player, UI ui) {
+	public void StartEncounter(Player player, UI ui, GameEventNotifier notifer) {
 	}
 
 	public float getRandomFloatInRange(float min, float max) {

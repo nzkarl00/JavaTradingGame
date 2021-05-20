@@ -30,7 +30,7 @@ public class PirateEncounter extends EncounterEvent {
 
 	}
 
-	public void StartEncounter(Player player, UI ui) { //pass in a gui object, just print for now
+	public void StartEncounter(Player player, UI ui, GameEventNotifier notifier) { //pass in a gui object, just print for now
 		Ship playerShip = player.getShip();
 		ui.showMessage(intro);
 		ui.showMessage("Your ship has health of " + playerShip.getHealth() + " and damage of " + playerShip.getDamage());
@@ -50,6 +50,7 @@ public class PirateEncounter extends EncounterEvent {
 				ui.showMessage(goodsStolenMessage);
 			} else {
 				ui.showMessage(goodsKillMessage);
+				notifier.addGameEvent(GameEventNotifier.EventType.killedByPirates);
 			}
 		} else {
 			ui.showMessage(winMessage);

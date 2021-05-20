@@ -110,6 +110,19 @@ public class Ship {
 		// System.out.println("\n");
 	}
 
+	public float getGoodsValue() {
+		float totalValue = 0;
+
+		Map<Item, Integer> inventory = getInventory();
+		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
+			Item item = entry.getKey();
+			int quantity = entry.getValue();
+			totalValue += item.getBaseValue() * quantity;
+		}
+
+		return totalValue;
+	}
+
 	public Map<Item, Integer> getInventory() {
 		return playerInventory;
 	}

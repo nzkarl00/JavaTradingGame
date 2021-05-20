@@ -9,7 +9,7 @@ public class SailorEncounter extends EncounterEvent {
 		super();
 	}
 
-	public void StartEncounter(Player player, UI ui) { 
+	public void StartEncounter(Player player, UI ui, GameEventNotifier notifer) { 
 		ui.showMessage("You find sailors, and rescue them. They give you some money as a reward.");
 		player.transferMoney(20, ui);
 	}

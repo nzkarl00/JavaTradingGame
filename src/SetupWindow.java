@@ -39,7 +39,7 @@ public class SetupWindow {
 	}
 	
 	public void finishedWindow() {
-		manager.closeSetupWindow(this);
+		// manager.closeSetupWindow(this);
 	}
 	
 	public static void addShip(Ship ship) { 	

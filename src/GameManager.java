@@ -55,7 +55,7 @@ public class GameManager {
 		String regex = "^[A-Za-z ]{3,15}$";
 		String username = ui.queryStringByRegex("Enter trader name", regex);
 
-		int duration = ui.queryIntBetweenRange("Enter game duration between 20 and 50:", 20, 50);
+		int duration = ui.queryIntBetweenRange("Enter game duration between 20 and 50:", 3, 50);
 		daysLeft = duration;
 
 		Ship ship = selectShip();
@@ -136,6 +136,8 @@ public class GameManager {
 	private void mainLoop() {
 		//show options for player to do
 		ActionType chosenAction = getNextAction();
+		GameEventNotifier notifier = new GameEventNotifier();
+
 		if (chosenAction == ActionType.viewGameState) {
 			//show money + days
 			ui.showMessage("You have " + daysLeft + " days left, and $" + player.getMoney() + ".");
@@ -168,10 +170,17 @@ public class GameManager {
 		if (chosenAction == ActionType.sailToIsland) {
 			//must repair damage to ship before can sail
 			IslandRoute chosenRoute = chooseIslandRoute(player.getCurrentIsland());
-			sailToIsland(chosenRoute);
+			sailToIsland(chosenRoute, notifier);
 		}
 
-		mainLoop();
+		boolean outOfMoney = hasRunOutOfMoney();
+		boolean outOfDays = hasRunOutOfDays();
+		boolean killedByPirates = notifier.hasEventOccurred(GameEventNotifier.EventType.killedByPirates);
+		if (outOfMoney || outOfDays || killedByPirates) {
+			showEndScreen(outOfMoney, outOfDays, killedByPirates);
+		} else {
+			mainLoop();
+		}
 	}
 
 	private ActionType getNextAction() {
@@ -232,11 +241,11 @@ public class GameManager {
 		return fromIsland.getRoutes().get(routeIndex);
 	}
 
-	private void sailToIsland(IslandRoute route) {
+	private void sailToIsland(IslandRoute route, GameEventNotifier notifier) {
 		//details managed by Player class
 		ui.showMessage("sail using route " + route.getString());
 		daysLeft -= route.getDaysToTravel(player.getShip().getSpeed());
-		player.moveToNewIsland(route, ui);
+		player.moveToNewIsland(route, ui, notifier);
 	}
 
 	private void createItems() {
@@ -286,20 +295,62 @@ public class GameManager {
 		}
 	}
 
-	public void launchMainWindow() {
-		MainWindow mainWindow = new MainWindow(this);
+	private boolean hasRunOutOfDays() {
+		//get min travel day
+		//compare to existing day
+		int minDays = getMinDaysToTravel(player.getCurrentIsland());
+		return daysLeft - minDays < 0;
 	}
+
+	private boolean hasRunOutOfMoney() {
+		//get min travel day, convert to money
+		//compare to existing money
+		int minDays = getMinDaysToTravel(player.getCurrentIsland());
+		float moneyNeededToTravel = player.getShip().getCrewTravelCost(minDays);
+		return moneyNeededToTravel > player.getMoney();
+	}
+
+	private int getMinDaysToTravel(Island island) {
+		ArrayList<IslandRoute> routes = island.getRoutes();
+		int minDays = -1;
+		
+		for (IslandRoute route : routes) {
+			int routeTravelTime = route.getDaysToTravel(player.getShip().getSpeed());
+			if (minDays == -1 || routeTravelTime < minDays) {
+				minDays = routeTravelTime;
+			}
+		}
+
+		return minDays;
+	}
+
+	private void showEndScreen(boolean outOfMoney, boolean outOfDays, boolean killedByPirates) {
+		ui.showMessage("Game over!");
+		if (outOfMoney) {
+			ui.showMessage("You died due to running out of money.");
+		} else if (outOfDays) {
+			ui.showMessage("There are no more days of your journey left.");
+		} else if (killedByPirates) {
+			ui.showMessage("You were killed by pirates.");
+		}
+		float totalValue = player.getMoney() + player.getShip().getGoodsValue() * 0.5f;
+		ui.showMessage("You had a total of $" + totalValue + " in cash and remaining goods.");
+	}
+
+	// public void launchMainWindow() {
+	// 	MainWindow mainWindow = new MainWindow(this);
+	// }
 	
-	public void closeMainWindow(MainWindow mainWindow) {
-		mainWindow.closeWindow();
-	}
+	// public void closeMainWindow(MainWindow mainWindow) {
+	// 	mainWindow.closeWindow();
+	// }
 	
-	public void launchSetupWindow() {
-		SetupWindow setupWindow = new SetupWindow(this);
-	}
+	// public void launchSetupWindow() {
+	// 	SetupWindow setupWindow = new SetupWindow(this);
+	// }
 	
-	public void closeSetupWindow(SetupWindow setupWindow) {
-		setupWindow.closeWindow();
-		launchMainWindow();
-	}
+	// public void closeSetupWindow(SetupWindow setupWindow) {
+	// 	setupWindow.closeWindow();
+	// 	launchMainWindow();
+	// }
 }
