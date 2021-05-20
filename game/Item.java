@@ -1,3 +1,7 @@
+package game;
+
+import islands.Island;
+
 /**
  * represents information about a particular item
  * items can be sold, bought, or used as an upgrade

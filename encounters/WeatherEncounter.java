@@ -1,3 +1,7 @@
+package encounters;
+
+import game.Player;
+import game.UI;
 
 /**
  * Class for weather encounter event.

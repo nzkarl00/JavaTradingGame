@@ -1,3 +1,10 @@
+package islands;
+
+import encounters.EncounterEvent;
+import encounters.PirateEncounter;
+import encounters.SailorEncounter;
+import encounters.WeatherEncounter;
+
 /**
  * Gives a description of avaliable routes between two certain islands
  * could be managed either by having one object to contain all possible routes, or having multiple objects to express different types of routes
@@ -72,7 +79,6 @@ public class IslandRoute {
 		
 		float encounterChoice = (float)Math.random();
 		EncounterEvent event;
-
 		if (encounterChoice < 0.3f) {
 			event = new PirateEncounter(0, 3, 0, 5);
 		} else if (encounterChoice < 0.6f) {

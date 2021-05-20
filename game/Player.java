@@ -1,3 +1,10 @@
+package game;
+
+import encounters.EncounterEvent;
+import encounters.GameEventNotifier;
+import islands.Island;
+import islands.IslandRoute;
+
 /**
  * Class containing properties for Player character
  * keeps track of player's current state
@@ -31,7 +38,7 @@ public class Player {
 	 * @param route IslandRoute describing route to new island
 	 * @param ui UI object (currently passed in from GameManager) used for outputting info about the journey
 	 * */
-	public void moveToNewIsland(IslandRoute route, UI ui, GameEventNotifier notifier) {
+	public void moveToNewIsland(IslandRoute route, UI ui) {
 		if (ship.getDamageState()) {
 			ui.showMessage("ERROR: ship has been damaged, you must repair your ship before you can travel!");
 			return;
@@ -52,7 +59,7 @@ public class Player {
 		//check for random encounter
 		EncounterEvent en = route.getEncounter();
 		if (en != null)
-		en.StartEncounter(this, ui, notifier);
+		en.StartEncounter(this, ui);
 
 		ui.showMessage("Arrived at " + currentIsland.getName());
 

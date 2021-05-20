@@ -1,11 +1,15 @@
+package encounters;
 import java.util.Random;
+import game.Player;
+
+import game.UI;
 
 public class EncounterEvent {
 
 	public EncounterEvent() {
 	}
 
-	public void StartEncounter(Player player, UI ui, GameEventNotifier notifer) {
+	public void StartEncounter(Player player, UI ui) {
 	}
 
 	public float getRandomFloatInRange(float min, float max) {

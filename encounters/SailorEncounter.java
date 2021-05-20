@@ -1,7 +1,7 @@
-/**
- * rescue some sailors
- * player recieves money in return
- * */
+package encounters;
+
+import game.Player;
+import game.UI;
 
 public class SailorEncounter extends EncounterEvent {
 

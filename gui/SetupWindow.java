@@ -24,7 +24,7 @@ public class SetupWindow {
 	private JFrame window;
 	private GameManager manager;
 	private JTextField txtfldName;
-	private static DefaultListModel<Ship> ships;
+	private int index;
 	
 	/**
 	 * Create the application.
@@ -43,10 +43,6 @@ public class SetupWindow {
 		manager.closeSetupWindow(this);
 	}
 	
-	public static void addShip(Ship ship) { 	
-		ships.addElement(ship);
-	}
-
 	/**
 	 * Initialize the contents of the window.
 	 */
@@ -170,17 +166,18 @@ public class SetupWindow {
 					lblNameError.setText("");
 					return;
 				} else {
-					closeWindow();
 					if (rdbtnSloop.isSelected()) {
-						manager.configureAdventure(txtfldName.getText(), sldrDuration.getValue(), 1);
+						index = 1;
 					} else if (rdbtnBrigantine.isSelected()) {
-						manager.configureAdventure(txtfldName.getText(), sldrDuration.getValue(), 2);
+						index = 2;
 					} else if (rdbtnGalleon.isSelected()) {
-						manager.configureAdventure(txtfldName.getText(), sldrDuration.getValue(), 3);
+						index = 3;
 					} else {
-						manager.configureAdventure(txtfldName.getText(), sldrDuration.getValue(), 4);
+						index = 4;
 					}
 				}
+				manager.configureAdventure(txtfldName.getText(), sldrDuration.getValue(), index);
+				finishedWindow();
 			}
 		});
 		btnNewButton.setBounds(344, 213, 130, 37);
