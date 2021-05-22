@@ -43,7 +43,7 @@ public class Item {
 	}
 	
 	public String toString() {
-		return (name + "    " + weight + "kg"); 		
+		return (name + "    " + weight + "kg/unit"); 		
 	}
 
 }

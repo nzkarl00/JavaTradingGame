@@ -99,8 +99,8 @@ public class Store {
 		}
 	}
 	
-	public void removeItem(Item item, int quantity) {
-		stock.put(item, stock.get(item) - quantity);
+	public void removeItem(Item item) {
+		stock.put(item, stock.get(item) - 1);
 		if (stock.get(item) < 5) {
 			if (sellables.contains(item) == false) {
 				sellables.add(item);
@@ -136,7 +136,7 @@ public class Store {
 		// ui.showMessage("You are at " + island.getName() + "'s store. What would you like to do?");
 		printSellableInventory();
 		getBuyableItems();
-		player.getShip().showInventory(ui);
+		player.getShip().showInventory();
 
 		handleStoreOptions(player, ui);
 	}
@@ -157,14 +157,14 @@ public class Store {
 				message = "Enter a number between 1 and " + buyables.size() + " to select an item to buy";
 				itemIndex = ui.queryIntBetweenRange(message, 1, buyables.size());
 				Item selectedItem = buyables.get(itemIndex - 1);
-				purchaseItem(selectedItem, player, ui);
+				purchaseItem(selectedItem, player);
 				break;
 			case 1:
 				//sell
 				message = "Enter a number between 1 and " + sellables.size() + " to select an item to sell";
 				itemIndex = ui.queryIntBetweenRange(message, 1, sellables.size());
 				Item forSale = sellables.get(itemIndex - 1);
-				sellItem(forSale, player, ui);
+				sellItem(forSale, player);
 				break;
 			case 2:
 				ui.showMessage("Exiting store.");
@@ -175,35 +175,29 @@ public class Store {
 		handleStoreOptions(player, ui);
 	}
 	
-	public void purchaseItem(Item item, Player player, UI ui) {
-		String message = ("Enter quantity, " + stock.get(item) + " in stock for $" + getPrice(item, true) + " each. You have $" + player.getMoney() + ".");
-		int purchaseQuantity = ui.queryIntBetweenRange(message, 1, stock.get(item));
-		int total = (int) (getPrice(item, true) * purchaseQuantity);
+	public String purchaseItem(Item item, Player player) {
+		int total = getPrice(item, true);
 		if (player.getMoney() < total) {
-			System.out.println("Insufficient funds.");
+			return "fail";
 		} else {
-			String purchaseMessage = "Successfully purchased " + purchaseQuantity + " " + item.getName() + " for $" + total + ".";
 			total *= -1;
-			player.transferMoney(total, ui);
-			player.getShip().addItem(item, purchaseQuantity);
-			System.out.println(purchaseMessage + " You have $" + player.getMoney() + " remaining.");
-			removeItem(item, purchaseQuantity);
+			player.transferMoney(total);
+			player.getShip().addItem(item);
+			removeItem(item);
+			return ("Purchased " + item.getName() + " for $" + total*-1);
 		}
 	}
 	
-	public void sellItem(Item item, Player player, UI ui) {
-		String message = ("Enter quantity, purchasing price of " + item.getName() + " is " + getPrice(item, false) + " per unit.");
+	public String sellItem(Item item, Player player) {
 		int quantityOwned = player.getShip().playerInventory.get(item);
 		if (quantityOwned == 0) {
-			System.out.println("You don't have any " + item.getName());
+			return ("You don't have any " + item.getName());
 		} else {
-			int saleQuantity = ui.queryIntBetweenRange(message, 0, quantityOwned);
-			int total = (int) (getPrice(item, false) * saleQuantity);
-			player.transferMoney(total, ui);
-			player.getShip().removeItem(item, saleQuantity);
-			System.out.println("Successfully sold " + saleQuantity + " " + item.getName() + " for $" + total + ".");
-			System.out.println("You now have $" + player.getMoney() + ".");
-			addItem(item, saleQuantity);
+			int total = (int) (getPrice(item, false));
+			player.transferMoney(total);
+			addItem(item, 1);
+			player.getShip().removeItem(item);
+			return ("Sold " + item.getName() + " for $" + total);
 		}
 	}
 	
@@ -213,5 +207,21 @@ public class Store {
 	
 	public ArrayList<Item> getBuyables() {
 		return buyables;
+	}
+	
+	public String buyPriceList() {
+		String prices = "";
+		for (Item i: buyables) {
+			prices = prices + "$" + getPrice(i, true) + "\n";
+		}
+		return prices;
+	}
+	
+	public String sellPriceList() {
+		String prices = "";
+		for (Item i: sellables) {
+			prices = prices + "$" + getPrice(i, false) + "\n";
+		}
+		return prices;
 	}
 }

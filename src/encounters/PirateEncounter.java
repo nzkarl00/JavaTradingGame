@@ -62,7 +62,7 @@ public class PirateEncounter extends EncounterEvent {
 			}
 		} else {
 			ui.showMessage(winMessage);
-			player.transferMoney(40, ui);
+			player.transferMoney(40);
 		}
 
 	}

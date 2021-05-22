@@ -19,6 +19,9 @@ import javax.swing.DropMode;
 import javax.swing.ListSelectionModel;
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class MainWindow {
 
@@ -26,6 +29,11 @@ public class MainWindow {
 	private GameManager manager;
 	private DefaultListModel<Item> currentSell;
 	private DefaultListModel<Item> currentBuy;
+	private JLabel lblPlayerMoney;
+	private JList<Item> listBuying;
+	private JList<Item> listSelling;
+	private JTextArea txtrBuyPrices;
+	private JTextArea txtrSellPrices;
 	/**
 	 * Create the application.
 	 */
@@ -46,15 +54,52 @@ public class MainWindow {
 		worker.execute();
     }
     
-    public void populateStores() {
-    for (Item i: manager.currentIsland.getStore().getSellables()) {
-		currentSell.addElement(i);
-		}
-    for (Item j: manager.currentIsland.getStore().getBuyables()) {
-		currentBuy.addElement(j);
-		}
+    public void closeWindow() {
+		mainWindow.dispose();
 	}
-	
+    
+    public void populateStores() {
+    	currentSell.clear();
+    	currentBuy.clear();
+    	for (Item i: manager.currentIsland.getStore().getSellables()) {
+    		currentSell.addElement(i);
+			}
+    	for (Item j: manager.currentIsland.getStore().getBuyables()) {
+    		currentBuy.addElement(j);
+			}
+
+	}
+    
+    public void updateStores() {
+    	int sellIndex = listSelling.getSelectedIndex();
+    	int buyIndex = listBuying.getSelectedIndex();
+    	int lenBuy = currentBuy.getSize();
+    	int lenSell = currentSell.getSize();
+    	currentSell.clear();
+    	currentBuy.clear();
+    	for (Item i: manager.currentIsland.getStore().getSellables()) {
+    		currentSell.addElement(i);
+			}
+    	for (Item j: manager.currentIsland.getStore().getBuyables()) {
+    		currentBuy.addElement(j);
+			}
+    	if (lenBuy == currentBuy.getSize()) {
+    		listBuying.setSelectedIndex(buyIndex);
+    		}
+    	if (lenSell == currentSell.getSize()) {
+    	listSelling.setSelectedIndex(sellIndex);
+    		}
+    }
+    
+    public void updateMoney() {
+    	lblPlayerMoney.setText(String.valueOf(manager.player.getMoney()));
+    }
+    
+    public void updatePrices() {
+    	txtrSellPrices.setText(manager.currentIsland.getStore().sellPriceList());
+    	txtrBuyPrices.setText(manager.currentIsland.getStore().buyPriceList());
+    }
+    
 	/**
 	 * Initialize the contents of the mainWindow.
 	 */
@@ -100,7 +145,7 @@ public class MainWindow {
 		lblBalance.setBounds(750, 175, 200, 25);
 		mainWindow.getContentPane().add(lblBalance);
 		
-		JLabel lblPlayerMoney = new JLabel("200");
+		lblPlayerMoney = new JLabel("200");
 		lblPlayerMoney.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
 		lblPlayerMoney.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPlayerMoney.setBounds(750, 200, 200, 25);
@@ -141,50 +186,81 @@ public class MainWindow {
 		btnSetSail.setBounds(750, 450, 200, 200);
 		mainWindow.getContentPane().add(btnSetSail);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 450, 730, 200);
+		mainWindow.getContentPane().add(scrollPane);
+		
 		JTextArea txtrStoreOutput = new JTextArea();
+		scrollPane.setViewportView(txtrStoreOutput);
 		txtrStoreOutput.setEditable(false);
 		txtrStoreOutput.setFont(new Font("Monospaced", Font.BOLD, 16));
 		txtrStoreOutput.setForeground(Color.WHITE);
 		txtrStoreOutput.setBackground(Color.BLACK);
 		txtrStoreOutput.setText("Welcome to the store!");
 		txtrStoreOutput.setRows(5);
-		txtrStoreOutput.setBounds(10, 450, 730, 200);
-		mainWindow.getContentPane().add(txtrStoreOutput);
-		
-		JLabel lblStoreBuying = new JLabel("Store is buying:");
-		lblStoreBuying.setFont(new Font("Viner Hand ITC", Font.BOLD, 24));
-		lblStoreBuying.setBounds(10, 10, 200, 40);
-		mainWindow.getContentPane().add(lblStoreBuying);
 		
 		JLabel lblStoreSelling = new JLabel("Store is selling:");
 		lblStoreSelling.setFont(new Font("Viner Hand ITC", Font.BOLD, 24));
-		lblStoreSelling.setBounds(370, 10, 200, 40);
+		lblStoreSelling.setBounds(10, 10, 200, 40);
 		mainWindow.getContentPane().add(lblStoreSelling);
 		
-		JButton btnBuy = new JButton("Buy");
-		btnBuy.setFont(new Font("Viner Hand ITC", Font.BOLD, 18));
-		btnBuy.setBounds(10, 215, 350, 40);
-		mainWindow.getContentPane().add(btnBuy);
+		JLabel lblStoreBuying = new JLabel("Store is buying:");
+		lblStoreBuying.setFont(new Font("Viner Hand ITC", Font.BOLD, 24));
+		lblStoreBuying.setBounds(370, 10, 200, 40);
+		mainWindow.getContentPane().add(lblStoreBuying);
 		
-		JList listBuying = new JList<Item>(currentBuy);
+		listBuying = new JList<Item>(currentBuy);
 		listBuying.setVisibleRowCount(5);
 		listBuying.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listBuying.setFont(new Font("Monospaced", Font.BOLD, 18));
 		listBuying.setForeground(Color.WHITE);
 		listBuying.setBackground(Color.BLACK);
-		listBuying.setBounds(10, 55, 350, 150);
+		listBuying.setBounds(10, 55, 300, 150);
 		mainWindow.getContentPane().add(listBuying);
 		
-		JList listSelling = new JList<Item>(currentSell);
+		JButton btnBuy = new JButton("Buy");
+		btnBuy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (listBuying.getSelectedValue() == null) {
+					return;
+				}
+				String transaction = manager.buyItem((Item) listBuying.getSelectedValue());
+				if (transaction != "fail")  {
+					txtrStoreOutput.append("\n" + transaction);
+					updateMoney();
+				updateStores();
+				updatePrices();
+				}
+			}
+		});
+		btnBuy.setFont(new Font("Viner Hand ITC", Font.BOLD, 18));
+		btnBuy.setBounds(10, 215, 350, 40);
+		mainWindow.getContentPane().add(btnBuy);
+		
+		listSelling = new JList<Item>(currentSell);
 		listSelling.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		listSelling.setVisibleRowCount(5);
 		listSelling.setFont(new Font("Monospaced", Font.BOLD, 18));
 		listSelling.setForeground(Color.WHITE);
 		listSelling.setBackground(Color.BLACK);
-		listSelling.setBounds(370, 53, 350, 150);
+		listSelling.setBounds(370, 55, 300, 150);
 		mainWindow.getContentPane().add(listSelling);
 		
 		JButton btnSell = new JButton("Sell");
+		btnSell.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (listSelling.getSelectedValue() == null) {
+					return;
+				}
+				String transaction = manager.sellItem((Item) listSelling.getSelectedValue());
+				if (transaction != "fail")  {
+					txtrStoreOutput.append("\n" + transaction);
+					updateMoney();
+				updateStores();
+				updatePrices();
+				}
+			}
+		});
 		btnSell.setFont(new Font("Viner Hand ITC", Font.BOLD, 18));
 		btnSell.setBounds(370, 215, 350, 40);
 		mainWindow.getContentPane().add(btnSell);
@@ -237,5 +313,22 @@ public class MainWindow {
 		btnIslandProperties.setFont(new Font("Viner Hand ITC", Font.BOLD, 14));
 		btnIslandProperties.setBounds(370, 405, 350, 25);
 		mainWindow.getContentPane().add(btnIslandProperties);
+		
+		txtrSellPrices = new JTextArea(manager.currentIsland.getStore().sellPriceList());
+		txtrSellPrices.setEditable(false);
+		txtrSellPrices.setRows(5);
+		txtrSellPrices.setFont(new Font("Monospaced", Font.BOLD, 20));
+		txtrSellPrices.setBackground(Color.BLACK);
+		txtrSellPrices.setForeground(Color.WHITE);
+		txtrSellPrices.setBounds(670, 55, 50, 150);
+		mainWindow.getContentPane().add(txtrSellPrices);
+		
+		txtrBuyPrices = new JTextArea(manager.currentIsland.getStore().buyPriceList());
+		txtrBuyPrices.setRows(5);
+		txtrBuyPrices.setFont(new Font("Monospaced", Font.BOLD, 20));
+		txtrBuyPrices.setForeground(Color.WHITE);
+		txtrBuyPrices.setBackground(Color.BLACK);
+		txtrBuyPrices.setBounds(310, 55, 50, 150);
+		mainWindow.getContentPane().add(txtrBuyPrices);
 	}
 }

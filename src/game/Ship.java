@@ -92,22 +92,22 @@ public class Ship {
 		return health;
 	}
 	
-	public void addItem(Item item, int quantity) {
-		playerInventory.put(item, (playerInventory.get(item) + quantity));
+	public void addItem(Item item) {
+		playerInventory.put(item, (playerInventory.get(item) + 1));
 	}
 	
-	public void removeItem(Item item, int quantity) {
-		playerInventory.put(item, (playerInventory.get(item) - quantity));
+	public void removeItem(Item item) {
+		playerInventory.put(item, (playerInventory.get(item) - 1));
 	}
 
 	public void clearInventory() {
 		playerInventory = new HashMap<Item, Integer>();
 	}
 	
-	public void showInventory(UI ui) {
-		ui.showMessage("CURRENT PLAYER INVENTORY:");
+	public void showInventory() {
+		System.out.println("CURRENT PLAYER INVENTORY:");
 		for(Item i : GameManager.items) {
-			ui.showMessage(i.getName() + ": " + playerInventory.get(i));
+			System.out.println(i.getName() + ": " + playerInventory.get(i));
 		}
 		// System.out.println("\n");
 	}

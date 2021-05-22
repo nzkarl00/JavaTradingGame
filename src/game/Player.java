@@ -89,7 +89,7 @@ public class Player {
 	 * negative values mean money is taken away
 	 * returns true if transaction was successful and false if not
 	 * */
-	public boolean transferMoney(float amount, UI ui) {
+	public boolean transferMoney(float amount) {
 		if (amount > 0) { //player receives money
 			money += amount;
 			return true;
@@ -100,7 +100,6 @@ public class Player {
 			money += amount;
 			return true;
 		} else {
-			ui.showMessage("error: not enough money left!");
 			return false;
 		}
 	}

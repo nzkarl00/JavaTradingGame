@@ -1,11 +1,6 @@
 package game;
 import java.util.ArrayList;
 import java.util.Random;
-
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
-
-import gui.MainWin;
 import gui.MainWindow;
 import gui.SetupWindow;
 import islands.Island;
@@ -36,11 +31,12 @@ import islands.Store;
 
 public class GameManager {
 
-	private Player player;
+	public Player player;
 	private ArrayList<Island> islands;
 	public Island currentIsland;
 	public static ArrayList<Item> items;
 	public int daysLeft;
+	private MainWindow mainWindow;
 
 	UI ui;
 
@@ -68,7 +64,7 @@ public class GameManager {
 		generatePlayerInventory(ship);
 		generateStoreInventory();
 		currentIsland = islands.get(0);
-		player = new Player(name, ship, currentIsland, 200);
+		player = new Player(name, ship, currentIsland, 500);
 	}
 
 	/**
@@ -150,7 +146,7 @@ public class GameManager {
 		}
 		if (chosenAction == ActionType.viewGoods) {
 			//show items, for each show amuont paid + amount it was sold for and where if it was sold
-			player.getShip().showInventory(ui);
+			player.getShip().showInventory();
 			
 		}
 		if (chosenAction == ActionType.viewIslands) {
@@ -171,6 +167,14 @@ public class GameManager {
 		}
 
 		mainLoop();
+	}
+	
+	public String buyItem(Item item) {
+		return currentIsland.getStore().purchaseItem(item, player);
+	}
+	
+	public String sellItem(Item item) {
+		return currentIsland.getStore().sellItem(item, player);
 	}
 
 	private ActionType getNextAction() {
@@ -238,11 +242,11 @@ public class GameManager {
 	}
 
 	private void createItems() {
-		Item Silk = new Item(50,"Silk    ","A high quality textile.",2);
-		Item Linen = new Item(10,"Linen   ","A generic textile.",3);
-		Item Wine = new Item(20,"Wine    ","An alcoholic drink.",5);
+		Item Silk = new Item(50,"Silk","A high quality textile.",2);
+		Item Linen = new Item(10,"Linen","A generic textile.",3);
+		Item Wine = new Item(20,"Wine","An alcoholic drink.",5);
 		Item Cinnamon =  new Item(30,"Cinnamon","A generic spice.",1);
-		Item Saffron = new Item(100,"Saffron ","An exotic spice.",1);
+		Item Saffron = new Item(100,"Saffron","An exotic spice.",1);
 		
 		items = new ArrayList<Item>();
 		items.add(Silk);
@@ -269,15 +273,15 @@ public class GameManager {
 	}
 	
 	public void launchMainWindow() {
-		new MainWindow(this);
+		mainWindow = new MainWindow(this);
 	}
 	
-	public void closeMainWindow(MainWin mainWin) {
-		mainWin.closeWindow();
+	public void closeMainWindow(MainWindow mainWindow) {
+		mainWindow.closeWindow();
 	}
 	
 	public void launchSetupWindow() {
-		SetupWindow setupWindow = new SetupWindow(this);
+		new SetupWindow(this);
 	}
 	
 	public void closeSetupWindow(SetupWindow setupWindow) {
