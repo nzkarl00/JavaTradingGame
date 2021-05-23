@@ -37,6 +37,7 @@ public class GameManager {
 	public static ArrayList<Item> items;
 	public int daysLeft;
 	private MainWindow mainWindow;
+	private String transactionHistory = "Purchase Log:\n";
 
 	UI ui;
 
@@ -170,11 +171,39 @@ public class GameManager {
 	}
 	
 	public String buyItem(Item item) {
-		return currentIsland.getStore().purchaseItem(item, player);
+		String transaction = currentIsland.getStore().purchaseItem(item, player);
+		if (transaction != "fail") {
+			transactionHistory = transactionHistory + (transaction + " from " + currentIsland.getName() + "\n");
+		}
+		return transaction;
 	}
 	
 	public String sellItem(Item item) {
-		return currentIsland.getStore().sellItem(item, player);
+		String transaction = currentIsland.getStore().sellItem(item, player);
+		if (transaction.startsWith("Y") == false) {
+			transactionHistory += (transaction + " at " + currentIsland.getName() + "\n");
+		}
+		return transaction;
+	}
+	
+	public String getTransactionHistory () {
+		return transactionHistory;
+	}
+	
+	public String viewBuyingPrices(int index) {
+		String storeString = "";
+		for (Item b: islands.get(index).getStore().getBuyables()) {
+			storeString += (b.getName() + " $" + islands.get(index).getStore().getPrice(b, true) + "\n");
+		}
+		return storeString;
+	}
+	
+	public String viewSellingPrices(int index) {
+		String storeString = "";
+		for (Item s: islands.get(index).getStore().getSellables()) {
+			storeString += (s.getName() + " $" + islands.get(index).getStore().getPrice(s, false) + "\n");
+		}
+		return storeString;
 	}
 
 	private ActionType getNextAction() {
@@ -208,7 +237,7 @@ public class GameManager {
 	* @param island Island that is the starting point for routes that will be printed out
 	* @return ArrayList<String> containing descriptions for each route from island
 	* */
-	private ArrayList<String> getIslandRoutesInformation(Island island) {
+	public ArrayList<String> getIslandRoutesInformation(Island island) {
 		ArrayList<IslandRoute> routes = island.getRoutes();
 		
 		ArrayList<String> routeDescriptions = new ArrayList<String>();

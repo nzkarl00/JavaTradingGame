@@ -2060,7 +2060,7 @@
   <commands xmi:id="_Thp5qLorEeuxyMWZ7QzC9A" elementId="org.eclipse.ui.edit.selectAll" commandName="Select All" description="Select all" category="_ThkZwrorEeuxyMWZ7QzC9A"/>
   <commands xmi:id="_Thp5qborEeuxyMWZ7QzC9A" elementId="org.eclipse.eclemma.ui.swtBotJunitShortcut.coverage" commandName="Coverage SWTBot Test" description="Coverage SWTBot Test" category="_ThkZ17orEeuxyMWZ7QzC9A"/>
   <commands xmi:id="_Thp5qrorEeuxyMWZ7QzC9A" elementId="org.eclipse.ui.ide.markers.copyDescription" commandName="Copy Description To Clipboard" description="Copies markers description field to the clipboard" category="_ThkZwrorEeuxyMWZ7QzC9A"/>
-  <commands xmi:id="_Thp5q7orEeuxyMWZ7QzC9A" elementId="org.eclipse.debug.ui.commands.DropToFrame" commandName="Drop to Frame" description="Drop to Frame" category="_ThkZ17orEeuxyMWZ7QzC9A"/>
+  <commands xmi:id="_Thp5q7orEeuxyMWZ7QzC9A" elementId="org.eclipse.debug.ui.commands.DropToFrame" commandName="Drop to infoWindow" description="Drop to infoWindow" category="_ThkZ17orEeuxyMWZ7QzC9A"/>
   <commands xmi:id="_Thp5rLorEeuxyMWZ7QzC9A" elementId="org.eclipse.jdt.ui.edit.text.java.show.outline" commandName="Quick Outline" description="Show the quick outline for the editor input" category="_ThkZyborEeuxyMWZ7QzC9A"/>
   <commands xmi:id="_Thp5rborEeuxyMWZ7QzC9A" elementId="org.eclipse.pde.api.tools.ui.compare.to.baseline" commandName="API Baseline..." description="Allows to compare the selected resource with the current baseline" category="_ThkZ4rorEeuxyMWZ7QzC9A"/>
   <commands xmi:id="_Thp5rrorEeuxyMWZ7QzC9A" elementId="org.eclipse.pde.ui.imagebrowser.saveToWorkspace" commandName="Save Image" description="Save the selected image into a project in the workspace" category="_ThkZ4rorEeuxyMWZ7QzC9A"/>

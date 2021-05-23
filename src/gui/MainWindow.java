@@ -9,12 +9,18 @@ import java.awt.event.WindowEvent;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JTextArea;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.DropMode;
 import javax.swing.ListSelectionModel;
 import javax.swing.AbstractListModel;
@@ -34,6 +40,7 @@ public class MainWindow {
 	private JList<Item> listSelling;
 	private JTextArea txtrBuyPrices;
 	private JTextArea txtrSellPrices;
+	private JDialog dialog = new JDialog();
 	/**
 	 * Create the application.
 	 */
@@ -300,16 +307,38 @@ public class MainWindow {
 		mainWindow.getContentPane().add(lblPlayerInfo);
 		
 		JButton btnShipProperties = new JButton("View Ship Properties");
+		btnShipProperties.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {	
+				JOptionPane.showMessageDialog(mainWindow, manager.player.getShip().toString());
+			}
+		});
 		btnShipProperties.setFont(new Font("Viner Hand ITC", Font.BOLD, 14));
 		btnShipProperties.setBounds(370, 325, 350, 25);
 		mainWindow.getContentPane().add(btnShipProperties);
 		
 		JButton btnTransactionHistory = new JButton("View Transaction History");
+		btnTransactionHistory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JTextArea txtrTransactions = new JTextArea(manager.getTransactionHistory());
+				txtrTransactions.setBackground(UIManager.getColor("Button.background"));
+				txtrTransactions.setFont(new Font("monospace", Font.BOLD, 11));
+				JScrollPane spTransactions = new JScrollPane(txtrTransactions);
+				spTransactions.setPreferredSize(new Dimension(300, 400));
+				JOptionPane.showMessageDialog(mainWindow, spTransactions);
+			}
+		});
 		btnTransactionHistory.setFont(new Font("Viner Hand ITC", Font.BOLD, 14));
 		btnTransactionHistory.setBounds(370, 365, 350, 25);
 		mainWindow.getContentPane().add(btnTransactionHistory);
 		
-		JButton btnIslandProperties = new JButton("View Island Properties");
+		JButton btnIslandProperties = new JButton("View Islands");
+		btnIslandProperties.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JPanel islandDialog = new IslandDialog(manager);	
+				islandDialog.setPreferredSize(new Dimension(600, 600));
+				JOptionPane.showMessageDialog(mainWindow, islandDialog);
+			}
+		});
 		btnIslandProperties.setFont(new Font("Viner Hand ITC", Font.BOLD, 14));
 		btnIslandProperties.setBounds(370, 405, 350, 25);
 		mainWindow.getContentPane().add(btnIslandProperties);

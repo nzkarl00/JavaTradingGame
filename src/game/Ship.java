@@ -53,11 +53,12 @@ public class Ship {
 	 * @return String An easy-to-read overview of this Ship's properties
 	 * */
 	public String toString() {
-		String output = "Name: " + name + "\n"
+		String output = "Class: " + name + "\n"
 			+ "Speed: " + speed + "\n"
 			+ "Capacity: " + maxCapacity + "\n"
 			+ "Crew members: " + crewSize + "\n"
-			+ "Max health: " + maxHealth + "\n";
+			+ "Max health: " + maxHealth + "\n"
+			+ "\nCurrent inventory: " + showInventory();
 		return output;
 	}
 
@@ -104,12 +105,12 @@ public class Ship {
 		playerInventory = new HashMap<Item, Integer>();
 	}
 	
-	public void showInventory() {
-		System.out.println("CURRENT PLAYER INVENTORY:");
+	public String showInventory() {
+		String inven = "";
 		for(Item i : GameManager.items) {
-			System.out.println(i.getName() + ": " + playerInventory.get(i));
+			inven += ("\n" + i.getName() + " x" + playerInventory.get(i));
 		}
-		// System.out.println("\n");
+		return inven;
 	}
 
 	public float getGoodsValue() {
