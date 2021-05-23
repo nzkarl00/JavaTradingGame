@@ -65,6 +65,20 @@ public class Island {
 		return routeDescriptions;
 	}
 
+	public ArrayList<String> getRoutesToIslandDescriptions(float shipSpeed, Island toIsland) {
+		ArrayList<IslandRoute> routes = getRoutes();
+		
+		ArrayList<String> routeDescriptions = new ArrayList<String>();
+		for (IslandRoute route : routes) {
+			if (route.getEndIsland().name == toIsland.name) {
+				String description = route.getDescription(shipSpeed);
+				routeDescriptions.add(description);
+			}
+		}
+
+		return routeDescriptions;
+	}
+
 	public Store getStore() {
 		return store;
 	}
