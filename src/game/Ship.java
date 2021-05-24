@@ -3,6 +3,7 @@ package game;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.*;
+import islands.Store;
 
 /**
  * Base class for all Ship functionality.
@@ -113,14 +114,20 @@ public class Ship {
 		return inven;
 	}
 
-	public float getGoodsValue() {
-		float totalValue = 0;
+	public int getGoodsValue(Store store) { //value of goods sold at store or base value if no store provided
+		int totalValue = 0;
 
 		Map<Item, Integer> inventory = getInventory();
 		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
 			Item item = entry.getKey();
 			int quantity = entry.getValue();
-			totalValue += item.getBaseValue() * quantity;
+			int price = 0;
+			if (store != null) {
+				price = store.getPrice(item, true);
+			} else {
+				price = (int)item.getBaseValue();
+			}
+			totalValue += price * quantity;
 		}
 
 		return totalValue;

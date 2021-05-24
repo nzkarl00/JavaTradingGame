@@ -338,7 +338,8 @@ public class GameManager {
 		//compare to existing money
 		int minDays = getMinDaysToTravel(player.getCurrentIsland());
 		float moneyNeededToTravel = player.getShip().getCrewTravelCost(minDays);
-		return moneyNeededToTravel > player.getMoney();
+		float hypotheticalMoneyFromStore = player.getShip().getGoodsValue(currentIsland.getStore());
+		return moneyNeededToTravel > player.getMoney() + hypotheticalMoneyFromStore;
 	}
 	
 	private int getMinDaysToTravel(Island island) {

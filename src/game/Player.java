@@ -83,6 +83,7 @@ public class Player {
 		return money;
 	}
 
+
 	/**
 	 * interface to allow any object to give or take money from player
 	 * positive values of money indicate money is given to player
