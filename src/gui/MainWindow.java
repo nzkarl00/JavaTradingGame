@@ -99,7 +99,7 @@ public class MainWindow {
     }
     
     public void updateMoney() {
-    	lblPlayerMoney.setText(String.valueOf(manager.player.getMoney()));
+    	lblPlayerMoney.setText("$" + String.valueOf(manager.player.getMoney()));
     }
     
     public void updatePrices() {
@@ -152,7 +152,7 @@ public class MainWindow {
 		lblBalance.setBounds(750, 175, 200, 25);
 		mainWindow.getContentPane().add(lblBalance);
 		
-		lblPlayerMoney = new JLabel("200");
+		lblPlayerMoney = new JLabel("$500");
 		lblPlayerMoney.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
 		lblPlayerMoney.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPlayerMoney.setBounds(750, 200, 200, 25);
@@ -277,38 +277,49 @@ public class MainWindow {
 		lblShipUpgrades.setBounds(10, 280, 350, 25);
 		mainWindow.getContentPane().add(lblShipUpgrades);
 		
-		JButton btnArmor1 = new JButton("Armor 1");
-		btnArmor1.addActionListener(new ActionListener() {
+		JButton btnCannon1 = new JButton("Cannon 1");
+		btnCannon1.setFont(new Font("Viner Hand ITC", Font.BOLD, 13));
+		btnCannon1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(0), manager.player);
-				txtrStoreOutput.append("\n" + transaction);
 				if (transaction != "fail")  {
 					txtrStoreOutput.append("\n" + transaction);
 					updateMoney();
+					btnCannon1.setEnabled(false);
 				}
 			}
 		});
-		btnArmor1.setBounds(10, 325, 100, 40);
-		mainWindow.getContentPane().add(btnArmor1);
-		
-		JButton btnArmor2 = new JButton("Armor 2");
-		btnArmor2.setBounds(135, 325, 100, 40);
-		mainWindow.getContentPane().add(btnArmor2);
-		
-		JButton btnArmor3 = new JButton("Armor 3");
-		btnArmor3.setBounds(260, 325, 100, 40);
-		mainWindow.getContentPane().add(btnArmor3);
-		
-		JButton btnCannon1 = new JButton("Cannon 1");
-		btnCannon1.setBounds(10, 390, 100, 40);
+		btnCannon1.setBounds(10, 339, 100, 91);
 		mainWindow.getContentPane().add(btnCannon1);
 		
 		JButton btnCannon2 = new JButton("Cannon 2");
-		btnCannon2.setBounds(135, 390, 100, 40);
+		btnCannon2.setFont(new Font("Viner Hand ITC", Font.BOLD, 13));
+		btnCannon2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(1), manager.player);
+				if (transaction != "fail")  {
+					txtrStoreOutput.append("\n" + transaction);
+					updateMoney();
+					btnCannon2.setEnabled(false);
+				}
+			}
+		});
+		btnCannon2.setBounds(135, 339, 100, 91);
 		mainWindow.getContentPane().add(btnCannon2);
 		
-		JButton btnCannon3 = new JButton("Cannon 3");
-		btnCannon3.setBounds(260, 390, 100, 40);
+		JButton btnCannon3 = new JButton("Cannon 3 ");
+		btnCannon3.setFont(new Font("Viner Hand ITC", Font.BOLD, 13));
+		btnCannon3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(2), manager.player);
+				if (transaction != "fail")  {
+					txtrStoreOutput.append("\n" + transaction);
+					updateMoney();
+					btnCannon3.setEnabled(false);
+				}
+			}
+		});
+		btnCannon3.setBounds(260, 339, 100, 91);
 		mainWindow.getContentPane().add(btnCannon3);
 		
 		JLabel lblPlayerInfo = new JLabel("Player Info:");
@@ -369,5 +380,23 @@ public class MainWindow {
 		txtrBuyPrices.setBackground(Color.BLACK);
 		txtrBuyPrices.setBounds(310, 55, 50, 150);
 		mainWindow.getContentPane().add(txtrBuyPrices);
+		
+		JLabel lblCannonOnePrice = new JLabel("$105");
+		lblCannonOnePrice.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCannonOnePrice.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+		lblCannonOnePrice.setBounds(10, 316, 100, 25);
+		mainWindow.getContentPane().add(lblCannonOnePrice);
+		
+		JLabel lblCannonTwoPrice = new JLabel("$150");
+		lblCannonTwoPrice.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCannonTwoPrice.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+		lblCannonTwoPrice.setBounds(135, 316, 100, 25);
+		mainWindow.getContentPane().add(lblCannonTwoPrice);
+		
+		JLabel lblCannonThreePrice = new JLabel("$225");
+		lblCannonThreePrice.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCannonThreePrice.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
+		lblCannonThreePrice.setBounds(260, 316, 100, 25);
+		mainWindow.getContentPane().add(lblCannonThreePrice);
 	}
 }

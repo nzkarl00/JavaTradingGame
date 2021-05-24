@@ -289,11 +289,13 @@ public class GameManager {
 		items.add(Saffron);
 		items.add(Cinnamon);	
 		
-		UpgradeItem cannon = new UpgradeItem(30, "Cannon",
-				"An extra cannon for your ship. Those pirates won't know what hit them!",
-				10, UpgradeItem.UpgradeType.damage);
+		UpgradeItem cannon1 = new UpgradeItem(70, "Cannon 1", "Upgrades damage", 0, UpgradeItem.UpgradeType.damage);
+		UpgradeItem cannon2 = new UpgradeItem(100, "Cannon 2", "Upgrades damage", 0, UpgradeItem.UpgradeType.damage);
+		UpgradeItem cannon3 = new UpgradeItem(150, "Cannon 3", "Upgrades damage", 0, UpgradeItem.UpgradeType.damage);
 		upgradeableItems = new ArrayList<UpgradeItem>();
-		upgradeableItems.add(cannon);
+		upgradeableItems.add(cannon1);
+		upgradeableItems.add(cannon2);
+		upgradeableItems.add(cannon3);
 
 	}
 
@@ -306,8 +308,12 @@ public class GameManager {
 			}
 		}
 		upgrades = new Store("upgrades");
-		UpgradeItem damageUpgrade = upgradeableItems.get(0);
-		upgrades.addItem(damageUpgrade, 3);
+		UpgradeItem damageUpgrade1 = upgradeableItems.get(0);
+		UpgradeItem damageUpgrade2 = upgradeableItems.get(1);
+		UpgradeItem damageUpgrade3 = upgradeableItems.get(2);
+		upgrades.addItem(damageUpgrade1, 1);
+		upgrades.addItem(damageUpgrade2, 1);
+		upgrades.addItem(damageUpgrade3, 1);
 
 	}
 	
