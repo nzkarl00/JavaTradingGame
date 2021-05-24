@@ -1,3 +1,7 @@
 src/.classpath
 src/.metadata
 src/.project
+/bin1/
+.classpath
+.project
+/bin/

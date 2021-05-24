@@ -69,6 +69,10 @@ public class IslandRoute {
 	public float getEncounterChance() {
 		return directness;
 	}
+
+	public float getDirectness() {
+		return directness;
+	}
 	
 	/*
 	 * Depending on chance of a new encounter, returns an object giving information on encounter (pirates, storm, etc).

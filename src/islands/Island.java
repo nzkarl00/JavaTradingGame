@@ -81,6 +81,11 @@ public class Island {
 
 	public void addRoute(Island endIsland, float directness) {
 		IslandRoute route = new IslandRoute(this, endIsland, directness);
+		for (IslandRoute existingRoute : routes) {
+			if (existingRoute.getEndIsland() == endIsland && existingRoute.getDirectness() == directness) {
+				return;
+			}
+		}
 		routes.add(route);
 	}
 
