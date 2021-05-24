@@ -2,6 +2,9 @@ package game;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import islands.Store;
+
 import java.util.*;
 
 /**
@@ -25,7 +28,7 @@ public class Ship {
 	private float speed;
 	private int maxCapacity;
 	private int crewSize;
-	private float dailyCrewMemberCost = 10;
+	private float dailyCrewMemberCost = 3;
 	private float maxHealth;
 	private float health;
 	private float damage;
@@ -113,18 +116,31 @@ public class Ship {
 		return inven;
 	}
 
-	public float getGoodsValue() {
-		float totalValue = 0;
+	public int getGoodsValue(Store store) { //value of goods sold at store or base value if no store provided
+		int totalValue = 0;
 
 		Map<Item, Integer> inventory = getInventory();
 		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
 			Item item = entry.getKey();
-			int quantity = entry.getValue();
-			totalValue += item.getBaseValue() * quantity;
+			int playerQuantity = entry.getValue();
+			int price = 0;
+			if (store != null) {
+				int storeQuantity = store.getItemQuantity(item);
+				int priceMod = storeQuantity;
+				while (priceMod > 0) {
+					price += store.getModifiablePrice(item, priceMod, true);
+					priceMod -= 1;
+				}
+			} else {
+				price = (int)item.getBaseValue();
+				price *= playerQuantity;
+			}
+			totalValue += price;
 		}
 
 		return totalValue;
 	}
+
 
 	public Map<Item, Integer> getInventory() {
 		return playerInventory;
@@ -162,4 +178,22 @@ public class Ship {
 		}
 		return upgrades;
 	}
+
+	public int getMaxCapacity() {
+		return maxCapacity;
+	}
+
+	public int getRemainingCapacity() {
+		int weight = 0;
+
+		Map<Item, Integer> inventory = getInventory();
+		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
+			Item item = entry.getKey();
+			int quantity = entry.getValue();
+			weight += item.getWeight() * quantity;
+		}
+
+		return maxCapacity - weight;
+	}
+
 }

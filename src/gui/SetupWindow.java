@@ -155,8 +155,8 @@ public class SetupWindow {
 		lblShipError.setBounds(187, 192, 147, 25);
 		window.getContentPane().add(lblShipError);
 		
-		JButton btnNewButton = new JButton("Confirm");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnRepairShip = new JButton("Confirm");
+		btnRepairShip.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (txtfldName.getText().matches("^[A-Za-z ]{3,15}$") == false) {
 					lblNameError.setText("Name must contain 3-15 non-special alphabetical charcters");
@@ -180,8 +180,8 @@ public class SetupWindow {
 				finishedWindow();
 			}
 		});
-		btnNewButton.setBounds(344, 213, 130, 37);
-		window.getContentPane().add(btnNewButton);
+		btnRepairShip.setBounds(344, 213, 130, 37);
+		window.getContentPane().add(btnRepairShip);
 	}
 	
 }

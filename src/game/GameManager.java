@@ -42,8 +42,9 @@ public class GameManager {
 	private String transactionHistory = "Purchase Log:\n";
 	public ArrayList<UpgradeItem> upgradeableItems;
 	public Store upgrades;
-
+	public GameEventNotifier notifier;
 	UI ui;
+	
 
 
 	enum ActionType {
@@ -175,10 +176,18 @@ public class GameManager {
 		mainLoop();
 	}
 	
+	public String repairShip() {
+		String transaction = upgrades.repairShip();
+		if (transaction != "fail") {
+			transactionHistory = transactionHistory + (transaction + " at " + player.getCurrentIsland() + "\n");
+		}
+		return transaction;
+	}
+	
 	public String buyItem(Item item) {
 		String transaction = currentIsland.getStore().purchaseItem(item, player);
 		if (transaction != "fail") {
-			transactionHistory = transactionHistory + (transaction + " from " + currentIsland.getName() + "\n");
+			transactionHistory = transactionHistory + (transaction + " from " + player.getCurrentIsland().getName() + "\n");
 		}
 		return transaction;
 	}
@@ -186,7 +195,7 @@ public class GameManager {
 	public String sellItem(Item item) {
 		String transaction = currentIsland.getStore().sellItem(item, player);
 		if (transaction.startsWith("Y") == false) {
-			transactionHistory += (transaction + " at " + currentIsland.getName() + "\n");
+			transactionHistory += (transaction + " at " + player.getCurrentIsland().getName() + "\n");
 		}
 		return transaction;
 	}
@@ -254,6 +263,7 @@ public class GameManager {
 
 		return routeDescriptions;
 	}
+	
 
 	/**
 	* Asks player for route to choose from list of routes
@@ -268,7 +278,7 @@ public class GameManager {
 		return fromIsland.getRoutes().get(routeIndex);
 	}
 
-	private void sailToIsland(IslandRoute route, GameEventNotifier notifier) {
+	public void sailToIsland(IslandRoute route, GameEventNotifier notifier) {
 		//details managed by Player class
 		ui.showMessage("sail using route " + route.getString());
 		daysLeft -= route.getDaysToTravel(player.getShip().getSpeed());
@@ -338,8 +348,10 @@ public class GameManager {
 		//compare to existing money
 		int minDays = getMinDaysToTravel(player.getCurrentIsland());
 		float moneyNeededToTravel = player.getShip().getCrewTravelCost(minDays);
-		return moneyNeededToTravel > player.getMoney();
+		float hypotheticalMoneyFromStore = player.getShip().getGoodsValue(currentIsland.getStore());
+		return moneyNeededToTravel > player.getMoney() + hypotheticalMoneyFromStore;
 	}
+
 	
 	private int getMinDaysToTravel(Island island) {
 		ArrayList<IslandRoute> routes = island.getRoutes();

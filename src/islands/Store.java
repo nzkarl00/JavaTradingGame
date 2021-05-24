@@ -54,6 +54,15 @@ public class Store {
 		return adjustedPrice;
 	}
 	
+	public int getModifiablePrice(Item item, double priceMod, boolean buying) {
+		if (buying) {
+			return (int)(item.getBaseValue() * (1.55 - (priceMod / 20)));
+		} else {
+			return (int)(item.getBaseValue() * (1.45 - (priceMod / 20)));
+		}
+	}
+
+	
 	public void getBuyableItems() {
 		System.out.println("Buyable Inventory:");
 		for(Item i : buyables) {
@@ -67,9 +76,9 @@ public class Store {
 	boolean isBought = GameManager.player.transferMoney(-repairCost);
 		if (isBought) {
 			GameManager.player.getShip().setDamageState(false);
-			return ("Ship repaired.");
+			return ("Ship repaired for $50.");
 		} else {
-			return ("Insufficient funds.");
+			return ("fail");
 		}
 		}
 
@@ -184,13 +193,15 @@ public class Store {
 		int total = getPrice(item, true);
 		if (player.getMoney() < total) {
 			return "fail";
-		} else {
-			total *= -1;
-			player.transferMoney(total);
-			player.getShip().addItem(item);
-			removeItem(item, 1);
-			return ("Purchased " + item.getName() + " for $" + total*-1);
 		}
+		if (player.getShip().getRemainingCapacity() < item.getWeight()) {
+			return "You don't have enough space for that!";
+		}
+		total *= -1;
+		player.transferMoney(total);
+		player.getShip().addItem(item);
+		removeItem(item, 1);
+		return ("Purchased " + item.getName() + " for $" + total*-1);
 	}
 	
 	public String sellItem(Item item, Player player) {
@@ -229,5 +240,10 @@ public class Store {
 		}
 		return prices;
 	}
+	
+	public int getItemQuantity(Item item) {
+		return stock.get(item);
+	}
+
 
 }

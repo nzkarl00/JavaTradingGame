@@ -4,6 +4,7 @@ import encounters.EncounterEvent;
 import encounters.PirateEncounter;
 import encounters.SailorEncounter;
 import encounters.WeatherEncounter;
+import game.GameManager;
 
 /**
  * Gives a description of avaliable routes between two certain islands
@@ -98,6 +99,10 @@ public class IslandRoute {
 	public String getDescription(float shipSpeed) {
 		return getDaysToTravel(shipSpeed) + " days, " +
 			(getEncounterChance() * 100) + "% danger";
+	}
+	
+	public String toString() {
+		return (toIsland.getName() + ", " + getDaysToTravel(GameManager.player.getShip().getSpeed()) + " days, " + getEncounterChance()*100 + "% danger");
 	}
 
 }

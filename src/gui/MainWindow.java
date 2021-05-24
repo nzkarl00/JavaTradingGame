@@ -1,6 +1,8 @@
 package gui;
 import java.awt.EventQueue;
 import game.*;
+import islands.IslandRoute;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -18,16 +20,20 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JTextArea;
+import javax.swing.ListModel;
+
 import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.swing.DropMode;
 import javax.swing.ListSelectionModel;
 import javax.swing.AbstractListModel;
+import javax.swing.ComboBoxModel;
 import javax.swing.DefaultListModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
 
 public class MainWindow {
 
@@ -41,6 +47,14 @@ public class MainWindow {
 	private JTextArea txtrBuyPrices;
 	private JTextArea txtrSellPrices;
 	private JDialog dialog = new JDialog();
+	private JLabel lblShipCapacity;
+	private JComboBox<String> comboSelectRoute;
+	private JLabel lblActualLocation;
+	private JLabel lblShipHealth;
+	private JLabel lblCurrentDays;
+	private JButton btnRepairShip;
+	private JButton btnSetSail;
+	
 	/**
 	 * Create the application.
 	 */
@@ -68,14 +82,21 @@ public class MainWindow {
     public void populateStores() {
     	currentSell.clear();
     	currentBuy.clear();
-    	for (Item i: manager.currentIsland.getStore().getSellables()) {
+    	for (Item i: manager.player.getCurrentIsland().getStore().getSellables()) {
     		currentSell.addElement(i);
 			}
-    	for (Item j: manager.currentIsland.getStore().getBuyables()) {
+    	for (Item j: manager.player.getCurrentIsland().getStore().getBuyables()) {
     		currentBuy.addElement(j);
 			}
 
 	}
+    
+    public void updateRoutes() {
+    	comboSelectRoute.removeAllItems();
+    	for (IslandRoute i: manager.player.getCurrentIsland().getRoutes()) {
+    		comboSelectRoute.addItem(i.toString());
+		}
+    }
     
     public void updateStores() {
     	int sellIndex = listSelling.getSelectedIndex();
@@ -84,10 +105,10 @@ public class MainWindow {
     	int lenSell = currentSell.getSize();
     	currentSell.clear();
     	currentBuy.clear();
-    	for (Item i: manager.currentIsland.getStore().getSellables()) {
+    	for (Item i: manager.player.getCurrentIsland().getStore().getSellables()) {
     		currentSell.addElement(i);
 			}
-    	for (Item j: manager.currentIsland.getStore().getBuyables()) {
+    	for (Item j: manager.player.getCurrentIsland().getStore().getBuyables()) {
     		currentBuy.addElement(j);
 			}
     	if (lenBuy == currentBuy.getSize()) {
@@ -103,10 +124,32 @@ public class MainWindow {
     }
     
     public void updatePrices() {
-    	txtrSellPrices.setText(manager.currentIsland.getStore().sellPriceList());
-    	txtrBuyPrices.setText(manager.currentIsland.getStore().buyPriceList());
+    	txtrSellPrices.setText(manager.player.getCurrentIsland().getStore().sellPriceList());
+    	txtrBuyPrices.setText(manager.player.getCurrentIsland().getStore().buyPriceList());
     }
     
+    public void updateCapacity() {
+    	lblShipCapacity.setText("Capacity: " + (manager.player.getShip().getMaxCapacity() - manager.player.getShip().getRemainingCapacity()) + " / " +  manager.player.getShip().getMaxCapacity()); 
+    }
+    
+    public void updateHealth() {
+    	if (manager.player.getShip().getDamageState() == true) {
+    		lblShipHealth.setText("Damaged");
+    		btnRepairShip.setEnabled(true);
+    		btnSetSail.setEnabled(false);
+    		btnSetSail.setText("Ship Damaged!");
+    		btnSetSail.setFont(new Font("Viner Hand ITC", Font.BOLD, 24));
+    	} else {
+    		lblShipHealth.setText("Fully repaired");
+    		btnSetSail.setEnabled(true);
+    		btnSetSail.setText("Set Sail!");
+    		btnSetSail.setFont(new Font("Viner Hand ITC", Font.BOLD, 32));
+    	}
+    }
+    
+    public void updateDays() {
+    	lblCurrentDays.setText(String.valueOf(manager.daysLeft));
+    }
 	/**
 	 * Initialize the contents of the mainWindow.
 	 */
@@ -128,7 +171,7 @@ public class MainWindow {
 		lblDaysRemaining.setBounds(750, 25, 200, 25);
 		mainWindow.getContentPane().add(lblDaysRemaining);
 		
-		JLabel lblCurrentDays = new JLabel(String.valueOf(manager.daysLeft));
+		lblCurrentDays = new JLabel(String.valueOf(manager.daysLeft));
 		lblCurrentDays.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCurrentDays.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
 		lblCurrentDays.setBounds(750, 50, 206, 25);
@@ -140,7 +183,7 @@ public class MainWindow {
 		lblCurrentLocation.setBounds(750, 100, 200, 25);
 		mainWindow.getContentPane().add(lblCurrentLocation);
 		
-		JLabel lblActualLocation = new JLabel("Fractured Isle");
+		lblActualLocation = new JLabel("Fractured Isle");
 		lblActualLocation.setHorizontalAlignment(SwingConstants.CENTER);
 		lblActualLocation.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
 		lblActualLocation.setBounds(750, 125, 200, 25);
@@ -164,16 +207,16 @@ public class MainWindow {
 		lblShipStatus.setBounds(750, 250, 200, 25);
 		mainWindow.getContentPane().add(lblShipStatus);
 		
-		JLabel lblShipHealth = new JLabel("Fully Repaired");
+		lblShipHealth = new JLabel("Fully Repaired");
 		lblShipHealth.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
 		lblShipHealth.setHorizontalAlignment(SwingConstants.CENTER);
-		lblShipHealth.setBounds(750, 275, 200, 25);
+		lblShipHealth.setBounds(750, 310, 200, 25);
 		mainWindow.getContentPane().add(lblShipHealth);
 		
-		JLabel lblShipCapacity = new JLabel("0 / 0");
+		lblShipCapacity = new JLabel("Capacity: " + (manager.player.getShip().getMaxCapacity() - manager.player.getShip().getRemainingCapacity()) + " / " +  manager.player.getShip().getMaxCapacity());
 		lblShipCapacity.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
 		lblShipCapacity.setHorizontalAlignment(SwingConstants.CENTER);
-		lblShipCapacity.setBounds(750, 300, 200, 25);
+		lblShipCapacity.setBounds(750, 280, 200, 25);
 		mainWindow.getContentPane().add(lblShipCapacity);
 		
 		JLabel lblSelectRoute = new JLabel("Select Route:");
@@ -182,19 +225,25 @@ public class MainWindow {
 		lblSelectRoute.setBounds(750, 375, 200, 25);
 		mainWindow.getContentPane().add(lblSelectRoute);
 		
-		JList listSelectRoute = new JList();
-		listSelectRoute.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		listSelectRoute.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		listSelectRoute.setBounds(750, 400, 200, 25);
-		mainWindow.getContentPane().add(listSelectRoute);
-		
-		JButton btnSetSail = new JButton("Set Sail!");
+		btnSetSail = new JButton("Set Sail!");
+		btnSetSail.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				manager.sailToIsland(manager.player.getCurrentIsland().getRoutes().get(comboSelectRoute.getSelectedIndex()), manager.notifier);
+				lblActualLocation.setText(manager.player.getCurrentIsland().getName());
+				updateRoutes();
+				populateStores();
+				updateMoney();
+				updateDays();
+				updateHealth();
+				updatePrices();
+			}
+		});
 		btnSetSail.setFont(new Font("Viner Hand ITC", Font.BOLD, 32));
-		btnSetSail.setBounds(750, 450, 200, 200);
+		btnSetSail.setBounds(730, 450, 244, 200);
 		mainWindow.getContentPane().add(btnSetSail);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 450, 730, 200);
+		scrollPane.setBounds(10, 450, 710, 200);
 		mainWindow.getContentPane().add(scrollPane);
 		
 		JTextArea txtrStoreOutput = new JTextArea();
@@ -208,12 +257,12 @@ public class MainWindow {
 		
 		JLabel lblStoreSelling = new JLabel("Store is selling:");
 		lblStoreSelling.setFont(new Font("Viner Hand ITC", Font.BOLD, 24));
-		lblStoreSelling.setBounds(10, 10, 200, 40);
+		lblStoreSelling.setBounds(10, 10, 350, 40);
 		mainWindow.getContentPane().add(lblStoreSelling);
 		
 		JLabel lblStoreBuying = new JLabel("Store is buying:");
 		lblStoreBuying.setFont(new Font("Viner Hand ITC", Font.BOLD, 24));
-		lblStoreBuying.setBounds(370, 10, 200, 40);
+		lblStoreBuying.setBounds(370, 10, 350, 40);
 		mainWindow.getContentPane().add(lblStoreBuying);
 		
 		listBuying = new JList<Item>(currentBuy);
@@ -235,6 +284,7 @@ public class MainWindow {
 				if (transaction != "fail")  {
 					txtrStoreOutput.append("\n" + transaction);
 					updateMoney();
+					updateCapacity();
 				updateStores();
 				updatePrices();
 				}
@@ -263,6 +313,7 @@ public class MainWindow {
 				if (transaction != "fail")  {
 					txtrStoreOutput.append("\n" + transaction);
 					updateMoney();
+					updateCapacity();
 				updateStores();
 				updatePrices();
 				}
@@ -289,7 +340,7 @@ public class MainWindow {
 				}
 			}
 		});
-		btnCannon1.setBounds(10, 339, 100, 91);
+		btnCannon1.setBounds(10, 339, 110, 91);
 		mainWindow.getContentPane().add(btnCannon1);
 		
 		JButton btnCannon2 = new JButton("Cannon 2");
@@ -304,7 +355,7 @@ public class MainWindow {
 				}
 			}
 		});
-		btnCannon2.setBounds(135, 339, 100, 91);
+		btnCannon2.setBounds(130, 339, 110, 91);
 		mainWindow.getContentPane().add(btnCannon2);
 		
 		JButton btnCannon3 = new JButton("Cannon 3 ");
@@ -319,7 +370,7 @@ public class MainWindow {
 				}
 			}
 		});
-		btnCannon3.setBounds(260, 339, 100, 91);
+		btnCannon3.setBounds(250, 339, 110, 91);
 		mainWindow.getContentPane().add(btnCannon3);
 		
 		JLabel lblPlayerInfo = new JLabel("Player Info:");
@@ -355,7 +406,7 @@ public class MainWindow {
 		JButton btnIslandProperties = new JButton("View Islands");
 		btnIslandProperties.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JPanel islandDialog = new IslandDialog(manager);	
+				JPanel islandDialog = new IslandDialog(manager);
 				islandDialog.setPreferredSize(new Dimension(860, 600));
 				JOptionPane.showMessageDialog(mainWindow, islandDialog);
 			}
@@ -364,7 +415,7 @@ public class MainWindow {
 		btnIslandProperties.setBounds(370, 405, 350, 25);
 		mainWindow.getContentPane().add(btnIslandProperties);
 		
-		txtrSellPrices = new JTextArea(manager.currentIsland.getStore().sellPriceList());
+		txtrSellPrices = new JTextArea(manager.player.getCurrentIsland().getStore().sellPriceList());
 		txtrSellPrices.setEditable(false);
 		txtrSellPrices.setRows(5);
 		txtrSellPrices.setFont(new Font("Monospaced", Font.BOLD, 20));
@@ -373,7 +424,7 @@ public class MainWindow {
 		txtrSellPrices.setBounds(670, 55, 50, 150);
 		mainWindow.getContentPane().add(txtrSellPrices);
 		
-		txtrBuyPrices = new JTextArea(manager.currentIsland.getStore().buyPriceList());
+		txtrBuyPrices = new JTextArea(manager.player.getCurrentIsland().getStore().buyPriceList());
 		txtrBuyPrices.setRows(5);
 		txtrBuyPrices.setFont(new Font("Monospaced", Font.BOLD, 20));
 		txtrBuyPrices.setForeground(Color.WHITE);
@@ -384,19 +435,41 @@ public class MainWindow {
 		JLabel lblCannonOnePrice = new JLabel("$105");
 		lblCannonOnePrice.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCannonOnePrice.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-		lblCannonOnePrice.setBounds(10, 316, 100, 25);
+		lblCannonOnePrice.setBounds(10, 316, 110, 25);
 		mainWindow.getContentPane().add(lblCannonOnePrice);
 		
 		JLabel lblCannonTwoPrice = new JLabel("$150");
 		lblCannonTwoPrice.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCannonTwoPrice.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-		lblCannonTwoPrice.setBounds(135, 316, 100, 25);
+		lblCannonTwoPrice.setBounds(130, 316, 110, 25);
 		mainWindow.getContentPane().add(lblCannonTwoPrice);
 		
 		JLabel lblCannonThreePrice = new JLabel("$225");
 		lblCannonThreePrice.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCannonThreePrice.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
-		lblCannonThreePrice.setBounds(260, 316, 100, 25);
+		lblCannonThreePrice.setBounds(250, 316, 110, 25);
 		mainWindow.getContentPane().add(lblCannonThreePrice);
+		
+		comboSelectRoute = new JComboBox<String>();
+		updateRoutes();
+		comboSelectRoute.setBounds(730, 405, 244, 25);
+		mainWindow.getContentPane().add(comboSelectRoute);
+		
+		btnRepairShip = new JButton("Repair Ship - $50");
+		btnRepairShip.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String transaction = manager.repairShip();
+				if (transaction != "fail")  {
+					txtrStoreOutput.append("\n" + transaction);
+					updateMoney();
+					btnRepairShip.setEnabled(false);
+					updateHealth();
+				}
+			}
+		});
+		btnRepairShip.setEnabled(false);
+		btnRepairShip.setFont(new Font("Viner Hand ITC", Font.BOLD, 14));
+		btnRepairShip.setBounds(730, 340, 244, 23);
+		mainWindow.getContentPane().add(btnRepairShip);
 	}
 }

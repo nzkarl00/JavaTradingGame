@@ -12,6 +12,17 @@ import javax.swing.UIManager;
 public class IslandDialog extends JPanel {
 	
 	private GameManager manager;
+	private JTextArea txtrFIRoutes;
+	private JTextArea txtrSRRoutes;
+	private JTextArea txtrPCRoutes;
+	private JTextArea txtrVIRoutes;
+	
+	public void updateAllRoutes() {
+		txtrFIRoutes.setText(manager.player.getCurrentIsland().getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(0)).toString());
+		txtrSRRoutes.setText(manager.player.getCurrentIsland().getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(1)).toString());
+		txtrPCRoutes.setText(manager.player.getCurrentIsland().getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(2)).toString());
+		txtrVIRoutes.setText(manager.player.getCurrentIsland().getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(3)).toString());
+	}
 
 	/**
 	 * Create the panel.
@@ -112,11 +123,11 @@ public class IslandDialog extends JPanel {
 		txtrFISell.setBounds(135, 76, 115, 133);
 		add(txtrFISell);
 		
-		JTextArea txtrFIRoutes = new JTextArea(manager.currentIsland.getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(0)).toString());
+		txtrFIRoutes = new JTextArea(manager.player.getCurrentIsland().getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(0)).toString());
 		txtrFIRoutes.setLineWrap(true);
 		txtrFIRoutes.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrFIRoutes.setBackground(UIManager.getColor("Button.background"));
-		txtrFIRoutes.setBounds(260, 76, 146, 133);
+		txtrFIRoutes.setBounds(260, 76, 155, 133);
 		add(txtrFIRoutes);
 		
 		JTextArea txtrSRBuy = new JTextArea(manager.viewBuyingPrices(1));
@@ -131,10 +142,10 @@ public class IslandDialog extends JPanel {
 		txtrSRSell.setBounds(575, 76, 115, 133);
 		add(txtrSRSell);
 		
-		JTextArea txtrSRRoutes = new JTextArea(manager.currentIsland.getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(1)).toString());
+		txtrSRRoutes = new JTextArea(manager.player.getCurrentIsland().getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(1)).toString());
 		txtrSRRoutes.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrSRRoutes.setBackground(UIManager.getColor("Button.background"));
-		txtrSRRoutes.setBounds(700, 76, 146, 133);
+		txtrSRRoutes.setBounds(700, 76, 155, 133);
 		add(txtrSRRoutes);
 		
 		JTextArea txtrPCBuy = new JTextArea(manager.viewBuyingPrices(2));
@@ -149,10 +160,10 @@ public class IslandDialog extends JPanel {
 		txtrPCSell.setBounds(135, 296, 115, 133);
 		add(txtrPCSell);
 		
-		JTextArea txtrPCRoutes = new JTextArea(manager.currentIsland.getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(2)).toString());
+		txtrPCRoutes = new JTextArea(manager.player.getCurrentIsland().getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(2)).toString());
 		txtrPCRoutes.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrPCRoutes.setBackground(UIManager.getColor("Button.background"));
-		txtrPCRoutes.setBounds(260, 296, 146, 133);
+		txtrPCRoutes.setBounds(260, 296, 155, 133);
 		add(txtrPCRoutes);
 		
 		JTextArea txtrVIBuy = new JTextArea(manager.viewBuyingPrices(3));
@@ -167,11 +178,13 @@ public class IslandDialog extends JPanel {
 		txtrVISell.setBounds(575, 296, 115, 133);
 		add(txtrVISell);
 		
-		JTextArea txtrVIRoutes = new JTextArea(manager.currentIsland.getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(3)).toString());
+		txtrVIRoutes = new JTextArea(manager.player.getCurrentIsland().getRoutesToIslandDescriptions(manager.player.getShip().getSpeed(), manager.islands.get(3)).toString());
 		txtrVIRoutes.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrVIRoutes.setBackground(UIManager.getColor("Button.background"));
-		txtrVIRoutes.setBounds(700, 296, 146, 133);
+		txtrVIRoutes.setBounds(700, 296, 155, 133);
 		add(txtrVIRoutes);
+		
+		updateAllRoutes();
 
 	}
 }
