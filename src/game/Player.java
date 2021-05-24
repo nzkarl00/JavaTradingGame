@@ -4,6 +4,7 @@ import encounters.EncounterEvent;
 import encounters.GameEventNotifier;
 import islands.Island;
 import islands.IslandRoute;
+import java.util.Random;
 
 /**
  * Class containing properties for Player character
@@ -57,7 +58,7 @@ public class Player {
 		currentIsland = route.getEndIsland();
 
 		//check for random encounter
-		EncounterEvent en = route.getEncounter();
+		EncounterEvent en = route.getEncounter(new Random());
 		if (en != null)
 		en.StartEncounter(this, ui, notifier);
 

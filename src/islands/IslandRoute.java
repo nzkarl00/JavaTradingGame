@@ -5,6 +5,8 @@ import encounters.PirateEncounter;
 import encounters.SailorEncounter;
 import encounters.WeatherEncounter;
 import game.GameManager;
+import game.Player;
+import java.util.Random;
 
 /**
  * Gives a description of avaliable routes between two certain islands
@@ -71,14 +73,22 @@ public class IslandRoute {
 	/*
 	 * Depending on chance of a new encounter, returns an object giving information on encounter (pirates, storm, etc).
 	*/
-	public EncounterEvent getEncounter() {
-		float encounterDeterminant = (float)Math.random();
+	public EncounterEvent getEncounter(Random rng) {
+		// Random rng;
+		// if (useSeed) {
+		// 	rng = new Random(0);
+		// } else {
+		// 	rng = new Random();
+		// }
+
+		// float encounterDeterminant = (float)Math.random();
+		float encounterDeterminant = rng.nextFloat();
 		float encounterChance = getEncounterChance();
-		if (encounterDeterminant > encounterChance) {
+		if (encounterDeterminant < (1 - encounterChance)) {
 			return null;
 		}
 		
-		float encounterChoice = (float)Math.random();
+		float encounterChoice = rng.nextFloat();
 		EncounterEvent event;
 		if (encounterChoice < 0.3f) {
 			event = new PirateEncounter(0, 3, 0, 5);
@@ -101,8 +111,8 @@ public class IslandRoute {
 			(getEncounterChance() * 100) + "% danger";
 	}
 	
-	public String toString() {
-		return (toIsland.getName() + ", " + getDaysToTravel(GameManager.player.getShip().getSpeed()) + " days, " + getEncounterChance()*100 + "% danger");
+	public String toString(float shipSpeed) {
+		return (toIsland.getName() + ", " + getDaysToTravel(shipSpeed) + " days, " + getEncounterChance()*100 + "% danger");
 	}
 
 }
