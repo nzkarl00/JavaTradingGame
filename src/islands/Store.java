@@ -5,6 +5,7 @@ import game.GameManager;
 import game.Item;
 import game.Player;
 import game.UI;
+import game.UpgradeItem;
 
 /**
  * Handles interaction with Store
@@ -61,69 +62,73 @@ public class Store {
 		System.out.println("");
 	}
 	
-	public void createItem(Item item, int quantity) {
-		stock.put(item, quantity);
-		if (stock.get(item) < 5) {
-			sellables.add(item);
-		} else if (stock.get(item) > 15) {
-			buyables.add(item);
+    public String repairShip() {
+	float repairCost = 50;
+	boolean isBought = GameManager.player.transferMoney(-repairCost);
+		if (isBought) {
+			GameManager.player.getShip().setDamageState(false);
+			return ("Ship repaired.");
 		} else {
-			sellables.add(item);
-			buyables.add(item);
+			return ("Insufficient funds.");
 		}
-	}
+		}
+
 	
+
 	public void addItem(Item item, int quantity) {
-		stock.put(item, stock.get(item) + quantity);
-		if (stock.get(item) < 5) {
-			if (sellables.contains(item) == false) {
-				sellables.add(item);
-			}
-			if (buyables.contains(item) == true) {
-				buyables.remove(item);
-			}
-		} else if (stock.get(item) > 15) {
-			if (buyables.contains(item) == false) {
-				buyables.add(item);
-			}
-			if (sellables.contains(item) == true) {
-				sellables.remove(item);
-			}
+		if (stock.containsKey(item)) {
+			stock.put(item, stock.get(item) + quantity);
 		} else {
-			if (sellables.contains(item) == false) {
-			sellables.add(item);
-			}
-			if (buyables.contains(item) == false) {
-			buyables.add(item);
-			}
+			stock.put(item, quantity);
+		}
+
+		if (item instanceof UpgradeItem) {
+			addToItemList(item, buyables);
+		} else {
+			updateItemBuySellState(item, 5, 15);
 		}
 	}
+
 	
-	public void removeItem(Item item) {
-		stock.put(item, stock.get(item) - 1);
-		if (stock.get(item) < 5) {
-			if (sellables.contains(item) == false) {
-				sellables.add(item);
-			}
-			if (buyables.contains(item) == true) {
-				buyables.remove(item);
-			}
-		} else if (stock.get(item) > 15) {
-			if (buyables.contains(item) == false) {
-				buyables.add(item);
-			}
-			if (sellables.contains(item) == true) {
-				sellables.remove(item);
-			}
-		} else {
-			if (sellables.contains(item) == false) {
-			sellables.add(item);
-			}
-			if (buyables.contains(item) == false) {
-			buyables.add(item);
-			}
+	public void removeItem(Item item, int quantity) {
+		stock.put(item, stock.get(item) - quantity); //should probably handle what happens if quantity is already 0 (likely error)
+
+		if (!(item instanceof UpgradeItem)) {
+			updateItemBuySellState(item, 5, 15);
 		}
 	}
+
+	void updateItemBuySellState(Item item, int minStockForBuyable, int maxStockForSellable) {
+		if (stock.get(item) < minStockForBuyable) {
+			//make this item only a sellable 
+			addToItemList(item, sellables);
+			removeFromItemList(item, buyables);
+
+		} else if (stock.get(item) > maxStockForSellable) {
+			//make this item only a buyable
+			addToItemList(item, buyables);
+			removeFromItemList(item, sellables);
+
+		} else {
+			//make this item both a sellable and a buyable
+			addToItemList(item, sellables);
+			addToItemList(item, buyables);
+
+		}
+	}
+
+	void addToItemList(Item item, ArrayList<Item> list) {
+		if (!list.contains(item)) {
+			list.add(item);
+		}
+	}
+
+	void removeFromItemList(Item item, ArrayList<Item> list) {
+		if (list.contains(item)) {
+			list.remove(item);
+		}
+	}
+
 	
 	public void printStock() {
 		System.out.println(storeName + " Store:");
@@ -183,7 +188,7 @@ public class Store {
 			total *= -1;
 			player.transferMoney(total);
 			player.getShip().addItem(item);
-			removeItem(item);
+			removeItem(item, 1);
 			return ("Purchased " + item.getName() + " for $" + total*-1);
 		}
 	}
@@ -224,4 +229,5 @@ public class Store {
 		}
 		return prices;
 	}
+
 }

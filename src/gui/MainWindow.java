@@ -164,7 +164,7 @@ public class MainWindow {
 		lblShipStatus.setBounds(750, 250, 200, 25);
 		mainWindow.getContentPane().add(lblShipStatus);
 		
-		JLabel lblShipHealth = new JLabel("0 / 0");
+		JLabel lblShipHealth = new JLabel("Fully Repaired");
 		lblShipHealth.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
 		lblShipHealth.setHorizontalAlignment(SwingConstants.CENTER);
 		lblShipHealth.setBounds(750, 275, 200, 25);
@@ -278,6 +278,16 @@ public class MainWindow {
 		mainWindow.getContentPane().add(lblShipUpgrades);
 		
 		JButton btnArmor1 = new JButton("Armor 1");
+		btnArmor1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(0), manager.player);
+				txtrStoreOutput.append("\n" + transaction);
+				if (transaction != "fail")  {
+					txtrStoreOutput.append("\n" + transaction);
+					updateMoney();
+				}
+			}
+		});
 		btnArmor1.setBounds(10, 325, 100, 40);
 		mainWindow.getContentPane().add(btnArmor1);
 		
@@ -335,7 +345,7 @@ public class MainWindow {
 		btnIslandProperties.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JPanel islandDialog = new IslandDialog(manager);	
-				islandDialog.setPreferredSize(new Dimension(600, 600));
+				islandDialog.setPreferredSize(new Dimension(860, 600));
 				JOptionPane.showMessageDialog(mainWindow, islandDialog);
 			}
 		});

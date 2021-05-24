@@ -94,4 +94,10 @@ public class IslandRoute {
 		//* Gives String representation of this IslandRoute
 		return fromIsland.getName() + " to " + toIsland.getName();
 	}
+	
+	public String getDescription(float shipSpeed) {
+		return getDaysToTravel(shipSpeed) + " days, " +
+			(getEncounterChance() * 100) + "% danger";
+	}
+
 }

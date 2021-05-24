@@ -1,6 +1,8 @@
 package game;
 import java.util.ArrayList;
 import java.util.Random;
+
+import encounters.GameEventNotifier;
 import gui.MainWindow;
 import gui.SetupWindow;
 import islands.Island;
@@ -31,13 +33,15 @@ import islands.Store;
 
 public class GameManager {
 
-	public Player player;
-	private ArrayList<Island> islands;
+	public static Player player;
+	public ArrayList<Island> islands;
 	public Island currentIsland;
 	public static ArrayList<Item> items;
 	public int daysLeft;
 	private MainWindow mainWindow;
 	private String transactionHistory = "Purchase Log:\n";
+	public ArrayList<UpgradeItem> upgradeableItems;
+	public Store upgrades;
 
 	UI ui;
 
@@ -75,9 +79,9 @@ public class GameManager {
 	 * */
 	Ship selectShip(int shipIndex) {
 		Ship sloop = new Ship("Sloop", 10, 5, 3, 20);
-		Ship brigantine = new Ship("Brigantine", 50, 20, 5, 10);
-		Ship galleon = new Ship("Galleon", 30, 20, 10, 15);
-		Ship caravel = new Ship("Caravel", 20, 10, 5, 20);
+		Ship brigantine = new Ship("Brigantine", 20, 20, 5, 10);
+		Ship galleon = new Ship("Galleon", 30, 20, 7, 15);
+		Ship caravel = new Ship("Caravel", 50, 10, 10, 20);
 		Ship[] ships = new Ship[] { sloop, brigantine, galleon, caravel };
 
 		ArrayList<String> shipNames = new ArrayList<String>();
@@ -133,6 +137,7 @@ public class GameManager {
 	 * */
 	public void mainLoop() {
 		//show options for player to do
+		GameEventNotifier notifier = new GameEventNotifier();
 		ActionType chosenAction = getNextAction();
 		if (chosenAction == ActionType.viewGameState) {
 			//show money + days
@@ -164,7 +169,7 @@ public class GameManager {
 		if (chosenAction == ActionType.sailToIsland) {
 			//must repair damage to ship before can sail
 			IslandRoute chosenRoute = chooseIslandRoute(player.getCurrentIsland());
-			sailToIsland(chosenRoute);
+			sailToIsland(chosenRoute, notifier);
 		}
 
 		mainLoop();
@@ -263,11 +268,11 @@ public class GameManager {
 		return fromIsland.getRoutes().get(routeIndex);
 	}
 
-	private void sailToIsland(IslandRoute route) {
+	private void sailToIsland(IslandRoute route, GameEventNotifier notifier) {
 		//details managed by Player class
 		ui.showMessage("sail using route " + route.getString());
 		daysLeft -= route.getDaysToTravel(player.getShip().getSpeed());
-		player.moveToNewIsland(route, ui);
+		player.moveToNewIsland(route, ui, notifier);
 	}
 
 	private void createItems() {
@@ -283,6 +288,13 @@ public class GameManager {
 		items.add(Linen);
 		items.add(Saffron);
 		items.add(Cinnamon);	
+		
+		UpgradeItem cannon = new UpgradeItem(30, "Cannon",
+				"An extra cannon for your ship. Those pirates won't know what hit them!",
+				10, UpgradeItem.UpgradeType.damage);
+		upgradeableItems = new ArrayList<UpgradeItem>();
+		upgradeableItems.add(cannon);
+
 	}
 
 	private void generateStoreInventory() {
@@ -290,16 +302,53 @@ public class GameManager {
 		for(Island i : islands) {
 			for(Item j : items) {
 				Store store = i.getStore();
-				store.createItem(j, rng.nextInt(20));
+				store.addItem(j, rng.nextInt(20));
 			}
 		}
+		upgrades = new Store("upgrades");
+		UpgradeItem damageUpgrade = upgradeableItems.get(0);
+		upgrades.addItem(damageUpgrade, 3);
+
 	}
 	
 	private void generatePlayerInventory(Ship playership) {
 		for(Item i : items) {
 			playership.playerInventory.put(i, 0);
 		}
+		for(Item i : upgradeableItems) {
+			playership.playerInventory.put(i, 0);
+		}
 	}
+	
+	private boolean hasRunOutOfDays() {
+		//get min travel day
+		//compare to existing day
+		int minDays = getMinDaysToTravel(player.getCurrentIsland());
+		return daysLeft - minDays < 0;
+	}
+
+	private boolean hasRunOutOfMoney() {
+		//get min travel day, convert to money
+		//compare to existing money
+		int minDays = getMinDaysToTravel(player.getCurrentIsland());
+		float moneyNeededToTravel = player.getShip().getCrewTravelCost(minDays);
+		return moneyNeededToTravel > player.getMoney();
+	}
+	
+	private int getMinDaysToTravel(Island island) {
+		ArrayList<IslandRoute> routes = island.getRoutes();
+		int minDays = -1;
+		
+		for (IslandRoute route : routes) {
+			int routeTravelTime = route.getDaysToTravel(player.getShip().getSpeed());
+			if (minDays == -1 || routeTravelTime < minDays) {
+				minDays = routeTravelTime;
+			}
+	}
+	
+		return minDays;
+	}
+
 	
 	public void launchMainWindow() {
 		mainWindow = new MainWindow(this);

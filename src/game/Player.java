@@ -38,7 +38,7 @@ public class Player {
 	 * @param route IslandRoute describing route to new island
 	 * @param ui UI object (currently passed in from GameManager) used for outputting info about the journey
 	 * */
-	public void moveToNewIsland(IslandRoute route, UI ui) {
+	public void moveToNewIsland(IslandRoute route, UI ui, GameEventNotifier notifier) {
 		if (ship.getDamageState()) {
 			ui.showMessage("ERROR: ship has been damaged, you must repair your ship before you can travel!");
 			return;
@@ -59,7 +59,7 @@ public class Player {
 		//check for random encounter
 		EncounterEvent en = route.getEncounter();
 		if (en != null)
-		en.StartEncounter(this, ui);
+		en.StartEncounter(this, ui, notifier);
 
 		ui.showMessage("Arrived at " + currentIsland.getName());
 

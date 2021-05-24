@@ -45,6 +45,35 @@ public class Island {
 		//routes are either calculated by the island or assigned to the island by GameManager when game is being set up
 		return routes;
 	}
+	
+	public ArrayList<String> getRoutesDescriptions(float shipSpeed) {
+		ArrayList<IslandRoute> routes = getRoutes();
+		
+		ArrayList<String> routeDescriptions = new ArrayList<String>();
+		for (IslandRoute route : routes) {
+			String description = route.getDescription(shipSpeed);
+			routeDescriptions.add(description);
+		}
+
+		return routeDescriptions;
+	}
+
+	public String getRoutesToIslandDescriptions(float shipSpeed, Island toIsland) {
+		ArrayList<IslandRoute> routes = getRoutes();
+		
+		String routeDescriptions = "";
+		for (IslandRoute route : routes) {
+			if (route.getEndIsland().name == toIsland.name) {
+				String description = route.getDescription(shipSpeed);
+				routeDescriptions += (description + "\n");
+			}
+		}
+		if (routeDescriptions == "") {
+			routeDescriptions = ("Current location");
+		}
+		return routeDescriptions;
+	}
+
 
 	public Store getStore() {
 		return store;

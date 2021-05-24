@@ -9,7 +9,7 @@ public class EncounterEvent {
 	public EncounterEvent() {
 	}
 
-	public void StartEncounter(Player player, UI ui) {
+	public void StartEncounter(Player player, UI ui, GameEventNotifier notifier) {
 	}
 
 	public float getRandomFloatInRange(float min, float max) {
