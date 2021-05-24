@@ -162,4 +162,21 @@ public class Ship {
 		}
 		return upgrades;
 	}
+
+	public int getMaxCapacity() {
+		return maxCapacity;
+	}
+
+	public int getRemainingCapacity() {
+		int weight = 0;
+
+		Map<Item, Integer> inventory = getInventory();
+		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
+			Item item = entry.getKey();
+			int quantity = entry.getValue();
+			weight += item.getWeight() * quantity;
+		}
+
+		return maxCapacity - weight;
+	}
 }
