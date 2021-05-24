@@ -1,6 +1,5 @@
 package tests;
 
-import islands.Store;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
@@ -8,7 +7,8 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import game.Item;
+import game.*;
+import islands.*;
 
 class StoreTest {
 
@@ -72,6 +72,30 @@ class StoreTest {
 		ArrayList<Item> sellables = testStore.getSellables();
 		assertEquals(buyables.contains(testItem), shouldBeBuyable);
 		assertEquals(sellables.contains(testItem), shouldBeSellable);
+	}
+
+	//WILL CURRENTLY FAIL
+	//@Test
+	void testShipRepairNoCash() {
+		Player player = createTestGameScene();
+		Island s = player.getCurrentIsland();
+		String output = player.getCurrentIsland().getStore().repairShip();
+		assertEquals(output, "Insufficient funds.");
+	}
+
+	//@Test
+	void testShipRepairSuccess() {
+		Player player = createTestGameScene();
+		player.transferMoney(50);
+		String output = player.getCurrentIsland().getStore().repairShip();
+		assertEquals(output, "Ship repaired.");
+	}
+
+	Player createTestGameScene() {
+		Island island = new Island("island name", 0, 0);
+		Ship ship = new Ship("ship name", 10, 10, 10, 10);
+		Player player = new Player("player name", ship, island, 0);
+		return player;
 	}
 
 }

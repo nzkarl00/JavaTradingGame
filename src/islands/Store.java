@@ -45,13 +45,15 @@ public class Store {
 	
 	public int getPrice(Item good, boolean buying) {
 		double priceMod = stock.get(good);
-		int adjustedPrice = 0;
-		if (buying == true) {
-			adjustedPrice = (int) (good.getBaseValue() * (1.55 - (priceMod / 20)));
+		return getModifiablePrice(good, priceMod, buying);
+	}
+	
+	public int getModifiablePrice(Item item, double priceMod, boolean buying) {
+		if (buying) {
+			return (int)(item.getBaseValue() * (1.55 - (priceMod / 20)));
 		} else {
-			adjustedPrice = (int) (good.getBaseValue() * (1.45 - (priceMod / 20)));
+			return (int)(item.getBaseValue() * (1.45 - (priceMod / 20)));
 		}
-		return adjustedPrice;
 	}
 	
 	public void getBuyableItems() {

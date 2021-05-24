@@ -120,14 +120,20 @@ public class Ship {
 		Map<Item, Integer> inventory = getInventory();
 		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
 			Item item = entry.getKey();
-			int quantity = entry.getValue();
+			int playerQuantity = entry.getValue();
 			int price = 0;
 			if (store != null) {
-				price = store.getPrice(item, true);
+				int storeQuantity = store.getItemQuantity(item);
+				int priceMod = storeQuantity;
+				while (priceMod > 0) {
+					price += store.getModifiablePrice(item, priceMod, true);
+					priceMod -= 1;
+				}
 			} else {
 				price = (int)item.getBaseValue();
+				price *= playerQuantity;
 			}
-			totalValue += price * quantity;
+			totalValue += price;
 		}
 
 		return totalValue;
