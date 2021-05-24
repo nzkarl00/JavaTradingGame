@@ -71,14 +71,14 @@ public class Store {
 		System.out.println("");
 	}
 	
-    public String repairShip() {
+    public String repairShip(Player player) {
 	float repairCost = 50;
-	boolean isBought = GameManager.player.transferMoney(-repairCost);
+	boolean isBought = player.transferMoney(-repairCost);
 		if (isBought) {
-			GameManager.player.getShip().setDamageState(false);
+			player.getShip().setDamageState(false);
 			return ("Ship repaired for $50.");
 		} else {
-			return ("fail");
+			return ("Insufficient funds.");
 		}
 		}
 

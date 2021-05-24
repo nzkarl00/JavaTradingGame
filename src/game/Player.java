@@ -96,7 +96,7 @@ public class Player {
 		}
 
 		//player loses money
-		if (money - amount >= 0) {
+		if (money + amount >= 0) { //money minus a negative number adds up - bug fixed
 			money += amount;
 			return true;
 		} else {

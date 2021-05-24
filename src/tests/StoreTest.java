@@ -12,45 +12,41 @@ import islands.*;
 
 class StoreTest {
 
-	private Store testStore;
+	private Store store;
+	private Player player;
+	private Island island;
+	private Ship ship;
+	private Item item;
 
 	@BeforeEach
 	public void init() {
-		testStore = new Store("test-store");
+		player = createTestGameScene();
+		island = player.getCurrentIsland();
+		store = island.getStore();
+		ship = player.getShip();
+		item = new Item(1, "item", "desc", 1);
 	}
 
 	@Test
 	void addItem() {
-		Item testItem = new Item(1, "item-1", "desc", 1);
-		testStore.addItem(testItem, 1);
-		assertEquals(1, testStore.getItemQuantity(testItem));
+		store.addItem(item, 1);
+		assertEquals(1, store.getItemQuantity(item));
 	}
 
 	@Test
 	void removeItem() {
-		Item testItem = new Item(1, "item-1", "desc", 1);
-		testStore.addItem(testItem, 1);
-		testStore.removeItem(testItem, 1);
-		assertEquals(0, testStore.getItemQuantity(testItem));
+		store.addItem(item, 1);
+		store.removeItem(item, 1);
+		assertEquals(0, store.getItemQuantity(item));
 	}
 
 	@Test
 	void readdItem() {
-		Item testItem = new Item(1, "item-1", "desc", 1);
-		testStore.addItem(testItem, 1);
-		testStore.removeItem(testItem, 1);
-		testStore.addItem(testItem, 1);
-		assertEquals(1, testStore.getItemQuantity(testItem));
+		store.addItem(item, 1);
+		store.removeItem(item, 1);
+		store.addItem(item, 1);
+		assertEquals(1, store.getItemQuantity(item));
 	}
-
-	/*
-	 * test:
-	 * quantity should be correct when item is added or bought
-	 * quanity should not fall below 0 when stock=1 is bought
-	 * stock=0 to stock=1 should work
-	 * test basevalue
-	 * */
-
 
 	@Test
 	void testBuySellThresholds() {
@@ -66,29 +62,26 @@ class StoreTest {
 	}
 
 	void testBuySellState(int quantity, boolean shouldBeBuyable, boolean shouldBeSellable) {
-		Item testItem = new Item(1, "item-1", "desc", 1);
-		testStore.addItem(testItem, quantity);
-		ArrayList<Item> buyables = testStore.getBuyables();
-		ArrayList<Item> sellables = testStore.getSellables();
-		assertEquals(buyables.contains(testItem), shouldBeBuyable);
-		assertEquals(sellables.contains(testItem), shouldBeSellable);
+		store = new Store("test");
+		store.addItem(item, quantity);
+		ArrayList<Item> buyables = store.getBuyables();
+		ArrayList<Item> sellables = store.getSellables();
+		assertEquals(buyables.contains(item), shouldBeBuyable);
+		assertEquals(sellables.contains(item), shouldBeSellable);
 	}
 
-	//WILL CURRENTLY FAIL
-	//@Test
+	@Test
 	void testShipRepairNoCash() {
-		Player player = createTestGameScene();
-		Island s = player.getCurrentIsland();
-		String output = player.getCurrentIsland().getStore().repairShip();
+		String output = store.repairShip(player);
 		assertEquals(output, "Insufficient funds.");
 	}
 
-	//@Test
+	@Test
 	void testShipRepairSuccess() {
 		Player player = createTestGameScene();
 		player.transferMoney(50);
-		String output = player.getCurrentIsland().getStore().repairShip();
-		assertEquals(output, "Ship repaired.");
+		String output = player.getCurrentIsland().getStore().repairShip(player);
+		assertEquals(output, "Ship repaired for $50.");
 	}
 
 	Player createTestGameScene() {
@@ -96,6 +89,59 @@ class StoreTest {
 		Ship ship = new Ship("ship name", 10, 10, 10, 10);
 		Player player = new Player("player name", ship, island, 0);
 		return player;
+	}
+
+	@Test
+	void testPurchaseItemSuccess() {
+		store.addItem(item, 1);
+		player.getShip().playerInventory.put(item, 0);
+		player.transferMoney(1);
+		String output = store.purchaseItem(item, player);
+		assertEquals(output, "Purchased item for $1");
+	}
+
+	@Test
+	void testPurchaseItemNoCash() {
+		store.addItem(item, 1);
+		String output = store.purchaseItem(item, player);
+		assertEquals(output, "fail");
+	}
+
+	@Test
+	void testPurchaseItemNoCapacity() {
+		Item item = new Item(1, "item", "desc", player.getShip().getRemainingCapacity() + 1);
+		store.addItem(item, 1);
+		player.transferMoney(1);
+		String output = store.purchaseItem(item, player);
+		assertEquals(output, "You don't have enough space for that!");
+	}
+
+	@Test
+	void testSellItemFail() {
+		store.addItem(item, 1);
+		player.getShip().playerInventory.put(item, 0);
+		String output = store.sellItem(item, player);
+		assertEquals(output, "You don't have any item");
+	}
+
+	@Test
+	void testSellItemSuccess() {
+		store.addItem(item, 1);
+		player.getShip().playerInventory.put(item, 1);
+		String output = store.sellItem(item, player);
+		assertEquals(output, "Sold item for $1");
+	}
+
+	@Test
+	void testAdjustedPrice() {
+		Item item = new Item(10, "item", "desc", 1);
+		store.addItem(item, 1);
+		assertEquals(store.getPrice(item, true), 15);
+		assertEquals(store.getPrice(item, false), 14);
+
+		store.addItem(item, 29);
+		assertEquals(store.getPrice(item, true), 0); //item would be able to be bought for $0 if there's enough of it in stock - should this be changed?
+		assertEquals(store.getPrice(item, false), 0);
 	}
 
 }
