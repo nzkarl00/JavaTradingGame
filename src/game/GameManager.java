@@ -8,6 +8,7 @@ import gui.SetupWindow;
 import islands.Island;
 import islands.IslandRoute;
 import islands.Store;
+import islands.WorldCreator;
 
 /**
  * Class for managing high-level game logic
@@ -64,11 +65,15 @@ public class GameManager {
 		ui = new CommandLineInterface();
 		daysLeft = duration;
 		Ship ship = selectShip(shipIndex);
-		createIslands();
-		createRoutes(2);
-		createItems();
-		generatePlayerInventory(ship);
-		generateStoreInventory();
+
+		WorldCreator worldCreator = new WorldCreator();
+		islands = worldCreator.createIslandsWithRoutes();
+		items = worldCreator.initItems();
+		upgradeableItems = worldCreator.initUpgradeItems();
+		worldCreator.initPlayerInventory(ship, items, upgradeableItems);
+		worldCreator.initStoreInventories(islands, items);
+		upgrades = worldCreator.initUpgradeStore(upgradeableItems);
+
 		currentIsland = islands.get(0);
 		player = new Player(name, ship, currentIsland, 500);
 	}
@@ -97,40 +102,6 @@ public class GameManager {
 	}
 
 
-	private void createIslands() {
-		Island fracturedisle = new Island("Fractured Isle", 9, 7);	// ]
-		Island smithscordrefuge = new Island("Smithscord Refuge", 5, 1); // ]
-		Island penlycay = new Island("Penly Cay", 2, -10); // ] ------------------------Creating all the island objects for the game
-		Island valganisland = new Island("Valgan Island", -4, -2); // ]
-		Island stockstallenclave = new Island("Stockstall Enclave", -8, -8); // ]
-		islands = new ArrayList<Island>();
-		islands.add(fracturedisle);
-		islands.add(smithscordrefuge);
-		islands.add(penlycay);
-		islands.add(valganisland);
-		islands.add(stockstallenclave);
-	}
-
-	/**
-	 * for each island, make a route from itself to every other island on the map
-	 * this route will be added to island's internal list of routes
-	 * */
-	private void createRoutes(int numSimilarRoutes) {
-
-		for (int i = 0; i < islands.size(); i++) {
-			Island startIsland = islands.get(i);
-
-			for (int j = 0; j < islands.size(); j++) {
-				Island endIsland = islands.get(j);
-				if (j == i) continue;
-
-				for (int k = 0; k < numSimilarRoutes; k++) {
-					float directness = (1f / numSimilarRoutes) * (k + 1);
-					startIsland.addRoute(endIsland, directness);
-				}
-			}
-		}
-	}
 
 	/**
 	 * Main game loop where high-level game logic (moving between islands, sellings itmes, etc) is managed
@@ -285,56 +256,6 @@ public class GameManager {
 		player.moveToNewIsland(route, ui, notifier);
 	}
 
-	private void createItems() {
-		Item Silk = new Item(50,"Silk","A high quality textile.",2);
-		Item Linen = new Item(10,"Linen","A generic textile.",3);
-		Item Wine = new Item(20,"Wine","An alcoholic drink.",5);
-		Item Cinnamon =  new Item(30,"Cinnamon","A generic spice.",1);
-		Item Saffron = new Item(100,"Saffron","An exotic spice.",1);
-		
-		items = new ArrayList<Item>();
-		items.add(Silk);
-		items.add(Wine);
-		items.add(Linen);
-		items.add(Saffron);
-		items.add(Cinnamon);	
-		
-		UpgradeItem cannon1 = new UpgradeItem(70, "Cannon 1", "Upgrades damage", 0, UpgradeItem.UpgradeType.damage);
-		UpgradeItem cannon2 = new UpgradeItem(100, "Cannon 2", "Upgrades damage", 0, UpgradeItem.UpgradeType.damage);
-		UpgradeItem cannon3 = new UpgradeItem(150, "Cannon 3", "Upgrades damage", 0, UpgradeItem.UpgradeType.damage);
-		upgradeableItems = new ArrayList<UpgradeItem>();
-		upgradeableItems.add(cannon1);
-		upgradeableItems.add(cannon2);
-		upgradeableItems.add(cannon3);
-
-	}
-
-	private void generateStoreInventory() {
-		Random rng = new Random(); 
-		for(Island i : islands) {
-			for(Item j : items) {
-				Store store = i.getStore();
-				store.addItem(j, rng.nextInt(20));
-			}
-		}
-		upgrades = new Store("upgrades");
-		UpgradeItem damageUpgrade1 = upgradeableItems.get(0);
-		UpgradeItem damageUpgrade2 = upgradeableItems.get(1);
-		UpgradeItem damageUpgrade3 = upgradeableItems.get(2);
-		upgrades.addItem(damageUpgrade1, 1);
-		upgrades.addItem(damageUpgrade2, 1);
-		upgrades.addItem(damageUpgrade3, 1);
-
-	}
-	
-	private void generatePlayerInventory(Ship playership) {
-		for(Item i : items) {
-			playership.playerInventory.put(i, 0);
-		}
-		for(Item i : upgradeableItems) {
-			playership.playerInventory.put(i, 0);
-		}
-	}
 	
 	private boolean hasRunOutOfDays() {
 		//get min travel day
