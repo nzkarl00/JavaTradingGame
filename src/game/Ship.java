@@ -123,6 +123,9 @@ public class Ship {
 		Map<Item, Integer> inventory = getInventory();
 		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
 			Item item = entry.getKey();
+			if (item instanceof UpgradeItem) {
+				continue;
+			}
 			int playerQuantity = entry.getValue();
 			int price = 0;
 			if (store != null) {

@@ -56,10 +56,13 @@ public class GameManager {
 	}
 
 	/**
-	 * Main function run when a new game is being created
-	 * Ask player for username, game duration, and ship type
+	 * Initialises the starting state of the game based on values taken from the setup screen.
+	 * This includes creating islands, routes, items, setting starting values and generating inventories.
+	 * @param name String containing the player's name
+	 * @param duration integer value of the amount of days the game will last
+	 * @param shipIndex integer of 
 	 * These properties will be saved somewhere for future reference when game is actually started
-	 * */
+	 */
 	public void configureAdventure(String name, int duration, int shipIndex) {
 		notifier = new GameEventNotifier();
 		ui = new CommandLineInterface();
@@ -349,8 +352,8 @@ public class GameManager {
 		//compare to existing money
 		int minDays = getMinDaysToTravel(player.getCurrentIsland());
 		float moneyNeededToTravel = player.getShip().getCrewTravelCost(minDays);
-		//float hypotheticalMoneyFromStore = player.getShip().getGoodsValue(currentIsland.getStore());
-		return moneyNeededToTravel > player.getMoney();// + hypotheticalMoneyFromStore;
+		float hypotheticalMoneyFromStore = player.getShip().getGoodsValue(currentIsland.getStore());
+		return moneyNeededToTravel > player.getMoney() + hypotheticalMoneyFromStore;
 	}
 	
 	public String checkGameEnd() {
