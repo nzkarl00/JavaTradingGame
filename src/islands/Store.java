@@ -209,7 +209,7 @@ public class Store {
 		if (quantityOwned == 0) {
 			return ("You don't have any " + item.getName());
 		} else {
-			int total = (int) (getPrice(item, false));
+			int total = (getPrice(item, false));
 			player.transferMoney(total);
 			addItem(item, 1);
 			player.getShip().removeItem(item);

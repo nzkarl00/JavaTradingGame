@@ -55,6 +55,7 @@ public class Ship {
 	/**
 	 * @return String An easy-to-read overview of this Ship's properties
 	 * */
+	@Override
 	public String toString() {
 		String output = "Class: " + name + "\n"
 			+ "Speed: " + speed + "\n"
@@ -125,7 +126,7 @@ public class Ship {
 			int playerQuantity = entry.getValue();
 			int price = 0;
 			if (store != null) {
-				int storeQuantity = store.getItemQuantity(item);
+				int storeQuantity = store.getItemQuantity(item);  
 				int priceMod = storeQuantity;
 				while (priceMod > 0) {
 					price += store.getModifiablePrice(item, priceMod, true);

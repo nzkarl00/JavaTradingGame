@@ -38,6 +38,7 @@ public class PirateEncounter extends EncounterEvent {
 
 	}
 
+	@Override
 	public void StartEncounter(Player player, UI ui, GameEventNotifier notifier) { //pass in a gui object, just print for now
 		Ship playerShip = player.getShip();
 		ui.showMessage(intro);

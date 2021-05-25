@@ -7,8 +7,11 @@ import java.util.ArrayList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import game.*;
-import islands.*;
+import game.Item;
+import game.Player;
+import game.Ship;
+import islands.Island;
+import islands.Store;
 
 class StoreTest {
 

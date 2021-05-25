@@ -37,6 +37,7 @@ public class Island {
 		return name;
 	}
 	
+	@Override
 	public String toString() {
 		return (name + ", found at (" + xcoord + "," + ycoord + ")");
 	}

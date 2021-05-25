@@ -61,6 +61,7 @@ public class GameManager {
 	 * These properties will be saved somewhere for future reference when game is actually started
 	 * */
 	public void configureAdventure(String name, int duration, int shipIndex) {
+		notifier = new GameEventNotifier();
 		ui = new CommandLineInterface();
 		daysLeft = duration;
 		Ship ship = selectShip(shipIndex);
@@ -79,10 +80,10 @@ public class GameManager {
 	 * @return Returns Ship object that player has chosen
 	 * */
 	Ship selectShip(int shipIndex) {
-		Ship sloop = new Ship("Sloop", 10, 5, 3, 20);
-		Ship brigantine = new Ship("Brigantine", 20, 20, 5, 10);
-		Ship galleon = new Ship("Galleon", 30, 20, 7, 15);
-		Ship caravel = new Ship("Caravel", 50, 10, 10, 20);
+		Ship sloop = new Ship("Sloop", 10, 20, 3, 10);
+		Ship brigantine = new Ship("Brigantine", 20, 30, 5, 10);
+		Ship galleon = new Ship("Galleon", 30, 50, 7, 15);
+		Ship caravel = new Ship("Caravel", 50, 100, 10, 20);
 		Ship[] ships = new Ship[] { sloop, brigantine, galleon, caravel };
 
 		ArrayList<String> shipNames = new ArrayList<String>();
@@ -348,9 +349,25 @@ public class GameManager {
 		//compare to existing money
 		int minDays = getMinDaysToTravel(player.getCurrentIsland());
 		float moneyNeededToTravel = player.getShip().getCrewTravelCost(minDays);
-		float hypotheticalMoneyFromStore = player.getShip().getGoodsValue(currentIsland.getStore());
-		return moneyNeededToTravel > player.getMoney() + hypotheticalMoneyFromStore;
+		//float hypotheticalMoneyFromStore = player.getShip().getGoodsValue(currentIsland.getStore());
+		return moneyNeededToTravel > player.getMoney();// + hypotheticalMoneyFromStore;
 	}
+	
+	public String checkGameEnd() {
+		boolean outOfMoney = hasRunOutOfMoney();
+		boolean outOfDays = hasRunOutOfDays();
+		boolean killedByPirates = notifier.hasEventOccurred(GameEventNotifier.EventType.killedByPirates);
+		if (outOfMoney) {
+			return "You ran out of money to pay your crew";
+		} else if (outOfDays) {
+			return "You ran out of days";
+		} else if (killedByPirates) {
+			return "You didn't have enough goods on board and were sunk by pirates";
+		} else {
+			return "continue";
+		}
+	}
+	
 
 	
 	private int getMinDaysToTravel(Island island) {

@@ -42,6 +42,7 @@ public class Item {
 		return weight;
 	}
 	
+	@Override
 	public String toString() {
 		return (name + "    " + weight + "kg/unit"); 		
 	}

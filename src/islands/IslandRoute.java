@@ -101,6 +101,7 @@ public class IslandRoute {
 			(getEncounterChance() * 100) + "% danger";
 	}
 	
+	@Override
 	public String toString() {
 		return (toIsland.getName() + ", " + getDaysToTravel(GameManager.player.getShip().getSpeed()) + " days, " + getEncounterChance()*100 + "% danger");
 	}

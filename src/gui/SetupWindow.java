@@ -1,20 +1,16 @@
 package gui;
-import java.awt.EventQueue;
 import game.*;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
 import javax.swing.JSlider;
-import javax.swing.JList;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
+import javax.swing.WindowConstants;
 import java.awt.Color;
 
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -50,7 +46,7 @@ public class SetupWindow {
 		window = new JFrame();
 		window.setTitle("SENG201 Trading Game Setup");
 		window.setBounds(100, 100, 500, 300);
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		window.getContentPane().setLayout(null);
 		
 		JLabel lblName = new JLabel("Trader name:");
@@ -89,6 +85,7 @@ public class SetupWindow {
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				closeWindow();
 			}
@@ -157,6 +154,7 @@ public class SetupWindow {
 		
 		JButton btnRepairShip = new JButton("Confirm");
 		btnRepairShip.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (txtfldName.getText().matches("^[A-Za-z ]{3,15}$") == false) {
 					lblNameError.setText("Name must contain 3-15 non-special alphabetical charcters");

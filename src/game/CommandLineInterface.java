@@ -22,6 +22,7 @@ public class CommandLineInterface implements UI {
 	 * @param regex Regex pattern to match player's input to
 	 * @return String player's correct input
 	 * */
+	@Override
 	public String queryStringByRegex(String message, String regex) { 
 		System.out.println(message);
 
@@ -35,6 +36,7 @@ public class CommandLineInterface implements UI {
 	 * Will keep asking user to enter number until they get it right
 	 * @return parsed int between min and max player has chosen
 	 * */
+	@Override
 	public int queryIntBetweenRange(String message, int min, int max) {
 		int ans = min - 1;
 		while ((ans < min) || (ans > max)) {
@@ -55,6 +57,7 @@ public class CommandLineInterface implements UI {
 	 * @param options Araylist<String> representing objects player can choose from
 	 * @return int giving the array index of the chosen option 
 	 * */
+	@Override
 	public int queryListOfOptions(String message, ArrayList<String> options) {
 		System.out.println(message);
 		showListOfOptions(options);
@@ -65,6 +68,7 @@ public class CommandLineInterface implements UI {
 	}
 
 
+	@Override
 	public void showList(String description, ArrayList<String> items) {
 		System.out.println(description);
 		for (String item : items) {
@@ -76,6 +80,7 @@ public class CommandLineInterface implements UI {
 	/**
 	 * Displays message to player, here printing to standard output
 	 * */
+	@Override
 	public void showMessage(String message) {
 		System.out.println(message);
 		System.out.println("");
