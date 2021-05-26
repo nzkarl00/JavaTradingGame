@@ -98,11 +98,19 @@ public class Ship {
 	}
 	
 	public void addItem(Item item) {
-		playerInventory.put(item, (playerInventory.get(item) + 1));
+		if (playerInventory.containsKey(item)) {
+			playerInventory.put(item, (playerInventory.get(item) + 1));
+		} else {
+			playerInventory.put(item, 1);
+		}
 	}
 	
 	public void removeItem(Item item) {
-		playerInventory.put(item, (playerInventory.get(item) - 1));
+		if (playerInventory.containsKey(item)) {
+			playerInventory.put(item, (playerInventory.get(item) - 1));
+		} else {
+			//error
+		}
 	}
 
 	public void clearInventory() {
@@ -110,11 +118,18 @@ public class Ship {
 	}
 	
 	public String showInventory() {
-		String inven = "";
-		for(Item i : GameManager.items) {
-			inven += ("\n" + i.getName() + " x" + playerInventory.get(i));
+		//function rewritten to be easier to test reliably
+		ArrayList<String> items = new ArrayList<String>();
+
+		for (Map.Entry<Item, Integer> entry : playerInventory.entrySet()) {
+			Item item = entry.getKey();
+			int quantity = entry.getValue();
+			
+			items.add(item.getName() + " x" + quantity);
 		}
-		return inven;
+
+		items.sort(String::compareToIgnoreCase);
+		return "\n" + String.join("\n", items);
 	}
 
 	public int getGoodsValue(Store store) { //value of goods sold at store or base value if no store provided
