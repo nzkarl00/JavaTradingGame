@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.Random;
 
 import islands.*;
 import encounters.*;
@@ -91,8 +90,5 @@ class IslandRouteTest {
 	public void testShortString() {
 		assertEquals(directRoute.shortString(1), "island b, 15 days, 100.0% danger");
 	}
-
-
-
 
 }

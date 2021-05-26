@@ -116,7 +116,7 @@ class PirateEncounterTest {
 		assertEquals(event, GameEventNotifier.EventType.killedByPirates);
 
 		//pirates will win, loot is sufficient
-		Item item = new Item(1, "item", "", 0);
+		Item item = new Item(1, "item", 0);
 		playerShip.addItem(item);
 		event = getEventFromEncounter(player, 1, 1);
 		assertEquals(event, GameEventNotifier.EventType.goodsStolen);
@@ -151,7 +151,7 @@ class PirateEncounterTest {
 			"The pirates are unsatisfied with your goods. Only killing you will bring them joy.\n");
 
 		//pirates will win, loot is sufficient
-		Item item = new Item(1, "item", "", 0);
+		Item item = new Item(1, "item", 0);
 		playerShip.addItem(item);
 		output = getStringFromEncounter(player, 1, 1);
 		assertEquals(output,
@@ -166,14 +166,14 @@ class PirateEncounterTest {
 	GameEventNotifier.EventType getEventFromEncounter(Player player, float pirateHealth, float pirateDamage) {
 		PirateEncounter encounter = new PirateEncounter(pirateHealth, pirateDamage, 1);
 		GameEventNotifier notifier = new GameEventNotifier();
-		String output = encounter.StartEncounter(player, null, notifier);
+		String output = encounter.StartEncounter(player, notifier);
 		return notifier.getLastEvent();
 	}
 
 	String getStringFromEncounter(Player player, float pirateHealth, float pirateDamage) {
 		PirateEncounter encounter = new PirateEncounter(pirateHealth, pirateDamage, 1);
 		GameEventNotifier notifier = new GameEventNotifier();
-		String output = encounter.StartEncounter(player, null, notifier);
+		String output = encounter.StartEncounter(player, notifier);
 		return output;
 	}
 

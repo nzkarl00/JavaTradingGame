@@ -3,7 +3,6 @@ package encounters;
 import java.util.*;
 import game.Item;
 import game.Ship;
-import game.UI;
 import game.Player;
 /**
  * Pirates can:
@@ -30,7 +29,7 @@ public class PirateEncounter extends EncounterEvent {
 	}
 
 	@Override
-	public String StartEncounter(Player player, UI ui, GameEventNotifier notifier) { //pass in a GUI object, just print for now
+	public String StartEncounter(Player player, GameEventNotifier notifier) { //pass in a GUI object, just print for now
 		Ship playerShip = player.getShip();
 		String text = "";
 		text += (intro + "\n");

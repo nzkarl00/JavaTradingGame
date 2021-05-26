@@ -61,7 +61,7 @@ class ShipTest {
 	void testAddItem() {
 		Map<Item, Integer> inventory = ship.getInventory(); //saved as reference so don't need to keep referring to it
 
-		Item itemA = new Item(1, "itemA", "", 1);
+		Item itemA = new Item(1, "itemA", 1);
 		ship.addItem(itemA);
 		assertTrue(inventory.containsKey(itemA));
 		assertTrue(inventory.get(itemA) == 1); //ensure quantity of itemA is 1
@@ -69,7 +69,7 @@ class ShipTest {
 		ship.addItem(itemA);
 		assertTrue(inventory.get(itemA) == 2);
 
-		Item itemB = new Item(1, "itemB", "", 1);
+		Item itemB = new Item(1, "itemB", 1);
 		ship.addItem(itemB);
 		assertTrue(inventory.containsKey(itemB));
 		assertTrue(inventory.get(itemB) == 1);
@@ -79,7 +79,7 @@ class ShipTest {
 	void testRemoveItem() {
 		Map<Item, Integer> inventory = ship.getInventory(); //saved as reference so don't need to keep referring to it
 
-		Item itemA = new Item(1, "itemA", "", 1);
+		Item itemA = new Item(1, "itemA", 1);
 		ship.addItem(itemA);
 		ship.removeItem(itemA);
 		assertTrue(inventory.get(itemA) == 0); 
@@ -96,7 +96,7 @@ class ShipTest {
 		String output = ship.showInventory(); //test on blank ship
 		assertEquals(output, "\n");
 
-		Item itemA = new Item(1, "itemA", "", 1);
+		Item itemA = new Item(1, "itemA", 1);
 		ship.addItem(itemA);
 		output = ship.showInventory();
 		assertEquals(output, "\nitemA x1");
@@ -105,7 +105,7 @@ class ShipTest {
 		output = ship.showInventory();
 		assertEquals(output, "\nitemA x2");
 
-		Item itemB = new Item(1, "itemB", "", 1);
+		Item itemB = new Item(1, "itemB", 1);
 		ship.addItem(itemB);
 		output = ship.showInventory();
 		assertEquals(output, "\nitemA x2\nitemB x1");
@@ -115,8 +115,9 @@ class ShipTest {
 	void testGetGoodsValue() {
 		Store store = new Store("a");
 		Ship ship = new Ship("", 0, 10, 0, 0, 0);
-		Item itemA = new Item(1, "itemA", "", 1);
-		Item itemB = new Item(2, "itemB", "", 1);
+		Item itemA = new Item(1, "itemA", 1);
+		Item itemB = new Item(2, "itemB", 1);
+		
 		ship.addItem(itemA);
 		ship.addItem(itemB);
 		store.addItem(itemA, 1);

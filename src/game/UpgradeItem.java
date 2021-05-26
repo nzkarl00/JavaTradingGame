@@ -15,7 +15,7 @@ public class UpgradeItem extends Item {
 	private UpgradeType upgradeType;
 	
 	public UpgradeItem(float base, String tempname, String desc, float tempweight, UpgradeType _upgradeType) {
-		super(base, tempname, desc, tempweight);
+		super(base, tempname, tempweight);
 		upgradeType = _upgradeType;
 	}
 

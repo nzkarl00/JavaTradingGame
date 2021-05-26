@@ -24,7 +24,7 @@ class StoreTest {
 		island = player.getCurrentIsland();
 		store = island.getStore();
 		ship = player.getShip();
-		item = new Item(1, "item", "desc", 1);
+		item = new Item(1, "item", 1);
 	}
 
 	@Test
@@ -109,7 +109,7 @@ class StoreTest {
 
 	@Test
 	void testPurchaseItemNoCapacity() {
-		Item item = new Item(1, "item", "desc", player.getShip().getRemainingCapacity() + 1);
+		Item item = new Item(1, "item", player.getShip().getRemainingCapacity() + 1);
 		store.addItem(item, 1);
 		player.transferMoney(1);
 		String output = store.purchaseItem(item, player);
@@ -134,7 +134,7 @@ class StoreTest {
 
 	@Test
 	void testAdjustedPrice() {
-		Item item = new Item(10, "item", "desc", 1);
+		Item item = new Item(10, "item", 1);
 		store.addItem(item, 1);
 		assertEquals(store.getPrice(item, true), 15);
 		assertEquals(store.getPrice(item, false), 14);

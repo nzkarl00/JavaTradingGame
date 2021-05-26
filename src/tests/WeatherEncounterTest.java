@@ -13,7 +13,7 @@ class WeatherEncounterTest {
 		Ship ship = new Ship("", 0, 0, 0, 0, 0);
 		Player player = new Player("", ship, null, 0);
 		WeatherEncounter encounter = new WeatherEncounter();
-		encounter.StartEncounter(player, null, null);
+		encounter.StartEncounter(player, null);
 		assertTrue(ship.getDamageState());
 	}
 

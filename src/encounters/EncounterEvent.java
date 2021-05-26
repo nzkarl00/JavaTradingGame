@@ -1,15 +1,12 @@
 package encounters;
 import java.util.Random;
 import game.Player;
-
-import game.UI;
-
 public class EncounterEvent {
 
 	public EncounterEvent() {
 	}
 
-	public String StartEncounter(Player player, UI ui, GameEventNotifier notifier) {
+	public String StartEncounter(Player player, GameEventNotifier notifier) {
 		return null;
 	}
 

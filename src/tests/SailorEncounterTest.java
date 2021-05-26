@@ -12,7 +12,7 @@ class SailorEncounterTest {
 	void testEncounter() {
 		Player player = new Player("", null, null, 0);
 		SailorEncounter encounter = new SailorEncounter();
-		encounter.StartEncounter(player, null, null);
+		encounter.StartEncounter(player, null);
 		int moneyFromEncounter = 40;
 		assertEquals(player.getMoney(), moneyFromEncounter);
 	}
