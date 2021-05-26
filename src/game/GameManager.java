@@ -37,7 +37,7 @@ import islands.WorldCreator;
  * */
 
 public class GameManager {
-
+	
 	public static Player player;
 	public ArrayList<Island> islands;
 	public static ArrayList<Item> items;
@@ -47,9 +47,6 @@ public class GameManager {
 	public ArrayList<UpgradeItem> upgradeableItems;
 	public Store upgrades;
 	public GameEventNotifier notifier = new GameEventNotifier();
-	
-
-
 	enum ActionType {
 		viewGameState, viewShip, viewGoods, viewIslands, visitStore, sailToIsland
 	}
@@ -200,8 +197,11 @@ public class GameManager {
 	 */
 	public void sailToIsland(IslandRoute route, GameEventNotifier notifier) {
 		//details managed by Player class
-		daysLeft -= route.getDaysToTravel(player.getShip().getSpeed());
-		mainWindow.printEncounter(player.moveToNewIsland(route, notifier));
+		String islandMove = player.moveToNewIsland(route, notifier);
+		if (islandMove.startsWith("Arrived")) {
+			daysLeft -= route.getDaysToTravel(player.getShip().getSpeed());
+		}
+		mainWindow.printEncounter(islandMove);
 	}
 
 	/**

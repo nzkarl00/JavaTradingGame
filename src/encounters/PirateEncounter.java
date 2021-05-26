@@ -3,7 +3,6 @@ package encounters;
 import java.util.*;
 import game.Item;
 import game.Ship;
-import game.UI;
 import game.Player;
 /**
  * Pirates can:

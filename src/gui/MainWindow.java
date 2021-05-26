@@ -157,7 +157,7 @@ public class MainWindow {
         			System.exit(0);
         		}
     		} else {
-    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\nYour goods were automatically sold\nYour score was: " + manager.player.getMoney() + "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\nYour goods were automatically sold\nYour score was: " + (manager.player.getMoney() + manager.player.getShip().getGoodsValue(manager.player.getCurrentIsland().getStore())) + "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
         		if (n == 0) {
         			Main.main(null);
         			closeWindow();

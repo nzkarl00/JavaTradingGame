@@ -1,7 +1,6 @@
 package encounters;
 
 import game.Player;
-import game.UI;
 
 public class SailorEncounter extends EncounterEvent {
 

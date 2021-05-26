@@ -4,7 +4,6 @@ import java.util.*;
 import game.GameManager;
 import game.Item;
 import game.Player;
-import game.UI;
 import game.UpgradeItem;
 
 /**
@@ -144,49 +143,6 @@ public class Store {
 		for(Item i : GameManager.items) {
 			System.out.println(i.getName() + ": " + stock.get(i));
 		}
-	}
-
-	public void visitStore(Player player, UI ui) {
-		// ui.showMessage("You are at " + island.getName() + "'s store. What would you like to do?");
-		printSellableInventory();
-		getBuyableItems();
-		player.getShip().showInventory();
-
-		handleStoreOptions(player, ui);
-	}
-
-	private void handleStoreOptions(Player player, UI ui) {
-		ArrayList<String> options = new ArrayList<String>();
-		options.add("Buy from store");
-		options.add("Sell to store");
-		options.add("Exit store");
-
-		int optionIndex = ui.queryListOfOptions("Would you like to buy, sell, or leave the store?", options);
-		
-		String message;
-		int itemIndex = -1;
-		switch(optionIndex) {
-			case 0:
-				//buy
-				message = "Enter a number between 1 and " + buyables.size() + " to select an item to buy";
-				itemIndex = ui.queryIntBetweenRange(message, 1, buyables.size());
-				Item selectedItem = buyables.get(itemIndex - 1);
-				purchaseItem(selectedItem, player);
-				break;
-			case 1:
-				//sell
-				message = "Enter a number between 1 and " + sellables.size() + " to select an item to sell";
-				itemIndex = ui.queryIntBetweenRange(message, 1, sellables.size());
-				Item forSale = sellables.get(itemIndex - 1);
-				sellItem(forSale, player);
-				break;
-			case 2:
-				ui.showMessage("Exiting store.");
-				//exit
-				return;
-		}
-
-		handleStoreOptions(player, ui);
 	}
 	
 	public String purchaseItem(Item item, Player player) {
