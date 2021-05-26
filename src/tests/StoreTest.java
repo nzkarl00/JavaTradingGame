@@ -81,7 +81,7 @@ class StoreTest {
 		Player player = createTestGameScene();
 		player.transferMoney(50);
 		String output = player.getCurrentIsland().getStore().repairShip(player, 50);
-		assertEquals(output, "Ship repaired for $50.");
+		assertEquals(output, "Ship repaired for $50.0.");
 	}
 
 	Player createTestGameScene() {
