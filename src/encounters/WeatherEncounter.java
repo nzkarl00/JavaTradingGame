@@ -4,8 +4,8 @@ import game.Player;
 
 /**
  * Class for weather encounter event.
- * if bad weather is met, player's ship takes damage
- * once landed at island, have to pay money to make up for repair costs
+ * If bad weather is met, player's ship takes damage.
+ * Once landed at island, have to pay money to make up for repair costs.
  * */
 
 public class WeatherEncounter extends EncounterEvent {
@@ -14,6 +14,9 @@ public class WeatherEncounter extends EncounterEvent {
 		super();
 	}
 
+	/**
+	 * Damages the player's ship and returns a string to notify the player it has occurred.
+	 */
 	@Override
 	public String StartEncounter(Player player, GameEventNotifier notifier) {
 		player.getShip().setDamageState(true);

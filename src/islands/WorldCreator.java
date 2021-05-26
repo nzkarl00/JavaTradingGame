@@ -1,5 +1,5 @@
 package islands;
-//handles init of game obejcts - islands, stores, items
+//handles initialisation of game objects - islands, stores, items
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,10 +7,16 @@ import java.util.Random;
 import game.Item;
 import game.Ship;
 import game.UpgradeItem;
-import game.UpgradeItem.UpgradeType;
-
+/**
+ * Class to handle all the starting operations of the game, generating items, islands, stores, upgrades, routes, and inventories.
+ *
+ */
 public class WorldCreator {
 
+	/**
+	 * Calls to create all starting islands and their routes.
+	 * @return ArrayList<Island> containing all created islands
+	 */
 	public ArrayList<Island> createIslandsWithRoutes() {
 		//so islands with routes etc attached
 		ArrayList<Island> islands = initIslands();
@@ -18,6 +24,10 @@ public class WorldCreator {
 		return islands;
 	}
 
+	/**
+	 * Creates all islands and adds them to an arraylist to be returned.
+	 * @return ArrayList<Island> containing all created islands
+	 */
 	private ArrayList<Island> initIslands() {
 		ArrayList<Island> islands = new ArrayList<Island>();
 
@@ -37,11 +47,10 @@ public class WorldCreator {
 	}
 
 	/**
-	 * for each island, make a route from itself to every other island on the map
-	 * this route will be added to island's internal list of routes
-	 * */
+	 * For each island, makes a route from itself to every other island on the map.
+	 * This route will be added to island's internal list of routes.
+	 */
 	public void initRoutes(ArrayList<Island> islands, int numSimilarRoutes) {
-
 		for (int i = 0; i < islands.size(); i++) {
 			Island startIsland = islands.get(i);
 
@@ -57,6 +66,10 @@ public class WorldCreator {
 		}
 	}
 
+	/**
+	 * Creates all items for the game and adds them to an arraylist to be returned.
+	 * @return ArrayList<Item> containing all created items for the game
+	 */
 	public ArrayList<Item> initItems() {
 		ArrayList<Item> items = new ArrayList<Item>();
 
@@ -75,6 +88,10 @@ public class WorldCreator {
 		return items;
 	}
 
+	/**
+	 * Creates all upgrade items for the game and adds them to an arraylist to be returned.
+	 * @return ArrayList<UpgradeItem> containing all created upgrades
+	 */
 	public ArrayList<UpgradeItem> initUpgradeItems() {
 		ArrayList<UpgradeItem> upgradeableItems = new ArrayList<UpgradeItem>();
 
@@ -89,6 +106,11 @@ public class WorldCreator {
 		return upgradeableItems;
 	}
 
+	/**
+	 * Generates the starting inventories of all stores randomly, with between 0 and 20 of each item in stock.
+	 * @param islands ArrayList<Island> of every island in the game
+	 * @param items ArrayList<Item> of every item in the game
+	 */
 	public void initStoreInventories(ArrayList<Island> islands, ArrayList<Item> items) {
 		Random rng = new Random(); 
 		for(Island i : islands) {
@@ -99,6 +121,11 @@ public class WorldCreator {
 		}
 	}
 
+	/**
+	 * Creates the upgrade store and adds all upgrade items to its stock.
+	 * @param upgradeItems ArrayList<UpgradeItem> of all upgrade items
+	 * @return Store containing all stocked upgrades
+	 */
 	public Store initUpgradeStore(ArrayList<UpgradeItem> upgradeItems) {
 		Store upgradeStore = new Store("upgrades");
 
@@ -113,6 +140,12 @@ public class WorldCreator {
 		return upgradeStore;
 	}
 	
+	/**
+	 * Creates the player inventory in their ship, initialising with 0 of all items.
+	 * @param playership Ship with inventory to be populated
+	 * @param items ArrayList<Item> with all items of the game
+	 * @param upgradeableItems ArrayList<UpgradeItem> with all upgrades in the game
+	 */
 	public void initPlayerInventory(Ship playership, ArrayList<Item> items, ArrayList<UpgradeItem> upgradeableItems) {
 		for(Item i : items) {
 			playership.playerInventory.put(i, 0);

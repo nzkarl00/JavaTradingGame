@@ -109,7 +109,7 @@ public class GameManager {
 	public String repairShip() {
 		String transaction = upgrades.repairShip(player, 50);
 		if (transaction != "fail") {
-			transactionHistory = transactionHistory + (transaction + " at " + player.getCurrentIsland() + "\n");
+			transactionHistory = transactionHistory + (transaction + " at " + player.getCurrentIsland().getName() + "\n");
 		}
 		return transaction;
 	}

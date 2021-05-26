@@ -5,11 +5,17 @@ import game.Item;
 import game.Ship;
 import game.Player;
 /**
+ * Pirate encounter event, pirates will sometimes show up in a journey.
+ * Fights the player by comparing ship stats and deciding a winner.
+ * 
  * Pirates can:
  * -fight the player
  * -take damage and die as a result
  * -create too much damage and win as a result
- * -if they win, they will steal goods 
+ * -if they win, they will steal goods or sink the player if they don't have enough
+ * 
+ * Variables:
+ * intro: String printed at the start of an encounter
  * */
 public class PirateEncounter extends EncounterEvent {
 
@@ -21,13 +27,24 @@ public class PirateEncounter extends EncounterEvent {
 	private Ship pirateShip;
 	private float satisfactoryGoodsValue = 30;
 	
-
+	/**
+	 * Constructor for the pirate encounter, creates their ship and determines the amount of goods they need to spare the player.
+	 * @param health float health of the pirate ship
+	 * @param damage float damage of the pirate ship
+	 * @param _satisfactoryGoodsValue float value of goods required to spare the player
+	 */
 	public PirateEncounter(float health, float damage, float _satisfactoryGoodsValue) {
 		super();
 		pirateShip = new Ship("", 0, 0, 0, health, damage);
 		satisfactoryGoodsValue = _satisfactoryGoodsValue;
 	}
-
+	
+	/**
+	 * Starts the encounter with the player and passes the information to the event notifier.
+	 * @param player Player present in the game
+	 * @param notifier GameEventNotifier to pass encounter info to the manager
+	 * @return String containing the into, matchup and outcome of the battle
+	 */
 	@Override
 	public String StartEncounter(Player player, GameEventNotifier notifier) { //pass in a GUI object, just print for now
 		Ship playerShip = player.getShip();
@@ -62,6 +79,12 @@ public class PirateEncounter extends EncounterEvent {
 		}
 	}
 
+	/**
+	 * Starts combat with the pirate ship.
+	 * @param playerShip Ship the player is currently using
+	 * @param rng Random instance of the random number generator
+	 * @return boolean of true if the pirates win, false if the player wins
+	 */
 	public boolean startCombat(Ship playerShip, Random rng) { //return true if pirates win, false if player wins
 		//healthManager of pirate attacks healthManager of player
 		//do this until someone dies (reaches critical health)
@@ -75,6 +98,12 @@ public class PirateEncounter extends EncounterEvent {
 		return chance < pirateWinProbability;
 	}
 
+	/**
+	 * Method to calculate the chances of two ships winning a fight against each other.
+	 * @param shipA Ship first ship for comparison
+	 * @param shipB Ship second ship for comparison
+	 * @return float probability of shipA's victory
+	 */
 	public float getShipWinProbability(Ship shipA, Ship shipB) { //probability of shipA winning against shipB
 		//the higher a ship's damage + health is, the more likely it is to win
 		//weighted 40% health 60% damage
@@ -86,6 +115,11 @@ public class PirateEncounter extends EncounterEvent {
 		return probability;
 	}
 
+	/**
+	 * Gets the value of all goods in the player's Ship inventory.
+	 * @param ship Ship owned by the player
+	 * @return float total value of goods owned
+	 */
 	private float getGoodsValue(Ship ship) {
 		float totalValue = 0;
 

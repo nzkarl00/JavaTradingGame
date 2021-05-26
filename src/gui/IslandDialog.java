@@ -9,19 +9,58 @@ import java.awt.Font;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 
+/**
+ * Panel to be put in a popup window displaying the current state of every island in the game.
+ * Displays all buying and selling prices, as well as all routes to each island from the current.
+ */
 public class IslandDialog extends JPanel {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5680641284238776584L;
 	private GameManager manager;
 	private JTextArea txtrFIRoutes;
 	private JTextArea txtrSRRoutes;
 	private JTextArea txtrPCRoutes;
 	private JTextArea txtrVIRoutes;
+	private JTextArea txtrSERoutes;
+	private JTextArea txtrFIBuy;
+	private JTextArea txtrFISell;
+	private JTextArea txtrSRBuy;
+	private JTextArea txtrSRSell;
+	private JTextArea txtrPCBuy;
+	private JTextArea txtrPCSell;
+	private JTextArea txtrVIBuy;
+	private JTextArea txtrVISell;
+	private JTextArea txtrSEBuy;
+	private JTextArea txtrSESell;
 	
+	/**
+	 * Updates every route in the panel to reflect routes from the current island.
+	 */
 	public void updateAllRoutes() {
 		txtrFIRoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(0)).toString());
 		txtrSRRoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(1)).toString());
 		txtrPCRoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(2)).toString());
 		txtrVIRoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(3)).toString());
+		txtrSERoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(4)).toString());
+	}
+	
+	/**
+	 * Updates every price in the panel to reflect the current values.
+	 */
+	public void updateAllPrices() {
+		txtrFIBuy.setText(manager.viewBuyingPrices(0));
+		txtrSRBuy.setText(manager.viewBuyingPrices(1));
+		txtrPCBuy.setText(manager.viewBuyingPrices(2));
+		txtrVIBuy.setText(manager.viewBuyingPrices(3));
+		txtrSEBuy.setText(manager.viewBuyingPrices(4));
+		txtrFISell.setText(manager.viewSellingPrices(0));
+		txtrSRSell.setText(manager.viewSellingPrices(1));
+		txtrPCSell.setText(manager.viewSellingPrices(2));
+		txtrVISell.setText(manager.viewSellingPrices(3));
+		txtrSESell.setText(manager.viewSellingPrices(4));
 	}
 
 	/**
@@ -111,13 +150,28 @@ public class IslandDialog extends JPanel {
 		lblVIRoutes.setBounds(700, 260, 146, 25);
 		add(lblVIRoutes);
 		
-		JTextArea txtrFIBuy = new JTextArea(manager.viewBuyingPrices(0));
+		JLabel lblSEBuy = new JLabel("Buying:");
+		lblSEBuy.setFont(new Font("Viner Hand ITC", Font.BOLD, 14));
+		lblSEBuy.setBounds(217, 476, 115, 25);
+		add(lblSEBuy);
+		
+		JLabel lblSESell = new JLabel("Selling:");
+		lblSESell.setFont(new Font("Viner Hand ITC", Font.BOLD, 14));
+		lblSESell.setBounds(342, 476, 115, 25);
+		add(lblSESell);
+		
+		JLabel lblSERoutes = new JLabel("Routes from location:");
+		lblSERoutes.setFont(new Font("Viner Hand ITC", Font.BOLD, 14));
+		lblSERoutes.setBounds(467, 476, 146, 25);
+		add(lblSERoutes);
+		
+		txtrFIBuy = new JTextArea(manager.viewBuyingPrices(0));
 		txtrFIBuy.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrFIBuy.setBackground(UIManager.getColor("Button.background"));
 		txtrFIBuy.setBounds(10, 76, 115, 133);
 		add(txtrFIBuy);
 		
-		JTextArea txtrFISell = new JTextArea(manager.viewSellingPrices(0));
+		txtrFISell = new JTextArea(manager.viewSellingPrices(0));
 		txtrFISell.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrFISell.setBackground(UIManager.getColor("Button.background"));
 		txtrFISell.setBounds(135, 76, 115, 133);
@@ -130,13 +184,13 @@ public class IslandDialog extends JPanel {
 		txtrFIRoutes.setBounds(260, 76, 155, 133);
 		add(txtrFIRoutes);
 		
-		JTextArea txtrSRBuy = new JTextArea(manager.viewBuyingPrices(1));
+		txtrSRBuy = new JTextArea(manager.viewBuyingPrices(1));
 		txtrSRBuy.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrSRBuy.setBackground(UIManager.getColor("Button.background"));
 		txtrSRBuy.setBounds(450, 76, 115, 133);
 		add(txtrSRBuy);
 		
-		JTextArea txtrSRSell = new JTextArea(manager.viewSellingPrices(1));
+		txtrSRSell = new JTextArea(manager.viewSellingPrices(1));
 		txtrSRSell.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrSRSell.setBackground(UIManager.getColor("Button.background"));
 		txtrSRSell.setBounds(575, 76, 115, 133);
@@ -148,13 +202,13 @@ public class IslandDialog extends JPanel {
 		txtrSRRoutes.setBounds(700, 76, 155, 133);
 		add(txtrSRRoutes);
 		
-		JTextArea txtrPCBuy = new JTextArea(manager.viewBuyingPrices(2));
+		txtrPCBuy = new JTextArea(manager.viewBuyingPrices(2));
 		txtrPCBuy.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrPCBuy.setBackground(UIManager.getColor("Button.background"));
 		txtrPCBuy.setBounds(10, 296, 115, 133);
 		add(txtrPCBuy);
 		
-		JTextArea txtrPCSell = new JTextArea(manager.viewSellingPrices(2));
+		txtrPCSell = new JTextArea(manager.viewSellingPrices(2));
 		txtrPCSell.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrPCSell.setBackground(UIManager.getColor("Button.background"));
 		txtrPCSell.setBounds(135, 296, 115, 133);
@@ -166,13 +220,13 @@ public class IslandDialog extends JPanel {
 		txtrPCRoutes.setBounds(260, 296, 155, 133);
 		add(txtrPCRoutes);
 		
-		JTextArea txtrVIBuy = new JTextArea(manager.viewBuyingPrices(3));
+		txtrVIBuy = new JTextArea(manager.viewBuyingPrices(3));
 		txtrVIBuy.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrVIBuy.setBackground(UIManager.getColor("Button.background"));
 		txtrVIBuy.setBounds(450, 296, 115, 133);
 		add(txtrVIBuy);
 		
-		JTextArea txtrVISell = new JTextArea(manager.viewSellingPrices(3));
+		txtrVISell = new JTextArea(manager.viewSellingPrices(3));
 		txtrVISell.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrVISell.setBackground(UIManager.getColor("Button.background"));
 		txtrVISell.setBounds(575, 296, 115, 133);
@@ -184,7 +238,31 @@ public class IslandDialog extends JPanel {
 		txtrVIRoutes.setBounds(700, 296, 155, 133);
 		add(txtrVIRoutes);
 		
+		txtrSEBuy = new JTextArea(manager.viewBuyingPrices(4));
+		txtrSEBuy.setFont(new Font("Monospaced", Font.BOLD, 12));
+		txtrSEBuy.setBackground(UIManager.getColor("Button.background"));
+		txtrSEBuy.setBounds(217, 516, 115, 133);
+		add(txtrSEBuy);
+		
+		txtrSESell = new JTextArea(manager.viewSellingPrices(4));
+		txtrSESell.setFont(new Font("Monospaced", Font.BOLD, 12));
+		txtrSESell.setBackground(UIManager.getColor("Button.background"));
+		txtrSESell.setBounds(342, 516, 115, 133);
+		add(txtrSESell);
+		
+		txtrSERoutes = new JTextArea(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(4)).toString());
+		txtrSERoutes.setFont(new Font("Monospaced", Font.BOLD, 12));
+		txtrSERoutes.setBackground(UIManager.getColor("Button.background"));
+		txtrSERoutes.setBounds(467, 516, 155, 133);
+		add(txtrSERoutes);
+		
+		JLabel lblStockstallEnclave = new JLabel("Stockstall Enclave");
+		lblStockstallEnclave.setFont(new Font("Viner Hand ITC", Font.BOLD, 18));
+		lblStockstallEnclave.setBounds(217, 440, 200, 25);
+		add(lblStockstallEnclave);
+		
 		updateAllRoutes();
+		updateAllPrices();
 
 	}
 }

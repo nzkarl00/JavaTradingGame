@@ -4,12 +4,10 @@ import encounters.EncounterEvent;
 import encounters.PirateEncounter;
 import encounters.SailorEncounter;
 import encounters.WeatherEncounter;
-import game.GameManager;
-import game.Player;
 import java.util.Random;
 
 /**
- * Gives a description of avaliable routes between two certain islands
+ * Gives a description of available routes between two certain islands
  * could be managed either by having one object to contain all possible routes, or having multiple objects to express different types of routes
  * i think second option is easier to work with as it breaks object down into simplest possible form
  * means you can quickly define different properties for different routes without having code for accessing specific routes be overcomplicated
@@ -22,10 +20,9 @@ public class IslandRoute {
 
 	private Island fromIsland;
 	private Island toIsland;
-	private String description;
 	private float directness; //describes how "direct" the route between two islands is
 	//a directness of 0 is least direct, meaning it is the slowest but also the safest route
-	//wheras a directness of 1 is most direct, meaning it is the fastest but most risky route
+	//whereas a directness of 1 is most direct, meaning it is the fastest but most risky route
 	private float indirectDistMultiplier = 2; //the more indirect the route is, the more distance will be multiplied by this amount
 
 	public IslandRoute(Island _fromIsland, Island _toIsland, float _directness) {
@@ -43,8 +40,10 @@ public class IslandRoute {
 	}
 
 	/**
-	 * returns amount of days it will take for ship to travel route
-	 * days is based on distance between islands, directness, and ship speed
+	 * Returns amount of days it will take for ship to travel route.
+	 * Days is based on distance between islands, directness, and ship speed.
+	 * @param speed float of the ship speed for calculation
+	 * @return int days that the journey will take
 	 * */
 	public int getDaysToTravel(float speed) {
 		//calculate distance between two islands
@@ -62,21 +61,18 @@ public class IslandRoute {
 		return (int)Math.ceil(travelTime);
 	}
 
-	public void getDistance() {
-
-	}
-
-	public float getEncounterChance() {
-		return directness;
-	}
-
+	/** Getter for directness.
+	 * @return float directness
+	 */
 	public float getDirectness() {
 		return directness;
 	}
 	
-	/*
-	 * Depending on chance of a new encounter, returns an object giving information on encounter (pirates, storm, etc).
-	*/
+	/**
+	 * Checks to see if there will be an encounter and which encounter it will be.
+	 * @param rng Random to generate randomness of the encounter
+	 * @return event EncounterEvent of which encounter happens
+	 */
 	public EncounterEvent getEncounter(Random rng) {
 		// Random rng;
 		// if (useSeed) {
@@ -87,7 +83,7 @@ public class IslandRoute {
 
 		// float encounterDeterminant = (float)Math.random();
 		float encounterDeterminant = rng.nextFloat();
-		float encounterChance = getEncounterChance();
+		float encounterChance = getDirectness();
 		if (encounterDeterminant < (1 - encounterChance)) {
 			return null;
 		}
@@ -105,18 +101,32 @@ public class IslandRoute {
 		return event;
 	}
 
+	/**
+	 * Gets a nicely formatted string of the route from one island to another.
+	 * @return String formatted for visibility
+	 */
 	public String getString() {
 		//* Gives String representation of this IslandRoute
 		return fromIsland.getName() + " to " + toIsland.getName();
 	}
 	
+	/**
+	 * Gets a description of the route, returning the duration and chance of an encounter as a string.
+	 * @param shipSpeed speed of the ship for duration calculation
+	 * @return String containing days to travel and encounter chance formatted for printing
+	 */
 	public String getDescription(float shipSpeed) {
 		return getDaysToTravel(shipSpeed) + " days, " +
-			(getEncounterChance() * 100) + "% danger";
+			(getDirectness() * 100) + "% danger";
 	}
 	
+	/**
+	 * Gets a slightly longer description of the route, including the destination.
+	 * @param shipSpeed speed of the ship for duration calculation
+	 * @return String containing destination, time and encounter chance
+	 */
 	public String shortString(float shipSpeed) {
-		return (toIsland.getName() + ", " + getDaysToTravel(shipSpeed) + " days, " + getEncounterChance()*100 + "% danger");
+		return (toIsland.getName() + ", " + getDaysToTravel(shipSpeed) + " days, " + getDirectness()*100 + "% danger");
 	}
 
 }

@@ -15,6 +15,14 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Setup window for the player to set parameters for the game including player name, game duration and ship class.
+ * Variables:
+ * window: JFrame that contains everything in the setup window
+ * manager: GameManager to pass all setup parameters to
+ * txtfldName: JTextField for the player to input their name
+ * index: int index of the ship selected by the player
+ */
 public class SetupWindow {
 
 	private JFrame window;
@@ -31,10 +39,16 @@ public class SetupWindow {
 		window.setVisible(true);
 	}
 	
+	/**
+	 * Closes the window.
+	 */
 	public void closeWindow() {
 		window.dispose();
 	}
 	
+	/**
+	 * Calls the manager closeSetupWindow method which also opens the main window.
+	 */
 	public void finishedWindow() {
 		manager.closeSetupWindow(this);
 	}
