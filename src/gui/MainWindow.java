@@ -443,7 +443,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				JPanel islandDialog = new IslandDialog(manager);
-				islandDialog.setPreferredSize(new Dimension(860, 600));
+				islandDialog.setPreferredSize(new Dimension(860, 666));
 				JOptionPane.showMessageDialog(mainWindow, islandDialog);
 			}
 		});

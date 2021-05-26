@@ -1,8 +1,11 @@
 package game;
 
 /**
- * subclass for describing item that is an upgradeable
- * should say how this upgradeable works i.e. what property it affects and how much it affects it by
+ * Subclass for describing item that is used to upgrade a Ship.
+ * Has two types, reinforcement or damage. Only the damage type is currently used in the game.
+ * 
+ * Variables:
+ *-upgradeType UpgradeType, currently can only be damage or reinforcement
  * */
 
 public class UpgradeItem extends Item {
