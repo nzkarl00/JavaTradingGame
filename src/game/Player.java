@@ -36,30 +36,26 @@ public class Player {
 	 * @param route IslandRoute describing route to new island
 	 * @param ui UI object (currently passed in from GameManager) used for outputting info about the journey
 	 * */
-	public void moveToNewIsland(IslandRoute route, UI ui, GameEventNotifier notifier) {
+	public String moveToNewIsland(IslandRoute route, GameEventNotifier notifier) {
 		if (ship.getDamageState()) {
-			ui.showMessage("ERROR: ship has been damaged, you must repair your ship before you can travel!");
-			return;
+			return "Cannot sail while ship is damaged.\n";
 		}
 
 		int days = route.getDaysToTravel(ship.getSpeed());
 		float crewCost = ship.getCrewTravelCost(days);
 		
 		if (money < crewCost) {
-			ui.showMessage("ERROR: insufficient funds to travel to island!");
-			return;
+			return "Insufficient funds to travel to island.\n";
 		}
-
-		ui.showMessage("Sailing to " + route.getEndIsland().getName() + " for " + days + " days");
 		money -= crewCost;
 		currentIsland = route.getEndIsland();
 
 		//check for random encounter
 		EncounterEvent en = route.getEncounter(new Random());
 		if (en != null)
-		GameManager.mainWindow.printEncounter(en.StartEncounter(this, ui, notifier));
+		GameManager.mainWindow.printEncounter(en.StartEncounter(this, notifier));
 
-		ui.showMessage("Arrived at " + currentIsland.getName());
+		return ("Arrived at " + currentIsland.getName() + ".\n");
 
 		
 

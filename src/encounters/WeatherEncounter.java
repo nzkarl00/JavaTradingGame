@@ -16,7 +16,7 @@ public class WeatherEncounter extends EncounterEvent {
 	}
 
 	@Override
-	public String StartEncounter(Player player, UI ui, GameEventNotifier notifier) {
+	public String StartEncounter(Player player, GameEventNotifier notifier) {
 		player.getShip().setDamageState(true);
 		return ("You run into some nasty weather. \nYour ship has taken damage and will need to be repaired.\n");
 	}

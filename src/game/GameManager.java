@@ -47,7 +47,6 @@ public class GameManager {
 	public ArrayList<UpgradeItem> upgradeableItems;
 	public Store upgrades;
 	public GameEventNotifier notifier = new GameEventNotifier();
-	UI ui;
 	
 
 
@@ -68,7 +67,6 @@ public class GameManager {
 	 * These properties will be saved somewhere for future reference when game is actually started
 	 */
 	public void configureAdventure(String name, int duration, int shipIndex) {
-		ui = new CommandLineInterface();
 		daysLeft = duration;
 		Ship ship = selectShip(shipIndex);
 
@@ -99,10 +97,7 @@ public class GameManager {
 		for (int i=0; i<ships.length; i++) {
 			shipNames.add(ships[i].getName());
 		}
-
 		Ship chosen = ships[shipIndex - 1];
-		ui.showMessage("You have chosen " + chosen.getName() + ".");
-		
 		return chosen;
 	}
 
@@ -206,7 +201,7 @@ public class GameManager {
 	public void sailToIsland(IslandRoute route, GameEventNotifier notifier) {
 		//details managed by Player class
 		daysLeft -= route.getDaysToTravel(player.getShip().getSpeed());
-		player.moveToNewIsland(route, ui, notifier);
+		mainWindow.printEncounter(player.moveToNewIsland(route, notifier));
 	}
 
 	/**

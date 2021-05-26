@@ -10,7 +10,7 @@ public class SailorEncounter extends EncounterEvent {
 	}
 
 	@Override
-	public String StartEncounter(Player player, UI ui, GameEventNotifier notifer) { 
+	public String StartEncounter(Player player, GameEventNotifier notifer) { 
 		player.transferMoney(40);
 		return ("You find sailors, and rescue them. \nThey give you $40 as a reward.\n");
 	}
