@@ -133,15 +133,21 @@ class StoreTest {
 	}
 
 	@Test
-	void testAdjustedPrice() {
+	void testAdjustedPriceLowQuantity() {
 		Item item = new Item(10, "item", 1);
 		store.addItem(item, 1);
-		assertEquals(store.getPrice(item, true), 15);
-		assertEquals(store.getPrice(item, false), 14);
+		boolean isCorrectBuyingPrice = store.getPrice(item, true) == 15;
+		boolean isCorrectSellingPrice = store.getPrice(item, false) == 14;
+		assertTrue(isCorrectBuyingPrice && isCorrectSellingPrice);
+	}
 
-		store.addItem(item, 29);
-		assertEquals(store.getPrice(item, true), 0); //item would be able to be bought for $0 if there's enough of it in stock - should this be changed?
-		assertEquals(store.getPrice(item, false), 0);
+	@Test
+	void testAdjustedPriceHighQuantity() {
+		Item item = new Item(10, "item", 1);
+		store.addItem(item, 30);
+		boolean isCorrectBuyingPrice = store.getPrice(item, true) == 0;
+		boolean isCorrectSellingPrice = store.getPrice(item, false) == 0;
+		assertTrue(isCorrectBuyingPrice && isCorrectSellingPrice);
 	}
 
 }

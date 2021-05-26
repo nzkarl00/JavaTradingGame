@@ -41,6 +41,7 @@ class IslandRouteTest {
 		rng.setNextFloat(0);
 		EncounterEvent event = indirectRoute.getEncounter(rng);
 		assertNull(event);
+
 		event = midRoute.getEncounter(rng);
 		assertNull(event);
 	}

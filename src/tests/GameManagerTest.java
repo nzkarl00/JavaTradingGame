@@ -72,40 +72,4 @@ class GameManagerTest {
 		assertEquals(output, "Sold " + item.getName() + " for $" + sellPrice);
 	}
 
-	/*
-
-	@Test
-	void testSailToIsland() {
-
-	}
-
-	@Test
-	void testHasRunOutOfDays() {
-		//false - create situation where player definitely has more time to sail
-
-		//with a most direct route would take 1 day to travel
-		assertFalse(manager.hasRunOutOfDays());
-	}
-
-	GameManager createEndGameCheckScenario(int maxDays, float money, float islandDist, float shipSpeed) {
-		manager.configureAdventure("player name", maxDays, 1);
-		Island startIsland = new Island("a", 0, 0);
-		Island endIsland = new Island("a", 1, 0);
-		Ship ship = new Ship("", 1, 0, 0, 0, 0);
-		Player player = new Player("", ship, startIsland, 0);
-		return manager;
-	}
-
-	@Test
-	void testHasRunOutOfMoney() {
-
-	}
-
-	@Test
-	void testCheckGameEnd() {
-
-	}
-	*/
-	
-
 }

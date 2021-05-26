@@ -100,7 +100,7 @@ class PirateEncounterTest {
 
 
 	@Test
-	void testEncounterOutcomes() {
+	void testEncounterOutcomePlayerWin() {
 		//player will win
 		Ship playerShip = new Ship("player", 0, 0, 0, 1, 1);
 		Player player = new Player("", playerShip, null, 0);
@@ -108,23 +108,33 @@ class PirateEncounterTest {
 		GameEventNotifier.EventType event = getEventFromEncounter(player, 0, 0);
 		assertEquals(event, GameEventNotifier.EventType.killedPirates);
 		assertEquals(player.getMoney(), 100); //ensure money has been won
+	}
 
+	@Test
+	void testEncounterOutcomePlayerDie() {
 		//pirates will win, loot is insufficient
-		playerShip = new Ship("player", 0, 0, 0, 0, 0);
-		player = new Player("", playerShip, null, 0);
-		event = getEventFromEncounter(player, 1, 1);
-		assertEquals(event, GameEventNotifier.EventType.killedByPirates);
+		Ship playerShip = new Ship("player", 0, 0, 0, 0, 0);
+		Player player = new Player("", playerShip, null, 0);
 
+		GameEventNotifier.EventType event = getEventFromEncounter(player, 1, 1);
+		assertEquals(event, GameEventNotifier.EventType.killedByPirates);
+	}
+
+	@Test
+	void testEncounterOutcomePlayerLooted() {
 		//pirates will win, loot is sufficient
+		Ship playerShip = new Ship("player", 0, 0, 0, 0, 0);
+		Player player = new Player("", playerShip, null, 0);
 		Item item = new Item(1, "item", 0);
 		playerShip.addItem(item);
-		event = getEventFromEncounter(player, 1, 1);
+
+		GameEventNotifier.EventType event = getEventFromEncounter(player, 1, 1);
 		assertEquals(event, GameEventNotifier.EventType.goodsStolen);
 		assertTrue(playerShip.getGoodsValue(null) == 0); //ensure goods have been stolen
 	}
 
 	@Test
-	void testEncounterStrings() {
+	void testEncounterStringPlayerWin() {
 		//player will win
 		Ship playerShip = new Ship("player", 0, 0, 0, 1, 1);
 		Player player = new Player("", playerShip, null, 0);
@@ -136,12 +146,15 @@ class PirateEncounterTest {
 			"The pirate ship has health of 0.0 and damage of 0.0\n" +
 			"You defeated the pirates! Well done!\n" +
 			"You found $100 in the wreckage\n");
+	}
 
 
+	@Test
+	void testEncounterStringPlayerDie() {
 		//pirates will win, loot is insufficient
-		playerShip = new Ship("player", 0, 0, 0, 0, 0);
-		player = new Player("", playerShip, null, 0);
-		output = getStringFromEncounter(player, 1, 1);
+		Ship playerShip = new Ship("player", 0, 0, 0, 0, 0);
+		Player player = new Player("", playerShip, null, 0);
+		String output = getStringFromEncounter(player, 1, 1);
 		assertEquals(output,
 			"Arr!\n" +
 			"Your ship has health of 0.0 and damage of 0.0\n" + 
@@ -149,11 +162,17 @@ class PirateEncounterTest {
 			"You lost to the pirates.\n" +
 			"Your ship has $0.0 in goods. The pirates want at least $1.0\n" +
 			"The pirates are unsatisfied with your goods. Only killing you will bring them joy.\n");
+	}
 
+	@Test
+	void testEncounterStringPlayerLooted() {
 		//pirates will win, loot is sufficient
+		Ship playerShip = new Ship("player", 0, 0, 0, 0, 0);
+		Player player = new Player("", playerShip, null, 0);
 		Item item = new Item(1, "item", 0);
 		playerShip.addItem(item);
-		output = getStringFromEncounter(player, 1, 1);
+
+		String output = getStringFromEncounter(player, 1, 1);
 		assertEquals(output,
 			"Arr!\n" +
 			"Your ship has health of 0.0 and damage of 0.0\n" + 
