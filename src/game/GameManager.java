@@ -40,7 +40,7 @@ public class GameManager {
 	
 	private Player player;
 	public ArrayList<Island> islands;
-	private ArrayList<Item> items;
+	public ArrayList<Item> items;
 	public int daysLeft;
 	public static MainWindow mainWindow;
 	private String transactionHistory = "Purchase Log:\n";
@@ -107,7 +107,7 @@ public class GameManager {
 	 * @return String transaction which is then printed in the GUI
 	 */
 	public String repairShip() {
-		String transaction = upgrades.repairShip(player);
+		String transaction = upgrades.repairShip(player, 50);
 		if (transaction != "fail") {
 			transactionHistory = transactionHistory + (transaction + " at " + player.getCurrentIsland() + "\n");
 		}
@@ -174,6 +174,7 @@ public class GameManager {
 		return storeString;
 	}
 
+	//UNUSED FUNCTION 
 	/**
 	* returns list of routes that can be taken to other islands from specified island
 	* is currently called when choosing routes to travel from an island

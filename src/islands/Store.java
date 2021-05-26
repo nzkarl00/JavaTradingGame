@@ -70,16 +70,15 @@ public class Store {
 		System.out.println("");
 	}
 	
-    public String repairShip(Player player) {
-	float repairCost = 50;
+    public String repairShip(Player player, float repairCost) {
 	boolean isBought = player.transferMoney(-repairCost);
 		if (isBought) {
 			player.getShip().setDamageState(false);
-			return ("Ship repaired for $50.");
+			return ("Ship repaired for $" + repairCost + ".");
 		} else {
 			return ("Insufficient funds.");
 		}
-		}
+	}
 
 	
 

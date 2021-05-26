@@ -40,7 +40,7 @@ public class WorldCreator {
 	 * for each island, make a route from itself to every other island on the map
 	 * this route will be added to island's internal list of routes
 	 * */
-	private void initRoutes(ArrayList<Island> islands, int numSimilarRoutes) {
+	public void initRoutes(ArrayList<Island> islands, int numSimilarRoutes) {
 
 		for (int i = 0; i < islands.size(); i++) {
 			Island startIsland = islands.get(i);

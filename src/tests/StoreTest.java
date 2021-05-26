@@ -72,7 +72,7 @@ class StoreTest {
 
 	@Test
 	void testShipRepairNoCash() {
-		String output = store.repairShip(player);
+		String output = store.repairShip(player, 1);
 		assertEquals(output, "Insufficient funds.");
 	}
 
@@ -80,7 +80,7 @@ class StoreTest {
 	void testShipRepairSuccess() {
 		Player player = createTestGameScene();
 		player.transferMoney(50);
-		String output = player.getCurrentIsland().getStore().repairShip(player);
+		String output = player.getCurrentIsland().getStore().repairShip(player, 50);
 		assertEquals(output, "Ship repaired for $50.");
 	}
 
