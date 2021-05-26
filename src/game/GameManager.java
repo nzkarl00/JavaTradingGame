@@ -70,7 +70,7 @@ public class GameManager {
 	public void configureAdventure(String name, int duration, int shipIndex) {
 		daysLeft = duration;
 		Ship ship = selectShip(shipIndex);
-
+		//World creator handles all the initialisation of the game world
 		WorldCreator worldCreator = new WorldCreator();
 		islands = worldCreator.createIslandsWithRoutes();
 		items = worldCreator.initItems();
@@ -88,6 +88,7 @@ public class GameManager {
 	 * @return Returns Ship object that player has chosen
 	 * */
 	Ship selectShip(int shipIndex) {
+		//Makes ships with predetermined stats
 		Ship sloop = new Ship("Sloop", 10, 20, 2, 10, 30);
 		Ship brigantine = new Ship("Brigantine", 15, 20, 5, 15, 10);
 		Ship galleon = new Ship("Galleon", 20, 30, 7, 15, 15);
@@ -95,7 +96,7 @@ public class GameManager {
 		Ship[] ships = new Ship[] { sloop, brigantine, galleon, caravel };
 
 		ArrayList<String> shipNames = new ArrayList<String>();
-		for (int i=0; i<ships.length; i++) {
+		for (int i=0; i<ships.length; i++) {	//For each ship, add the name to ArrayList
 			shipNames.add(ships[i].getName());
 		}
 		Ship chosen = ships[shipIndex - 1];
@@ -107,9 +108,9 @@ public class GameManager {
 	 * @return String transaction which is then printed in the GUI
 	 */
 	public String repairShip() {
-		String transaction = upgrades.repairShip(player, 50);
+		String transaction = upgrades.repairShip(player, 50);	//Calls the upgrade store to repair the ship for $50
 		if (transaction != "fail") {
-			transactionHistory = transactionHistory + (transaction + " at " + player.getCurrentIsland().getName() + "\n");
+			transactionHistory = transactionHistory + (transaction + " at " + player.getCurrentIsland().getName() + "\n"); //Adds to the log if transaction was successful
 		}
 		return transaction;
 	}
@@ -120,7 +121,7 @@ public class GameManager {
 	 * @return String transaction which is then printed in the GUI
 	 */
 	public String buyItem(Item item) {
-		String transaction = player.getCurrentIsland().getStore().purchaseItem(item, player);
+		String transaction = player.getCurrentIsland().getStore().purchaseItem(item, player);	//Gets the store of the current island the player is at and calls purchaseItem()
 		if (transaction != "fail") {
 			transactionHistory = transactionHistory + (transaction + " from " + player.getCurrentIsland().getName() + "\n");
 		}
@@ -133,7 +134,7 @@ public class GameManager {
 	 * @return String transaction which is then printed in the GUI
 	 */
 	public String sellItem(Item item) {
-		String transaction = player.getCurrentIsland().getStore().sellItem(item, player);
+		String transaction = player.getCurrentIsland().getStore().sellItem(item, player);	//Gets the store of the current island the player is at and calls sellItem()
 		if (transaction.startsWith("Y") == false) {
 			transactionHistory += (transaction + " at " + player.getCurrentIsland().getName() + "\n");
 		}
@@ -156,7 +157,7 @@ public class GameManager {
 	public String viewBuyingPrices(int index) {
 		String storeString = "";
 		for (Item b: islands.get(index).getStore().getBuyables()) {
-			storeString += (b.getName() + " $" + islands.get(index).getStore().getPrice(b, true) + "\n");
+			storeString += (b.getName() + " $" + islands.get(index).getStore().getPrice(b, true) + "\n"); //Formats getPrice() from the store of target island 
 		}
 		return storeString;
 	}
@@ -168,8 +169,8 @@ public class GameManager {
 	 */
 	public String viewSellingPrices(int index) {
 		String storeString = "";
-		for (Item s: islands.get(index).getStore().getSellables()) {
-			storeString += (s.getName() + " $" + islands.get(index).getStore().getPrice(s, false) + "\n");
+		for (Item s: islands.get(index).getStore().getSellables()) {	//For each item in sellables from target island store
+			storeString += (s.getName() + " $" + islands.get(index).getStore().getPrice(s, false) + "\n");	//Appends the price of the item to a string
 		}
 		return storeString;
 	}
@@ -186,9 +187,9 @@ public class GameManager {
 		ArrayList<IslandRoute> routes = island.getRoutes();
 		
 		ArrayList<String> routeDescriptions = new ArrayList<String>();
-		for (IslandRoute route : routes) {
-			int routeTravelTime = route.getDaysToTravel(player.getShip().getSpeed());
-			String description = route.getString() + ", will take " + routeTravelTime + " days";
+		for (IslandRoute route : routes) {	//For every island route from the current island
+			int routeTravelTime = route.getDaysToTravel(player.getShip().getSpeed());	//Gets the days to travel from the speed of player's ship
+			String description = route.getString() + ", will take " + routeTravelTime + " days";	//Formats the route and time
 			routeDescriptions.add(description);
 		}
 
@@ -201,12 +202,11 @@ public class GameManager {
 	 * @param notifier GameEventNotifier to handle any encounters that may occur in the journey
 	 */
 	public void sailToIsland(IslandRoute route, GameEventNotifier notifier) {
-		//details managed by Player class
-		String islandMove = player.moveToNewIsland(route, notifier);
-		if (islandMove.startsWith("Arrived")) {
-			daysLeft -= route.getDaysToTravel(player.getShip().getSpeed());
+		String islandMove = player.moveToNewIsland(route, notifier);	//Player class handles specifics of moving to new island
+		if (islandMove.startsWith("Arrived")) {	//If the move was successful
+			daysLeft -= route.getDaysToTravel(player.getShip().getSpeed());	//Reduces daysLeft by the length of the route
 		}
-		mainWindow.printEncounter(islandMove);
+		mainWindow.printEncounter(islandMove);	//Prints result in the GUI
 	}
 
 	/**
@@ -214,10 +214,8 @@ public class GameManager {
 	 * @return boolean of true if the player is out of days, false if not out of days
 	 */
 	private boolean hasRunOutOfDays() {
-		//get min travel day
-		//compare to existing day
-		int minDays = getMinDaysToTravel(player.getCurrentIsland());
-		return daysLeft - minDays < 0;
+		int minDays = getMinDaysToTravel(player.getCurrentIsland());	//Minimum days to travel
+		return daysLeft - minDays < 0;	//Compares to days left in the game
 	}
 	
 	/**
@@ -226,12 +224,10 @@ public class GameManager {
 	 * @return boolean of true if the player does not have enough money to continue playing, false if they do have enough money
 	 */
 	private boolean hasRunOutOfMoney() {
-		//get min travel day, convert to money
-		//compare to existing money
-		int minDays = getMinDaysToTravel(player.getCurrentIsland());
-		float moneyNeededToTravel = player.getShip().getCrewTravelCost(minDays);
-		float hypotheticalMoneyFromStore = player.getShip().getGoodsValue(player.getCurrentIsland().getStore());
-		return moneyNeededToTravel > player.getMoney() + hypotheticalMoneyFromStore;
+		int minDays = getMinDaysToTravel(player.getCurrentIsland());	//Minimum days to travel
+		float moneyNeededToTravel = player.getShip().getCrewTravelCost(minDays);	//Travel cost for minimum days
+		float hypotheticalMoneyFromStore = player.getShip().getGoodsValue(player.getCurrentIsland().getStore());	//Checks the total value of player's inventory at current island store
+		return moneyNeededToTravel > player.getMoney() + hypotheticalMoneyFromStore;	//Checks if player has enough wealth including goods to sail anywhere
 	}
 
 	/**
@@ -239,6 +235,7 @@ public class GameManager {
 	 * @return String detailing continue if the game should not end, the way the game ended if it should end
 	 */
 	public String checkGameEnd() {
+		//Checks all game end conditions, returns text detailing end condition if ended. Continue if game keeps going
 		boolean outOfMoney = hasRunOutOfMoney();
 		boolean outOfDays = hasRunOutOfDays();
 		boolean killedByPirates = notifier.hasEventOccurred(GameEventNotifier.EventType.killedByPirates);
@@ -263,7 +260,7 @@ public class GameManager {
 		int minDays = -1;
 		
 		for (IslandRoute route : routes) {
-			int routeTravelTime = route.getDaysToTravel(player.getShip().getSpeed());
+			int routeTravelTime = route.getDaysToTravel(player.getShip().getSpeed());	//Travel time based on the speed of the player's ship
 			if (minDays == -1 || routeTravelTime < minDays) {
 				minDays = routeTravelTime;
 			}

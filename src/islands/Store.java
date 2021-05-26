@@ -26,7 +26,7 @@ public class Store {
 	public Store(String id) {
 		sellables = new ArrayList<Item>();
 		buyables = new ArrayList<Item>();
-		stock = new HashMap<Item, Integer>();
+		stock = new HashMap<Item, Integer>();	//Key is item, integer is quantity in stock
 	}
 	
 	/**
@@ -41,9 +41,9 @@ public class Store {
 		double priceMod = stock.get(good);
 		int adjustedPrice = 0;
 		if (buying == true) {
-			adjustedPrice = (int) (good.getBaseValue() * (1.55 - (priceMod / 20)));
+			adjustedPrice = (int) (good.getBaseValue() * (1.55 - (priceMod / 20)));	//Function for determining price based on quantity for buying
 		} else {
-			adjustedPrice = (int) (good.getBaseValue() * (1.45 - (priceMod / 20)));
+			adjustedPrice = (int) (good.getBaseValue() * (1.45 - (priceMod / 20)));	//Function for determining price based on quantity for selling
 		}
 		return adjustedPrice;
 	}
@@ -57,9 +57,9 @@ public class Store {
 	 */
 	public int getModifiablePrice(Item item, double priceMod, boolean buying) {
 		if (buying) {
-			return (int)(item.getBaseValue() * (1.55 - (priceMod / 20)));
+			return (int)(item.getBaseValue() * (1.55 - (priceMod / 20)));	//Function for determining price based on quantity for buying
 		} else {
-			return (int)(item.getBaseValue() * (1.45 - (priceMod / 20)));
+			return (int)(item.getBaseValue() * (1.45 - (priceMod / 20)));	//Function for determining price based on quantity for selling
 		}
 	}
 	
@@ -72,7 +72,7 @@ public class Store {
     public String repairShip(Player player, float repairCost) {
 	boolean isBought = player.transferMoney(-repairCost);
 		if (isBought) {
-			player.getShip().setDamageState(false);
+			player.getShip().setDamageState(false);	//Fixes the ship
 			return ("Ship repaired for $" + repairCost + ".");
 		} else {
 			return ("Insufficient funds.");
@@ -170,17 +170,17 @@ public class Store {
 	 */
 	public String purchaseItem(Item item, Player player) {
 		int total = getPrice(item, true);
-		if (player.getMoney() < total) {
+		if (player.getMoney() < total) {	//Not enough money fail case
 			return "fail";
 		}
-		if (player.getShip().getRemainingCapacity() < item.getWeight()) {
+		if (player.getShip().getRemainingCapacity() < item.getWeight()) {	//Not enough space fail case
 			return "You don't have enough space for that!";
 		}
 		total *= -1;
 		player.transferMoney(total);
 		player.getShip().addItem(item);
 		removeItem(item, 1);
-		return ("Purchased " + item.getName() + " for $" + total*-1);
+		return ("Purchased " + item.getName() + " for $" + total*-1);	//Returns transaction string
 	}
 	
 	/**
@@ -194,13 +194,13 @@ public class Store {
 	public String sellItem(Item item, Player player) {
 		int quantityOwned = player.getShip().playerInventory.get(item);
 		if (quantityOwned == 0) {
-			return ("You don't have any " + item.getName());
+			return ("You don't have any " + item.getName());	//Doesn't have any of the item to sell failure
 		} else {
 			int total = (int) (getPrice(item, false));
 			player.transferMoney(total);
 			addItem(item, 1);
 			player.getShip().removeItem(item);
-			return ("Sold " + item.getName() + " for $" + total);
+			return ("Sold " + item.getName() + " for $" + total);	//Returns transaction string
 		}
 	}
 	
@@ -227,7 +227,7 @@ public class Store {
 	public String buyPriceList() {
 		String prices = "";
 		for (Item i: buyables) {
-			prices = prices + "$" + getPrice(i, true) + "\n";
+			prices = prices + "$" + getPrice(i, true) + "\n";	//Checks the price of all items in buyables
 		}
 		return prices;
 	}
@@ -239,7 +239,7 @@ public class Store {
 	public String sellPriceList() {
 		String prices = "";
 		for (Item i: sellables) {
-			prices = prices + "$" + getPrice(i, false) + "\n";
+			prices = prices + "$" + getPrice(i, false) + "\n";	//Checks the price of all items in sellables
 		}
 		return prices;
 	}
@@ -250,7 +250,7 @@ public class Store {
 	 * @return int quantity of the item pulled from the hashmap stock
 	 */
 	public int getItemQuantity(Item item) {
-		return stock.get(item);
+		return stock.get(item);	//Checks how many of the item a store has
 	}
 
 

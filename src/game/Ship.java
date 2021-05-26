@@ -122,7 +122,7 @@ public class Ship {
 		ArrayList<UpgradeItem> upgrades = getUpgrades();
 		for (UpgradeItem item : upgrades) {
 			if (item.getUpgradeType() == UpgradeItem.UpgradeType.damage) {
-				baseDamage += damageUpgradeModifier;
+				baseDamage += damageUpgradeModifier;	//Increases damage if player has upgrades
 			}
 		}
 		return baseDamage;

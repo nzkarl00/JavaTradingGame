@@ -95,10 +95,10 @@ public class MainWindow {
     public void populateStores() {
     	currentSell.clear();
     	currentBuy.clear();
-    	for (Item i: manager.getPlayer().getCurrentIsland().getStore().getSellables()) {
+    	for (Item i: manager.getPlayer().getCurrentIsland().getStore().getSellables()) {	//Iterates over sellable items in the store of the current island
     		currentSell.addElement(i);
 			}
-    	for (Item j: manager.getPlayer().getCurrentIsland().getStore().getBuyables()) {
+    	for (Item j: manager.getPlayer().getCurrentIsland().getStore().getBuyables()) {		//Iterates over buyable items in the store of the current island
     		currentBuy.addElement(j);
 			}
 
@@ -109,8 +109,8 @@ public class MainWindow {
      */
     public void updateRoutes() {
     	comboSelectRoute.removeAllItems();
-    	for (IslandRoute i: manager.getPlayer().getCurrentIsland().getRoutes()) {
-    		if (i.getDaysToTravel(manager.getPlayer().getShip().getSpeed()) <= manager.daysLeft) {
+    	for (IslandRoute i: manager.getPlayer().getCurrentIsland().getRoutes()) {	//Iterates over the routes from the current island
+    		if (i.getDaysToTravel(manager.getPlayer().getShip().getSpeed()) <= manager.daysLeft) {	//Only adds routes with enough time left in the game to sail
     		comboSelectRoute.addItem(i.shortString(manager.getPlayer().getShip().getSpeed()));
     		}
 		}
@@ -127,10 +127,10 @@ public class MainWindow {
     	int lenSell = currentSell.getSize();
     	currentSell.clear();
     	currentBuy.clear();
-    	for (Item i: manager.getPlayer().getCurrentIsland().getStore().getSellables()) {
+    	for (Item i: manager.getPlayer().getCurrentIsland().getStore().getSellables()) {	//Iterates over the routes from the current island
     		currentSell.addElement(i);
 			}
-    	for (Item j: manager.getPlayer().getCurrentIsland().getStore().getBuyables()) {
+    	for (Item j: manager.getPlayer().getCurrentIsland().getStore().getBuyables()) {		//Only adds routes with enough time left in the game to sail
     		currentBuy.addElement(j);
 			}
     	if (lenBuy == currentBuy.getSize()) {
@@ -152,15 +152,16 @@ public class MainWindow {
      * Updates the prices in txtrSellPrices and txtrBuyPrices with the current values, called after every transaction.
      */
     public void updatePrices() {
-    	txtrSellPrices.setText(manager.getPlayer().getCurrentIsland().getStore().sellPriceList());
-    	txtrBuyPrices.setText(manager.getPlayer().getCurrentIsland().getStore().buyPriceList());
+    	txtrSellPrices.setText(manager.getPlayer().getCurrentIsland().getStore().sellPriceList());	//Gets the prices of all sellables at current island store
+    	txtrBuyPrices.setText(manager.getPlayer().getCurrentIsland().getStore().buyPriceList());	//Gets the prices of all buyables at the current island store
     }
     
     /**
      * Updates lblShipCapacity with the current capacity, called after every transaction
      */
     public void updateCapacity() {
-    	lblShipCapacity.setText("Capacity: " + (manager.getPlayer().getShip().getMaxCapacity() - manager.getPlayer().getShip().getRemainingCapacity()) + " / " +  manager.getPlayer().getShip().getMaxCapacity()); 
+    	lblShipCapacity.setText("Capacity: " + (manager.getPlayer().getShip().getMaxCapacity() - manager.getPlayer().getShip().getRemainingCapacity())
+    			+ " / " +  manager.getPlayer().getShip().getMaxCapacity()); 	//Maximum capacity of player ship - remaining capacity of current ship to get current capacity
     }
     
     /**
@@ -203,7 +204,9 @@ public class MainWindow {
     	String endCheck = manager.checkGameEnd();
     	if (endCheck != "continue") {
     		if (endCheck.contains("pirates")) {
-    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\n You lost" + "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+    			//Game end popup for pirate ending
+    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\n You lost" + "\nPlay again?", 
+    					"Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
     			if (n == 0) {
     				Main.main(null);
     				closeWindow();
@@ -211,7 +214,9 @@ public class MainWindow {
     				System.exit(0);
     			}
     		} else if (endCheck.contains("money")) {
-    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\nYour score was: " + manager.getPlayer().getMoney() + "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+    			//Game end popup for out of money ending
+    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\nYour score was: " + manager.getPlayer().getMoney() 
+    					+ "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
         		if (n == 0) {
         			Main.main(null);
         			closeWindow();
@@ -219,7 +224,11 @@ public class MainWindow {
         			System.exit(0);
         		}
     		} else {
-    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\nYour goods were automatically sold\nYour score was: " + (manager.getPlayer().getMoney() + manager.getPlayer().getShip().getGoodsValue(manager.getPlayer().getCurrentIsland().getStore())) + "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+    			//Game end popup for time ending
+    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\nYour goods were automatically sold\nYour score was: "
+    			//Current money + asset value
+    			+ (manager.getPlayer().getMoney() + manager.getPlayer().getShip().getGoodsValue(manager.getPlayer().getCurrentIsland().getStore())) 
+    			+ "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
         		if (n == 0) {
         			Main.main(null);
         			closeWindow();
@@ -315,7 +324,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				manager.sailToIsland(manager.getPlayer().getCurrentIsland().getRoutes().get(comboSelectRoute.getSelectedIndex()), manager.notifier);
-				lblActualLocation.setText(manager.getPlayer().getCurrentIsland().getName());
+				lblActualLocation.setText(manager.getPlayer().getCurrentIsland().getName());	//Updates actual location label
 				updateRoutes();
 				populateStores();
 				updateMoney();
@@ -369,7 +378,7 @@ public class MainWindow {
 					return;
 				}
 				String transaction = manager.buyItem(listBuying.getSelectedValue());
-				if (transaction != "fail")  {
+				if (transaction != "fail")  {	//Print transaction text if it was successful
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
 					updateCapacity();
@@ -395,7 +404,7 @@ public class MainWindow {
 		btnSell.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (listSelling.getSelectedValue() == null) {
+				if (listSelling.getSelectedValue() == null) {	//Print transaction text if it was successful
 					return;
 				}
 				String transaction = manager.sellItem(listSelling.getSelectedValue());
@@ -422,7 +431,7 @@ public class MainWindow {
 		btnCannon1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(0), manager.getPlayer());
+				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(0), manager.getPlayer()); //Buy first cannon upgrade
 				if (transaction != "fail")  {
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
@@ -439,7 +448,7 @@ public class MainWindow {
 		btnCannon2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(1), manager.getPlayer());
+				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(1), manager.getPlayer());	//Buy second cannon upgrade
 				if (transaction != "fail")  {
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
@@ -456,7 +465,7 @@ public class MainWindow {
 		btnCannon3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(2), manager.getPlayer());
+				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(2), manager.getPlayer());	//Buy third cannon upgrade
 				if (transaction != "fail")  {
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
@@ -558,7 +567,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String transaction = manager.repairShip();
-				if (transaction != "fail")  {
+				if (transaction != "fail")  { // If transaction was successful
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
 					btnRepairShip.setEnabled(false);
