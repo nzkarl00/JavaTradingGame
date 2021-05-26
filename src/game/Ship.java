@@ -40,14 +40,14 @@ public class Ship {
 	/**
 	 * Create a new Ship object with provided name, speed, capacity, crew size, and max health
 	 * */
-	public Ship(String _name, float _speed, int _maxCapacity, int _crewSize, float _maxHealth) {
+	public Ship(String _name, float _speed, int _maxCapacity, int _crewSize, float _maxHealth, float _damage) {
 		name = _name;
 		speed = _speed;
 		maxCapacity = _maxCapacity;
 		crewSize = _crewSize;
 		maxHealth = _maxHealth;
 		health = maxHealth;
-		damage = 10;
+		damage = _damage;
 		isDamaged = false;
 		playerInventory = new HashMap<Item, Integer>();
 	}

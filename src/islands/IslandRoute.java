@@ -95,7 +95,7 @@ public class IslandRoute {
 		float encounterChoice = rng.nextFloat();
 		EncounterEvent event;
 		if (encounterChoice < 0.3f) {
-			event = new PirateEncounter(0, 3, 0, 5);
+			event = new PirateEncounter(10, 10, 30);
 		} else if (encounterChoice < 0.6f) {
 			event = new WeatherEncounter();
 		} else {

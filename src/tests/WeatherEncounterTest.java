@@ -10,7 +10,7 @@ class WeatherEncounterTest {
 
 	@Test
 	void testEncounter() {
-		Ship ship = new Ship("", 0, 0, 0, 0);
+		Ship ship = new Ship("", 0, 0, 0, 0, 0);
 		Player player = new Player("", ship, null, 0);
 		WeatherEncounter encounter = new WeatherEncounter();
 		encounter.StartEncounter(player, null, null);

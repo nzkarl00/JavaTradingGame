@@ -86,7 +86,7 @@ class StoreTest {
 
 	Player createTestGameScene() {
 		Island island = new Island("island name", 0, 0);
-		Ship ship = new Ship("ship name", 10, 10, 10, 10);
+		Ship ship = new Ship("ship name", 10, 10, 10, 10, 10);
 		Player player = new Player("player name", ship, island, 0);
 		return player;
 	}

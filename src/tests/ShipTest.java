@@ -15,12 +15,12 @@ class ShipTest {
 
 	@BeforeEach
 	void init() {
-		ship = new Ship("ship", 10, 10, 10, 10);
+		ship = new Ship("ship", 10, 10, 10, 10, 10);
 	}
 
 	@Test
 	void testToString() {
-		Ship ship = new Ship("ship", 10, 10, 10, 10);
+		Ship ship = new Ship("ship", 10, 10, 10, 10, 10);
 		String output = ship.toString();
 		assertEquals(output, "Class: ship\nSpeed: 10.0\nCapacity: 10\nCrew members: 10\nMax health: 10.0\n\nCurrent inventory: \n");
 	}
@@ -114,7 +114,7 @@ class ShipTest {
 	@Test
 	void testGetGoodsValue() {
 		Store store = new Store("a");
-		Ship ship = new Ship("", 0, 10, 0, 0);
+		Ship ship = new Ship("", 0, 10, 0, 0, 0);
 		Item itemA = new Item(1, "itemA", "", 1);
 		Item itemB = new Item(2, "itemB", "", 1);
 		ship.addItem(itemA);
