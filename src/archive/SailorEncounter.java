@@ -1,3 +1,5 @@
+package archive;
+
 /**
  * rescue some sailors
  * player recieves money in return

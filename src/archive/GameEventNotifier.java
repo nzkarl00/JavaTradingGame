@@ -1,3 +1,5 @@
+package archive;
+
 import java.util.ArrayList;
 
 public class GameEventNotifier { //subclass that allows other objects to notify GameManager of important changes to the game via a structured interface

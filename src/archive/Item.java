@@ -1,3 +1,5 @@
+package archive;
+
 /**
  * represents information about a particular item
  * items can be sold, bought, or used as an upgrade

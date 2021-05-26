@@ -1,3 +1,5 @@
+package archive;
+
 
 /**
  * Class for weather encounter event.

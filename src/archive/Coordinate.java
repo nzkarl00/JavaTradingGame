@@ -1,3 +1,4 @@
+package archive;
 /**
  * Class to represent location of object on 2d grid
  * */

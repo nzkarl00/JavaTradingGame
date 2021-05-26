@@ -1,3 +1,5 @@
+package archive;
+
 /**
  * Gives a description of avaliable routes between two certain islands
  * could be managed either by having one object to contain all possible routes, or having multiple objects to express different types of routes

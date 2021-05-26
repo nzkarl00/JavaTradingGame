@@ -1,3 +1,5 @@
+package archive;
+
 /**
  * Class containing properties for Player character
  * keeps track of player's current state
