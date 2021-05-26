@@ -4,12 +4,10 @@ import encounters.EncounterEvent;
 import encounters.PirateEncounter;
 import encounters.SailorEncounter;
 import encounters.WeatherEncounter;
-import game.GameManager;
-import game.Player;
 import java.util.Random;
 
 /**
- * Gives a description of avaliable routes between two certain islands
+ * Gives a description of available routes between two certain islands
  * could be managed either by having one object to contain all possible routes, or having multiple objects to express different types of routes
  * i think second option is easier to work with as it breaks object down into simplest possible form
  * means you can quickly define different properties for different routes without having code for accessing specific routes be overcomplicated
@@ -22,10 +20,9 @@ public class IslandRoute {
 
 	private Island fromIsland;
 	private Island toIsland;
-	private String description;
 	private float directness; //describes how "direct" the route between two islands is
 	//a directness of 0 is least direct, meaning it is the slowest but also the safest route
-	//wheras a directness of 1 is most direct, meaning it is the fastest but most risky route
+	//whereas a directness of 1 is most direct, meaning it is the fastest but most risky route
 	private float indirectDistMultiplier = 2; //the more indirect the route is, the more distance will be multiplied by this amount
 
 	public IslandRoute(Island _fromIsland, Island _toIsland, float _directness) {

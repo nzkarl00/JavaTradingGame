@@ -1,5 +1,5 @@
 package islands;
-//handles init of game obejcts - islands, stores, items
+//handles initialisation of game objects - islands, stores, items
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -7,7 +7,6 @@ import java.util.Random;
 import game.Item;
 import game.Ship;
 import game.UpgradeItem;
-import game.UpgradeItem.UpgradeType;
 
 public class WorldCreator {
 

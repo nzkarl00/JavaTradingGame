@@ -17,7 +17,12 @@ public class Island {
 	private ArrayList<IslandRoute> routes = new ArrayList<IslandRoute>(); //ArrayList containing all possible routes from the island.
 	private Store store;
 	
-	
+	/**
+	 * Constructor for the Island
+	 * @param tempname String name to be assigned to the island
+	 * @param tempx int x coordinates to be assigned to the island
+	 * @param tempy int y coordinates to be assigned to the island
+	 */
 	public Island(String tempname, int tempx, int tempy) { //Constructor for creating new islands.
 		name = tempname;
 		xcoord = tempx;
@@ -25,27 +30,52 @@ public class Island {
 		store = new Store(name); 
 	}
 	
+	/**
+	 * Getter for xcoord.
+	 * @return int xcoord
+	 */
 	public int getX() {
 		return xcoord;
 	}
 	
+	/**
+	 * Getter for ycoord.
+	 * @return int ycoord
+	 */
 	public int getY() {
 		return ycoord;
 	}
 	
+	/**
+	 * Getter for name.
+	 * @return String name
+	 */
 	public String getName() {
 		return name;
 	}
 	
+	/**
+	 * Updated toString method for the island to display more relevant information.
+	 * @return String containing more relevant information
+	 */
 	public String toString() {
 		return (name + ", found at (" + xcoord + "," + ycoord + ")");
 	}
 
+	/**
+	 * Getter for routes.
+	 * @return ArrayList<IslandRoute> routes
+	 */
 	public ArrayList<IslandRoute> getRoutes() {
 		//routes are either calculated by the island or assigned to the island by GameManager when game is being set up
 		return routes;
 	}
 	
+	/**
+	 * Getter for route descriptions, to display more detailing information about all routes.
+	 * @param shipSpeed float speed used to calculate days to take the route
+	 * @return String detailed descriptions of all routes
+	 */
 	public ArrayList<String> getRoutesDescriptions(float shipSpeed) {
 		ArrayList<IslandRoute> routes = getRoutes();
 		
@@ -58,6 +88,12 @@ public class Island {
 		return routeDescriptions;
 	}
 
+	/**
+	 * Getter for all routes to a specific island.
+	 * @param shipSpeed float speed used to calculate days to take the route
+	 * @param toIsland Island destination
+	 * @return String descriptions of all routes to a specific island
+	 */
 	public String getRoutesToIslandDescriptions(float shipSpeed, Island toIsland) {
 		ArrayList<IslandRoute> routes = getRoutes();
 		
@@ -74,11 +110,19 @@ public class Island {
 		return routeDescriptions;
 	}
 
-
+	/**
+	 * Getter for store
+	 * @return Store store
+	 */
 	public Store getStore() {
 		return store;
 	}
 
+	/**
+	 * Adds a new route to the island
+	 * @param endIsland Island destination of the route
+	 * @param directness float how direct the route is to the island, direct routes are more dangerous
+	 */
 	public void addRoute(Island endIsland, float directness) {
 		IslandRoute route = new IslandRoute(this, endIsland, directness);
 		for (IslandRoute existingRoute : routes) {

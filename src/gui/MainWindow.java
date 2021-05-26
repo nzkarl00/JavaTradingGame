@@ -6,25 +6,53 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
-import javax.swing.SwingWorker;
 import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JTextArea;
 import java.awt.Color;
 import java.awt.Dimension;
-
 import javax.swing.ListSelectionModel;
 import javax.swing.DefaultListModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
-
+/**
+ * The main window of the game, a GUI for the player to perform all functions in the game.
+ * 
+ * Functions of the main window include:
+ * Calling item purchases and sales
+ * Displaying prices of goods at the current store
+ * Displaying all player and ship information
+ * Selecting routes and sailing to a new island
+ * Printing all actions taken in the game and results of the actions into a text window
+ * Providing means to open other information windows
+ * 
+ * Variables:
+ * mainWindow: JFrame containing everything in the main window
+ * manager: GameManager that handles every call from the main window, then uses other classes for game logic
+ * currentSell: DefaultListModel<Item> that contains the current items the store of the current island is selling
+ * currentBuy: DefaultListModel<Item> that contains the current items the store of the current island is buying
+ * lblPlayerMoney: JLabel to display the player's current money at all times
+ * listBuying: JList<Item> that displays currentBuy
+ * listSelling: JList<Item> that displays currentSell
+ * txtrBuyPrices: JTextArea to hold all of the prices of items being purchased by the store of the current island
+ * txtrSellPrices: JTextArea to hold all of the prices of items being sold by the store of the current island
+ * lblShipCapacity: JLabel that displays the current and total ship capacity at all times
+ * comboSelectRoute: JComboBox<String> for the player to select the route they wish to travel
+ * lblActualLocation: JLabel to display the current location of the player
+ * lblShipHealth: JLabel to display player's ship health state
+ * lblCurrentDays: JLabel to display days remaining in the game
+ * btnRepairShip: JButton to call a method for repairing the ship
+ * btnSetSail: JButton to call a method for traveling to a new island
+ * txtrStoreOutptut: JTextArea that print events of the game as they happen, including purchases, sales and encounters
+ * @author Seagull
+ *
+ */
 public class MainWindow {
 
 	private JFrame mainWindow;
@@ -36,7 +64,6 @@ public class MainWindow {
 	private JList<Item> listSelling;
 	private JTextArea txtrBuyPrices;
 	private JTextArea txtrSellPrices;
-	private JDialog dialog = new JDialog();
 	private JLabel lblShipCapacity;
 	private JComboBox<String> comboSelectRoute;
 	private JLabel lblActualLocation;
@@ -55,10 +82,16 @@ public class MainWindow {
 		mainWindow.setVisible(true);
 	}
     
+	/**
+	 * Closes the application.
+	 */
     public void closeWindow() {
 		mainWindow.dispose();
 	}
     
+    /**
+     * Populates currentBuy and currentSell with up to date information from the current island, called after sailing to a new island.
+     */
     public void populateStores() {
     	currentSell.clear();
     	currentBuy.clear();
@@ -71,6 +104,9 @@ public class MainWindow {
 
 	}
     
+    /**
+     * Updates the routes in comboSelectRoute with all the routes from the current island, called after sailing to a new island.
+     */
     public void updateRoutes() {
     	comboSelectRoute.removeAllItems();
     	for (IslandRoute i: manager.getPlayer().getCurrentIsland().getRoutes()) {
@@ -80,6 +116,10 @@ public class MainWindow {
 		}
     }
     
+    /**
+     * Updates currentSell and currentBuy with elements from the buying and selling lists from the current island.
+     * Maintains the selected index if the lists are unchanged, called after every transaction.
+     */
     public void updateStores() {
     	int sellIndex = listSelling.getSelectedIndex();
     	int buyIndex = listBuying.getSelectedIndex();
@@ -101,19 +141,31 @@ public class MainWindow {
     		}
     }
     
+    /**
+     * Updates lblPlayerMoney with the current value, called after every purchase.
+     */
     public void updateMoney() {
     	lblPlayerMoney.setText("$" + String.valueOf(manager.getPlayer().getMoney()));
     }
     
+    /**
+     * Updates the prices in txtrSellPrices and txtrBuyPrices with the current values, called after every transaction.
+     */
     public void updatePrices() {
     	txtrSellPrices.setText(manager.getPlayer().getCurrentIsland().getStore().sellPriceList());
     	txtrBuyPrices.setText(manager.getPlayer().getCurrentIsland().getStore().buyPriceList());
     }
     
+    /**
+     * Updates lblShipCapacity with the current capacity, called after every transaction
+     */
     public void updateCapacity() {
     	lblShipCapacity.setText("Capacity: " + (manager.getPlayer().getShip().getMaxCapacity() - manager.getPlayer().getShip().getRemainingCapacity()) + " / " +  manager.getPlayer().getShip().getMaxCapacity()); 
     }
     
+    /**
+     * Updates the health state of the ship in lblShipHealth, called after traveling to a new island.
+     */
     public void updateHealth() {
     	if (manager.getPlayer().getShip().getDamageState() == true) {
     		lblShipHealth.setText("Damaged");
@@ -129,14 +181,24 @@ public class MainWindow {
     	}
     }
     
+    /**
+     * Updates the number of days left in the game, called after traveling to a new island.
+     */
     public void updateDays() {
     	lblCurrentDays.setText(String.valueOf(manager.daysLeft));
     }
     
+    /**
+     * Prints text passed into the method into txtrStoreOutput.
+     * @param text String text to be printed
+     */
     public void printEncounter(String text) {
     	txtrStoreOutput.append(text);
     }
     
+    /**
+     * Checks to see if the game has ended, called after moving to a new island.
+     */
     public void checkGameEnd() {
     	String endCheck = manager.checkGameEnd();
     	if (endCheck != "continue") {

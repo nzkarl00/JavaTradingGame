@@ -1,7 +1,5 @@
 package islands;
 import java.util.*;
-
-import game.GameManager;
 import game.Item;
 import game.Player;
 import game.UpgradeItem;
@@ -22,7 +20,6 @@ import game.UpgradeItem;
 
 public class Store {
 
-	private String storeName;
 	private ArrayList<Item> sellables;
 	private ArrayList<Item> buyables;
 	private Map<Item, Integer> stock;
@@ -31,7 +28,6 @@ public class Store {
 		sellables = new ArrayList<Item>();
 		buyables = new ArrayList<Item>();
 		stock = new HashMap<Item, Integer>();
-		storeName = id;
 	}
 	
 	public void printSellableInventory() {
