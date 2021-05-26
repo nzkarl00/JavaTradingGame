@@ -64,8 +64,9 @@ public class Player {
 		currentIsland = route.getEndIsland();
 		//check for random encounter
 		EncounterEvent en = route.getEncounter(new Random());
-		if (en != null)
-		GameManager.mainWindow.printEncounter(en.StartEncounter(this, notifier));
+		if (en != null) {
+			GameManager.mainWindow.printEncounter(en.StartEncounter(this, notifier));
+		}
 		return ("Arrived at " + currentIsland.getName() + ".\n");
 	}
 
