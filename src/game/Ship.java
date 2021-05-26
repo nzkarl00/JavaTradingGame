@@ -53,13 +53,14 @@ public class Ship {
 	 * @param _maxHealth float maximum health capacity of the selected class of ship
 	 */
 	public Ship(String _name, float _speed, int _maxCapacity, int _crewSize, float _maxHealth) {
+
 		name = _name;
 		speed = _speed;
 		maxCapacity = _maxCapacity;
 		crewSize = _crewSize;
 		maxHealth = _maxHealth;
 		health = maxHealth;
-		damage = 10;
+		damage = _damage;
 		isDamaged = false;
 		playerInventory = new HashMap<Item, Integer>();
 	}

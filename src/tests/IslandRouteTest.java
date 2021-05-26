@@ -4,7 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.Random;
 
 import islands.*;
 import encounters.*;
@@ -90,25 +89,6 @@ class IslandRouteTest {
 	@Test
 	public void testShortString() {
 		assertEquals(directRoute.shortString(1), "island b, 15 days, 100.0% danger");
-	}
-
-
-	class TestableRandom extends Random {
-
-		float nextFloat;
-
-		public TestableRandom() {
-			super();
-			nextFloat = 0;
-		}
-
-		public void setNextFloat(float _float) {
-			nextFloat = _float;
-		}
-
-		public float nextFloat() {
-			return nextFloat;
-		}
 	}
 
 }

@@ -137,13 +137,13 @@ public class Store {
 		}
 	}
 
-	
+	/*
 	public void printStock() {
 		System.out.println(storeName + " Store:");
 		for(Item i : GameManager.items) {
 			System.out.println(i.getName() + ": " + stock.get(i));
 		}
-	}
+	}*/
 	
 	public String purchaseItem(Item item, Player player) {
 		int total = getPrice(item, true);

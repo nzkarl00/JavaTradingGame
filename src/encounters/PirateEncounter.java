@@ -22,10 +22,10 @@ public class PirateEncounter extends EncounterEvent {
 	private float satisfactoryGoodsValue = 30;
 	
 
-	public PirateEncounter(float _baseDamageMin, float _baseDamageMax, float _goodsValueMin, float _goodsValueMax) {
+	public PirateEncounter(float health, float damage, float _satisfactoryGoodsValue) {
 		super();
-		pirateShip = new Ship("", 20, 0, 0, 10);
-
+		pirateShip = new Ship("", 0, 0, 0, health, damage);
+		satisfactoryGoodsValue = _satisfactoryGoodsValue;
 	}
 
 	@Override
@@ -37,7 +37,7 @@ public class PirateEncounter extends EncounterEvent {
 		text += ("The pirate ship has health of " + pirateShip.getHealth() + " and damage of " + pirateShip.getDamage() + "\n");
 
 		//start fight
-		boolean havePiratesWon = startCombat(player.getShip());
+		boolean havePiratesWon = startCombat(player.getShip(), new Random());
 		if (havePiratesWon) {
 			text += (loseMessage + "\n");
 
@@ -47,6 +47,7 @@ public class PirateEncounter extends EncounterEvent {
 			if (goodsValue >= satisfactoryGoodsValue) {
 				playerShip.clearInventory();
 				text += (goodsStolenMessage + "\n");
+				notifier.addGameEvent(GameEventNotifier.EventType.goodsStolen);
 				return text;
 			} else {
 				text += (goodsKillMessage + "\n");
@@ -56,11 +57,12 @@ public class PirateEncounter extends EncounterEvent {
 		} else {
 			text += (winMessage + "\nYou found $100 in the wreckage\n");
 			player.transferMoney(100);
+			notifier.addGameEvent(GameEventNotifier.EventType.killedPirates);
 			return text;
 		}
 	}
 
-	private boolean startCombat(Ship playerShip) { //return true if pirates win, false if player wins
+	public boolean startCombat(Ship playerShip, Random rng) { //return true if pirates win, false if player wins
 		//healthManager of pirate attacks healthManager of player
 		//do this until someone dies (reaches critical health)
 		//combat done by random numbers based on probability of winning
@@ -68,16 +70,19 @@ public class PirateEncounter extends EncounterEvent {
 		float pirateWinProbability = getShipWinProbability(pirateShip, playerShip);
 		// System.out.println("prob: " + winProbability);
 		
-		float chance = super.getRandomFloatInRange(0, 1);
+		// float chance = super.getRandomFloatInRange(0, 1);
+		float chance = rng.nextFloat();
 		return chance < pirateWinProbability;
 	}
 
-	private float getShipWinProbability(Ship shipA, Ship shipB) { //probability of shipA winning against shipB
+	public float getShipWinProbability(Ship shipA, Ship shipB) { //probability of shipA winning against shipB
 		//the higher a ship's damage + health is, the more likely it is to win
 		//weighted 40% health 60% damage
 		float shipASuccess = shipA.getHealth() * 0.4f + shipA.getDamage() * 0.6f;
 		float shipBSuccess = shipB.getHealth() * 0.4f + shipB.getDamage() * 0.6f;
 		float probability = shipASuccess / (shipASuccess + shipBSuccess);
+		//if both ships have same probability, do ??
+		if (Float.isNaN(probability)) return 0.5f; //if both ships somehow have 0 chance of success, give 50% chance
 		return probability;
 	}
 

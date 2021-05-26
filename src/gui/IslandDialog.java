@@ -174,7 +174,7 @@ public class IslandDialog extends JPanel {
 		txtrFISell.setBounds(135, 76, 115, 133);
 		add(txtrFISell);
 		
-		txtrFIRoutes = new JTextArea(GameManager.player.getCurrentIsland().getRoutesToIslandDescriptions(GameManager.player.getShip().getSpeed(), manager.islands.get(0)).toString());
+		txtrFIRoutes = new JTextArea(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(0)).toString());
 		txtrFIRoutes.setLineWrap(true);
 		txtrFIRoutes.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrFIRoutes.setBackground(UIManager.getColor("Button.background"));
@@ -193,7 +193,7 @@ public class IslandDialog extends JPanel {
 		txtrSRSell.setBounds(575, 76, 115, 133);
 		add(txtrSRSell);
 		
-		txtrSRRoutes = new JTextArea(GameManager.player.getCurrentIsland().getRoutesToIslandDescriptions(GameManager.player.getShip().getSpeed(), manager.islands.get(1)).toString());
+		txtrSRRoutes = new JTextArea(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(1)).toString());
 		txtrSRRoutes.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrSRRoutes.setBackground(UIManager.getColor("Button.background"));
 		txtrSRRoutes.setBounds(700, 76, 155, 133);
@@ -211,7 +211,7 @@ public class IslandDialog extends JPanel {
 		txtrPCSell.setBounds(135, 296, 115, 133);
 		add(txtrPCSell);
 		
-		txtrPCRoutes = new JTextArea(GameManager.player.getCurrentIsland().getRoutesToIslandDescriptions(GameManager.player.getShip().getSpeed(), manager.islands.get(2)).toString());
+		txtrPCRoutes = new JTextArea(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(2)).toString());
 		txtrPCRoutes.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrPCRoutes.setBackground(UIManager.getColor("Button.background"));
 		txtrPCRoutes.setBounds(260, 296, 155, 133);
@@ -229,7 +229,7 @@ public class IslandDialog extends JPanel {
 		txtrVISell.setBounds(575, 296, 115, 133);
 		add(txtrVISell);
 		
-		txtrVIRoutes = new JTextArea(GameManager.player.getCurrentIsland().getRoutesToIslandDescriptions(GameManager.player.getShip().getSpeed(), manager.islands.get(3)).toString());
+		txtrVIRoutes = new JTextArea(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(3)).toString());
 		txtrVIRoutes.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrVIRoutes.setBackground(UIManager.getColor("Button.background"));
 		txtrVIRoutes.setBounds(700, 296, 155, 133);

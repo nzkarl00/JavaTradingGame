@@ -38,9 +38,9 @@ import islands.WorldCreator;
 
 public class GameManager {
 	
-	public static Player player;
+	private Player player;
 	public ArrayList<Island> islands;
-	public static ArrayList<Item> items;
+	private ArrayList<Item> items;
 	public int daysLeft;
 	public static MainWindow mainWindow;
 	private String transactionHistory = "Purchase Log:\n";
@@ -53,6 +53,10 @@ public class GameManager {
 
 	public GameManager() {
 
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	/**
@@ -84,10 +88,10 @@ public class GameManager {
 	 * @return Returns Ship object that player has chosen
 	 * */
 	Ship selectShip(int shipIndex) {
-		Ship sloop = new Ship("Sloop", 10, 20, 2, 10);
-		Ship brigantine = new Ship("Brigantine", 15, 20, 5, 15);
-		Ship galleon = new Ship("Galleon", 20, 30, 7, 15);
-		Ship caravel = new Ship("Caravel", 20, 50, 10, 20);
+		Ship sloop = new Ship("Sloop", 10, 20, 2, 10, 30);
+		Ship brigantine = new Ship("Brigantine", 15, 20, 5, 15, 10);
+		Ship galleon = new Ship("Galleon", 20, 30, 7, 15, 15);
+		Ship caravel = new Ship("Caravel", 20, 50, 10, 20, 7);
 		Ship[] ships = new Ship[] { sloop, brigantine, galleon, caravel };
 
 		ArrayList<String> shipNames = new ArrayList<String>();
