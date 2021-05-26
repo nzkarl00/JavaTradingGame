@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class Island {
 	private String name; //Name of the island.
-	private int xcoord; //X co-ordinate of the island.
-	private int ycoord; //Y co-ordinate of the island.
+	private int xCoord; //X co-ordinate of the island.
+	private int yCoord; //Y co-ordinate of the island.
 	private ArrayList<IslandRoute> routes = new ArrayList<IslandRoute>(); //ArrayList containing all possible routes from the island.
 	private Store store;
 	
@@ -23,10 +23,10 @@ public class Island {
 	 * @param tempx int x coordinates to be assigned to the island
 	 * @param tempy int y coordinates to be assigned to the island
 	 */
-	public Island(String tempname, int tempx, int tempy) { //Constructor for creating new islands.
-		name = tempname;
-		xcoord = tempx;
-		ycoord = tempy;
+	public Island(String _name, int _x, int _y) { //Constructor for creating new islands.
+		name = _name;
+		xCoord = _x;
+		yCoord = _y;
 		store = new Store(name); 
 	}
 	
@@ -35,7 +35,7 @@ public class Island {
 	 * @return int xcoord
 	 */
 	public int getX() {
-		return xcoord;
+		return xCoord;
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class Island {
 	 * @return int ycoord
 	 */
 	public int getY() {
-		return ycoord;
+		return yCoord;
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class Island {
 	 * @return String containing more relevant information
 	 */
 	public String toString() {
-		return (name + ", found at (" + xcoord + "," + ycoord + ")");
+		return (name + ", found at (" + xCoord + "," + yCoord + ")");
 	}
 
 	/**

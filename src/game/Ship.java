@@ -40,7 +40,7 @@ public class Ship {
 	private float health;
 	private float damage;
 	private boolean isDamaged;
-	public Map<Item, Integer> playerInventory;
+	private Map<Item, Integer> inventory;
 
 	private float damageUpgradeModifier = 10;
 
@@ -62,7 +62,7 @@ public class Ship {
 		health = maxHealth;
 		damage = _damage;
 		isDamaged = false;
-		playerInventory = new HashMap<Item, Integer>();
+		inventory = new HashMap<Item, Integer>();
 	}
 
 	/**
@@ -135,16 +135,24 @@ public class Ship {
 	public float getHealth() {
 		return health;
 	}
+
+	/**
+	 * Doesn't add item to inventory, but marks it so that the Ship knows it exists and can be added later
+	 * @param item Item object passed from the store
+	 */
+	public void registerInventoryItem(Item item) {
+		inventory.put(item, 0);
+	}
 	
 	/**
 	 * Adds an item to the Ship's inventory, or creates a new entry for it in the inventory if it is not already present.
 	 * @param item Item object passed from the store
 	 */
 	public void addItem(Item item) {
-		if (playerInventory.containsKey(item)) {
-			playerInventory.put(item, (playerInventory.get(item) + 1));
+		if (inventory.containsKey(item)) {
+			inventory.put(item, (inventory.get(item) + 1));
 		} else {
-			playerInventory.put(item, 1);
+			inventory.put(item, 1);
 		}
 	}
 	
@@ -153,10 +161,23 @@ public class Ship {
 	 * @param item Item object passed from the store
 	 */
 	public void removeItem(Item item) {
-		if (playerInventory.containsKey(item)) {
-			playerInventory.put(item, (playerInventory.get(item) - 1));
+		if (inventory.containsKey(item)) {
+			inventory.put(item, (inventory.get(item) - 1));
 		} else {
 			//error
+		}
+	}
+
+	/**
+	 * Get amount of items Ship has in inventory
+	 * @param item Item object passed from the store
+	 * @return quanity int 
+	 */
+	public int getItemQuantity(Item item) {
+		if (inventory.containsKey(item)) {
+			return inventory.get(item);
+		} else {
+			return 0;
 		}
 	}
 	
@@ -164,7 +185,7 @@ public class Ship {
 	 * Resets the Ship's inventory to a blank state, currently only occurs after a pirate raid.
 	 */
 	public void clearInventory() {
-		playerInventory = new HashMap<Item, Integer>();
+		inventory = new HashMap<Item, Integer>();
 	}
 	
 	/**
@@ -175,7 +196,7 @@ public class Ship {
 		//function rewritten to be easier to test reliably
 		ArrayList<String> items = new ArrayList<String>();
 
-		for (Map.Entry<Item, Integer> entry : playerInventory.entrySet()) {
+		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
 			Item item = entry.getKey();
 			int quantity = entry.getValue();
 			
@@ -225,7 +246,7 @@ public class Ship {
 	 * @return Map<Item, Integer> playerInventory
 	 */
 	public Map<Item, Integer> getInventory() {
-		return playerInventory;
+		return inventory;
 	}
 
 	/**
@@ -249,7 +270,7 @@ public class Ship {
 	 */
 	private ArrayList<UpgradeItem> getUpgrades() {
 		ArrayList<UpgradeItem> upgrades = new ArrayList<UpgradeItem>();
-		for (Map.Entry<Item, Integer> entry : playerInventory.entrySet()) {
+		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
 			Item item = entry.getKey();
 			if (item instanceof UpgradeItem) {
 				upgrades.add((UpgradeItem)item);

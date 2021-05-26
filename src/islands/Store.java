@@ -39,13 +39,7 @@ public class Store {
 	 */
 	public int getPrice(Item good, boolean buying) {
 		double priceMod = stock.get(good);
-		int adjustedPrice = 0;
-		if (buying == true) {
-			adjustedPrice = (int) (good.getBaseValue() * (1.55 - (priceMod / 20)));	//Function for determining price based on quantity for buying
-		} else {
-			adjustedPrice = (int) (good.getBaseValue() * (1.45 - (priceMod / 20)));	//Function for determining price based on quantity for selling
-		}
-		return adjustedPrice;
+		return getModifiablePrice(good, priceMod, buying);
 	}
 	
 	/**
@@ -192,7 +186,7 @@ public class Store {
 	 * @return String detailing what occurred in the transaction, which is eventually printed in the GUI
 	 */
 	public String sellItem(Item item, Player player) {
-		int quantityOwned = player.getShip().playerInventory.get(item);
+		int quantityOwned = player.getShip().getItemQuantity(item);
 		if (quantityOwned == 0) {
 			return ("You don't have any " + item.getName());	//Doesn't have any of the item to sell failure
 		} else {

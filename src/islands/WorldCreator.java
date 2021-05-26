@@ -18,7 +18,6 @@ public class WorldCreator {
 	 * @return ArrayList<Island> containing all created islands
 	 */
 	public ArrayList<Island> createIslandsWithRoutes() {
-		//so islands with routes etc attached
 		ArrayList<Island> islands = initIslands();
 		initRoutes(islands, 2);
 		return islands;
@@ -31,17 +30,17 @@ public class WorldCreator {
 	private ArrayList<Island> initIslands() {
 		ArrayList<Island> islands = new ArrayList<Island>();
 
-		Island fracturedisle = new Island("Fractured Isle", 9, 7);	// ]
-		Island smithscordrefuge = new Island("Smithscord Refuge", 5, 1); // ]
-		Island penlycay = new Island("Penly Cay", 2, -10); // ] ------------------------Creating all the island objects for the game
-		Island valganisland = new Island("Valgan Island", -4, -2); // ]
-		Island stockstallenclave = new Island("Stockstall Enclave", -8, -8); // ]
+		Island fracturedIsle = new Island("Fractured Isle", 9, 7);
+		Island smithscordRefuge = new Island("Smithscord Refuge", 5, 1);
+		Island penlyCay = new Island("Penly Cay", 2, -10);
+		Island valganIsland = new Island("Valgan Island", -4, -2);
+		Island stockstallEnclave = new Island("Stockstall Enclave", -8, -8);
 
-		islands.add(fracturedisle);
-		islands.add(smithscordrefuge);
-		islands.add(penlycay);
-		islands.add(valganisland);
-		islands.add(stockstallenclave);
+		islands.add(fracturedIsle);
+		islands.add(smithscordRefuge);
+		islands.add(penlyCay);
+		islands.add(valganIsland);
+		islands.add(stockstallEnclave);
 
 		return islands;
 	}
@@ -73,17 +72,17 @@ public class WorldCreator {
 	public ArrayList<Item> initItems() {
 		ArrayList<Item> items = new ArrayList<Item>();
 
-		Item Silk = new Item(50,"Silk",2);
-		Item Linen = new Item(10,"Linen",3);
-		Item Wine = new Item(20,"Wine",5);
-		Item Cinnamon =  new Item(30,"Cinnamon",1);
-		Item Saffron = new Item(100,"Saffron",1);
+		Item silk = new Item(50,"Silk",2);
+		Item linen = new Item(10,"Linen",3);
+		Item wine = new Item(20,"Wine",5);
+		Item cinnamon =  new Item(30,"Cinnamon",1);
+		Item saffron = new Item(100,"Saffron",1);
 		
-		items.add(Silk);
-		items.add(Wine);
-		items.add(Linen);
-		items.add(Saffron);
-		items.add(Cinnamon);	
+		items.add(silk);
+		items.add(wine);
+		items.add(linen);
+		items.add(saffron);
+		items.add(cinnamon);	
 
 		return items;
 	}
@@ -146,12 +145,12 @@ public class WorldCreator {
 	 * @param items ArrayList<Item> with all items of the game
 	 * @param upgradeableItems ArrayList<UpgradeItem> with all upgrades in the game
 	 */
-	public void initPlayerInventory(Ship playership, ArrayList<Item> items, ArrayList<UpgradeItem> upgradeableItems) {
-		for(Item i : items) {
-			playership.playerInventory.put(i, 0);
+	public void initPlayerInventory(Ship playerShip, ArrayList<Item> items, ArrayList<UpgradeItem> upgradeableItems) {
+		for(Item item : items) {
+			playerShip.registerInventoryItem(item);
 		}
-		for(Item i : upgradeableItems) {
-			playership.playerInventory.put(i, 0);
+		for(Item item : upgradeableItems) {
+			playerShip.registerInventoryItem(item);
 		}
 	}
 

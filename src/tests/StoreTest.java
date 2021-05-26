@@ -94,7 +94,7 @@ class StoreTest {
 	@Test
 	void testPurchaseItemSuccess() {
 		store.addItem(item, 1);
-		player.getShip().playerInventory.put(item, 0);
+		player.getShip().registerInventoryItem(item);
 		player.transferMoney(1);
 		String output = store.purchaseItem(item, player);
 		assertEquals(output, "Purchased item for $1");
@@ -119,7 +119,7 @@ class StoreTest {
 	@Test
 	void testSellItemFail() {
 		store.addItem(item, 1);
-		player.getShip().playerInventory.put(item, 0);
+		player.getShip().registerInventoryItem(item);
 		String output = store.sellItem(item, player);
 		assertEquals(output, "You don't have any item");
 	}
@@ -127,7 +127,7 @@ class StoreTest {
 	@Test
 	void testSellItemSuccess() {
 		store.addItem(item, 1);
-		player.getShip().playerInventory.put(item, 1);
+		player.getShip().addItem(item);
 		String output = store.sellItem(item, player);
 		assertEquals(output, "Sold item for $1");
 	}

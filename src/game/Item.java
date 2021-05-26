@@ -21,10 +21,10 @@ public class Item {
 	 * @param tempname String name that will be assigned to the item
 	 * @param tempweight float weight that will be assigned to the item
 	 */
-	public Item(float base, String tempname, float tempweight) {
+	public Item(float base, String _name, float _weight) {
 		baseValue = base;
-		name = tempname;
-		weight = tempweight;
+		name = _name;
+		weight = _weight;
 	}
 	
 	/**

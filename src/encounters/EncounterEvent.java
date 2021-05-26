@@ -1,5 +1,4 @@
 package encounters;
-import java.util.Random;
 /**
  * Class to handle all the encounters of the game, all specific encounters extend this class.
  */
@@ -10,19 +9,6 @@ public class EncounterEvent {
 
 	public String StartEncounter(Player player, GameEventNotifier notifier) {
 		return null;
-	}
-
-	/**
-	 * Gets a random float in a given range.
-	 * @param min float minimum of the range
-	 * @param max float maximum of the range
-	 * @return float the random float
-	 */
-	public float getRandomFloatInRange(float min, float max) {
-		Random rand = new Random();
-		float randNum = rand.nextFloat(); //returns float from 0 to 1
-		//at 0 will return min, at 1 will return max
-		return min + randNum * max;
 	}
 
 }

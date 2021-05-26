@@ -8,12 +8,8 @@ import java.util.Random;
 
 /**
  * Gives a description of available routes between two certain islands
- * could be managed either by having one object to contain all possible routes, or having multiple objects to express different types of routes
- * i think second option is easier to work with as it breaks object down into simplest possible form
- * means you can quickly define different properties for different routes without having code for accessing specific routes be overcomplicated
- *
- * this class will be used by Island to define routes to/from itself,
- * and either Player or GameManager to sort out navigation
+ * this class is be used by Island to define routes to/from itself
+ * which in turn is used for navigation between islands.
  * */
 
 public class IslandRoute {
@@ -52,7 +48,8 @@ public class IslandRoute {
 		double baseDistance = Math.sqrt(Math.pow(xDiff, 2) + Math.pow(yDiff, 2));
 
 		//the closer directness is to 0, the more distance is increased by
-		float distMultiplier = indirectDistMultiplier * (1 - directness); //directness of 0 uses multiplier fully, directness of 1 doesn't use it at all
+		//directness of 0 uses multiplier fully, directness of 1 doesn't use it at all
+		float distMultiplier = indirectDistMultiplier * (1 - directness);
 		double appliedDistance = baseDistance + baseDistance * distMultiplier;
 
 		//the larger speed is, the less time it will take to travel

@@ -175,27 +175,6 @@ public class GameManager {
 		return storeString;
 	}
 
-	//UNUSED FUNCTION 
-	/**
-	* returns list of routes that can be taken to other islands from specified island
-	* is currently called when choosing routes to travel from an island
-	* could also be called when you want to view routes from another island 
-	* @param island Island that is the starting point for routes that will be printed out
-	* @return ArrayList<String> containing descriptions for each route from island
-	* */
-	public ArrayList<String> getIslandRoutesInformation(Island island) {
-		ArrayList<IslandRoute> routes = island.getRoutes();
-		
-		ArrayList<String> routeDescriptions = new ArrayList<String>();
-		for (IslandRoute route : routes) {	//For every island route from the current island
-			int routeTravelTime = route.getDaysToTravel(player.getShip().getSpeed());	//Gets the days to travel from the speed of player's ship
-			String description = route.getString() + ", will take " + routeTravelTime + " days";	//Formats the route and time
-			routeDescriptions.add(description);
-		}
-
-		return routeDescriptions;
-	}
-
 	/**
 	 * Moves the player to a new island and decrements daysLeft by the length of the journey.
 	 * @param route IslandRoute selected by the player in the GUI
@@ -264,7 +243,7 @@ public class GameManager {
 			if (minDays == -1 || routeTravelTime < minDays) {
 				minDays = routeTravelTime;
 			}
-	}
+		}
 	
 		return minDays;
 	}
