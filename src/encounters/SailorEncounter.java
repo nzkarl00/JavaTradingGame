@@ -2,12 +2,19 @@ package encounters;
 
 import game.Player;
 
+/**
+ * Sailor encounter, this encounter simply gives the player a monetary reward.
+ */
+
 public class SailorEncounter extends EncounterEvent {
 
 	public SailorEncounter() {
 		super();
 	}
-
+	
+	/**
+	 * Gives the player money for rescuing sailors.
+	 */
 	@Override
 	public String StartEncounter(Player player, GameEventNotifier notifer) { 
 		player.transferMoney(40);

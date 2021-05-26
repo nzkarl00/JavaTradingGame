@@ -47,6 +47,9 @@ public class IslandDialog extends JPanel {
 		txtrSERoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(4)).toString());
 	}
 	
+	/**
+	 * Updates every price in the panel to reflect the current values.
+	 */
 	public void updateAllPrices() {
 		txtrFIBuy.setText(manager.viewBuyingPrices(0));
 		txtrSRBuy.setText(manager.viewBuyingPrices(1));
