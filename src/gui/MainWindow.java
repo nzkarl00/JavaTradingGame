@@ -62,10 +62,10 @@ public class MainWindow {
     public void populateStores() {
     	currentSell.clear();
     	currentBuy.clear();
-    	for (Item i: GameManager.player.getCurrentIsland().getStore().getSellables()) {
+    	for (Item i: manager.getPlayer().getCurrentIsland().getStore().getSellables()) {
     		currentSell.addElement(i);
 			}
-    	for (Item j: GameManager.player.getCurrentIsland().getStore().getBuyables()) {
+    	for (Item j: manager.getPlayer().getCurrentIsland().getStore().getBuyables()) {
     		currentBuy.addElement(j);
 			}
 
@@ -73,9 +73,9 @@ public class MainWindow {
     
     public void updateRoutes() {
     	comboSelectRoute.removeAllItems();
-    	for (IslandRoute i: GameManager.player.getCurrentIsland().getRoutes()) {
-    		if (i.getDaysToTravel(manager.player.getShip().getSpeed()) <= manager.daysLeft) {
-    		comboSelectRoute.addItem(i.shortString(manager.player.getShip().getSpeed()));
+    	for (IslandRoute i: manager.getPlayer().getCurrentIsland().getRoutes()) {
+    		if (i.getDaysToTravel(manager.getPlayer().getShip().getSpeed()) <= manager.daysLeft) {
+    		comboSelectRoute.addItem(i.shortString(manager.getPlayer().getShip().getSpeed()));
     		}
 		}
     }
@@ -87,10 +87,10 @@ public class MainWindow {
     	int lenSell = currentSell.getSize();
     	currentSell.clear();
     	currentBuy.clear();
-    	for (Item i: GameManager.player.getCurrentIsland().getStore().getSellables()) {
+    	for (Item i: manager.getPlayer().getCurrentIsland().getStore().getSellables()) {
     		currentSell.addElement(i);
 			}
-    	for (Item j: GameManager.player.getCurrentIsland().getStore().getBuyables()) {
+    	for (Item j: manager.getPlayer().getCurrentIsland().getStore().getBuyables()) {
     		currentBuy.addElement(j);
 			}
     	if (lenBuy == currentBuy.getSize()) {
@@ -102,20 +102,20 @@ public class MainWindow {
     }
     
     public void updateMoney() {
-    	lblPlayerMoney.setText("$" + String.valueOf(GameManager.player.getMoney()));
+    	lblPlayerMoney.setText("$" + String.valueOf(manager.getPlayer().getMoney()));
     }
     
     public void updatePrices() {
-    	txtrSellPrices.setText(GameManager.player.getCurrentIsland().getStore().sellPriceList());
-    	txtrBuyPrices.setText(GameManager.player.getCurrentIsland().getStore().buyPriceList());
+    	txtrSellPrices.setText(manager.getPlayer().getCurrentIsland().getStore().sellPriceList());
+    	txtrBuyPrices.setText(manager.getPlayer().getCurrentIsland().getStore().buyPriceList());
     }
     
     public void updateCapacity() {
-    	lblShipCapacity.setText("Capacity: " + (GameManager.player.getShip().getMaxCapacity() - GameManager.player.getShip().getRemainingCapacity()) + " / " +  GameManager.player.getShip().getMaxCapacity()); 
+    	lblShipCapacity.setText("Capacity: " + (manager.getPlayer().getShip().getMaxCapacity() - manager.getPlayer().getShip().getRemainingCapacity()) + " / " +  manager.getPlayer().getShip().getMaxCapacity()); 
     }
     
     public void updateHealth() {
-    	if (GameManager.player.getShip().getDamageState() == true) {
+    	if (manager.getPlayer().getShip().getDamageState() == true) {
     		lblShipHealth.setText("Damaged");
     		btnRepairShip.setEnabled(true);
     		btnSetSail.setEnabled(false);
@@ -149,7 +149,7 @@ public class MainWindow {
     				System.exit(0);
     			}
     		} else if (endCheck.contains("money")) {
-    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\nYour score was: " + manager.player.getMoney() + "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\nYour score was: " + manager.getPlayer().getMoney() + "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
         		if (n == 0) {
         			Main.main(null);
         			closeWindow();
@@ -157,7 +157,7 @@ public class MainWindow {
         			System.exit(0);
         		}
     		} else {
-    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\nYour goods were automatically sold\nYour score was: " + (manager.player.getMoney() + manager.player.getShip().getGoodsValue(manager.player.getCurrentIsland().getStore())) + "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
+    			int n = JOptionPane.showOptionDialog(mainWindow, endCheck + "\nYour goods were automatically sold\nYour score was: " + (manager.getPlayer().getMoney() + manager.getPlayer().getShip().getGoodsValue(manager.getPlayer().getCurrentIsland().getStore())) + "\nPlay again?", "Game Over", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
         		if (n == 0) {
         			Main.main(null);
         			closeWindow();
@@ -173,7 +173,7 @@ public class MainWindow {
 	private void initialize() {
 				
 		mainWindow = new JFrame();
-		mainWindow.setTitle(manager.player.getName() + "'s Trading Adventure");
+		mainWindow.setTitle(manager.getPlayer().getName() + "'s Trading Adventure");
 		mainWindow.setResizable(false);
 		mainWindow.setBounds(100, 100, 1000, 700);
 		mainWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -230,7 +230,7 @@ public class MainWindow {
 		lblShipHealth.setBounds(750, 310, 200, 25);
 		mainWindow.getContentPane().add(lblShipHealth);
 		
-		lblShipCapacity = new JLabel("Capacity: " + (GameManager.player.getShip().getMaxCapacity() - GameManager.player.getShip().getRemainingCapacity()) + " / " +  GameManager.player.getShip().getMaxCapacity());
+		lblShipCapacity = new JLabel("Capacity: " + (manager.getPlayer().getShip().getMaxCapacity() - manager.getPlayer().getShip().getRemainingCapacity()) + " / " +  manager.getPlayer().getShip().getMaxCapacity());
 		lblShipCapacity.setFont(new Font("Viner Hand ITC", Font.BOLD, 16));
 		lblShipCapacity.setHorizontalAlignment(SwingConstants.CENTER);
 		lblShipCapacity.setBounds(750, 280, 200, 25);
@@ -242,7 +242,7 @@ public class MainWindow {
 		lblSelectRoute.setBounds(750, 375, 200, 25);
 		mainWindow.getContentPane().add(lblSelectRoute);
 		
-		JLabel lblDailyCrewCost = new JLabel("Daily crew cost: " + String.valueOf(manager.player.getShip().getCrewTravelCost(1)));
+		JLabel lblDailyCrewCost = new JLabel("Daily crew cost: " + String.valueOf(manager.getPlayer().getShip().getCrewTravelCost(1)));
 		lblDailyCrewCost.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDailyCrewCost.setFont(new Font("Viner Hand ITC", Font.BOLD, 14));
 		lblDailyCrewCost.setBounds(730, 625, 244, 25);
@@ -252,8 +252,8 @@ public class MainWindow {
 		btnSetSail.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				manager.sailToIsland(GameManager.player.getCurrentIsland().getRoutes().get(comboSelectRoute.getSelectedIndex()), manager.notifier);
-				lblActualLocation.setText(GameManager.player.getCurrentIsland().getName());
+				manager.sailToIsland(manager.getPlayer().getCurrentIsland().getRoutes().get(comboSelectRoute.getSelectedIndex()), manager.notifier);
+				lblActualLocation.setText(manager.getPlayer().getCurrentIsland().getName());
 				updateRoutes();
 				populateStores();
 				updateMoney();
@@ -360,7 +360,7 @@ public class MainWindow {
 		btnCannon1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(0), GameManager.player);
+				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(0), manager.getPlayer());
 				if (transaction != "fail")  {
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
@@ -377,7 +377,7 @@ public class MainWindow {
 		btnCannon2.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(1), GameManager.player);
+				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(1), manager.getPlayer());
 				if (transaction != "fail")  {
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
@@ -394,7 +394,7 @@ public class MainWindow {
 		btnCannon3.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(2), GameManager.player);
+				String transaction = manager.upgrades.purchaseItem(manager.upgradeableItems.get(2), manager.getPlayer());
 				if (transaction != "fail")  {
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
@@ -415,7 +415,7 @@ public class MainWindow {
 		btnShipProperties.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {	
-				JOptionPane.showMessageDialog(mainWindow, GameManager.player.getShip().toString());
+				JOptionPane.showMessageDialog(mainWindow, manager.getPlayer().getShip().toString());
 			}
 		});
 		btnShipProperties.setFont(new Font("Viner Hand ITC", Font.BOLD, 14));
@@ -451,7 +451,7 @@ public class MainWindow {
 		btnIslandProperties.setBounds(370, 405, 350, 25);
 		mainWindow.getContentPane().add(btnIslandProperties);
 		
-		txtrSellPrices = new JTextArea(GameManager.player.getCurrentIsland().getStore().sellPriceList());
+		txtrSellPrices = new JTextArea(manager.getPlayer().getCurrentIsland().getStore().sellPriceList());
 		txtrSellPrices.setEditable(false);
 		txtrSellPrices.setRows(5);
 		txtrSellPrices.setFont(new Font("Monospaced", Font.BOLD, 20));
@@ -460,7 +460,7 @@ public class MainWindow {
 		txtrSellPrices.setBounds(670, 55, 50, 150);
 		mainWindow.getContentPane().add(txtrSellPrices);
 		
-		txtrBuyPrices = new JTextArea(GameManager.player.getCurrentIsland().getStore().buyPriceList());
+		txtrBuyPrices = new JTextArea(manager.getPlayer().getCurrentIsland().getStore().buyPriceList());
 		txtrBuyPrices.setRows(5);
 		txtrBuyPrices.setFont(new Font("Monospaced", Font.BOLD, 20));
 		txtrBuyPrices.setForeground(Color.WHITE);

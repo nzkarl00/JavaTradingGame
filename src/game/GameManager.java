@@ -38,9 +38,9 @@ import islands.WorldCreator;
 
 public class GameManager {
 	
-	public static Player player;
+	private Player player;
 	public ArrayList<Island> islands;
-	public static ArrayList<Item> items;
+	private ArrayList<Item> items;
 	public int daysLeft;
 	public static MainWindow mainWindow;
 	private String transactionHistory = "Purchase Log:\n";
@@ -53,6 +53,10 @@ public class GameManager {
 
 	public GameManager() {
 
+	}
+
+	public Player getPlayer() {
+		return player;
 	}
 
 	/**
