@@ -51,9 +51,9 @@ public class Ship {
 	 * @param _maxCapacity float inventory capacity of the selected class of ship
 	 * @param _crewSize int number of crew members present on the selected class of ship
 	 * @param _maxHealth float maximum health capacity of the selected class of ship
+	 * @param _damage damage value of the ship
 	 */
-	public Ship(String _name, float _speed, int _maxCapacity, int _crewSize, float _maxHealth) {
-
+	public Ship(String _name, float _speed, int _maxCapacity, int _crewSize, float _maxHealth, float _damage) {
 		name = _name;
 		speed = _speed;
 		maxCapacity = _maxCapacity;

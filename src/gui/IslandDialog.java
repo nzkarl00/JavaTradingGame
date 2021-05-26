@@ -40,11 +40,11 @@ public class IslandDialog extends JPanel {
 	 * Updates every route in the panel to reflect routes from the current island.
 	 */
 	public void updateAllRoutes() {
-		txtrFIRoutes.setText(GameManager.player.getCurrentIsland().getRoutesToIslandDescriptions(GameManager.player.getShip().getSpeed(), manager.islands.get(0)).toString());
-		txtrSRRoutes.setText(GameManager.player.getCurrentIsland().getRoutesToIslandDescriptions(GameManager.player.getShip().getSpeed(), manager.islands.get(1)).toString());
-		txtrPCRoutes.setText(GameManager.player.getCurrentIsland().getRoutesToIslandDescriptions(GameManager.player.getShip().getSpeed(), manager.islands.get(2)).toString());
-		txtrVIRoutes.setText(GameManager.player.getCurrentIsland().getRoutesToIslandDescriptions(GameManager.player.getShip().getSpeed(), manager.islands.get(3)).toString());
-		txtrSERoutes.setText(GameManager.player.getCurrentIsland().getRoutesToIslandDescriptions(GameManager.player.getShip().getSpeed(), manager.islands.get(4)).toString());
+		txtrFIRoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(0)).toString());
+		txtrSRRoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(1)).toString());
+		txtrPCRoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(2)).toString());
+		txtrVIRoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(3)).toString());
+		txtrSERoutes.setText(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(4)).toString());
 	}
 	
 	public void updateAllPrices() {
@@ -247,7 +247,7 @@ public class IslandDialog extends JPanel {
 		txtrSESell.setBounds(342, 516, 115, 133);
 		add(txtrSESell);
 		
-		txtrSERoutes = new JTextArea(GameManager.player.getCurrentIsland().getRoutesToIslandDescriptions(GameManager.player.getShip().getSpeed(), manager.islands.get(4)).toString());
+		txtrSERoutes = new JTextArea(manager.getPlayer().getCurrentIsland().getRoutesToIslandDescriptions(manager.getPlayer().getShip().getSpeed(), manager.islands.get(4)).toString());
 		txtrSERoutes.setFont(new Font("Monospaced", Font.BOLD, 12));
 		txtrSERoutes.setBackground(UIManager.getColor("Button.background"));
 		txtrSERoutes.setBounds(467, 516, 155, 133);
