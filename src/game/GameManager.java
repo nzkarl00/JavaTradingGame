@@ -47,9 +47,6 @@ public class GameManager {
 	public ArrayList<UpgradeItem> upgradeableItems;
 	public Store upgrades;
 	public GameEventNotifier notifier = new GameEventNotifier();
-	enum ActionType {
-		viewGameState, viewShip, viewGoods, viewIslands, visitStore, sailToIsland
-	}
 
 	public GameManager() {
 
