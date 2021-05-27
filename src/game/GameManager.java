@@ -202,6 +202,9 @@ public class GameManager {
 	private boolean hasRunOutOfMoney() {
 		int minDays = getMinDaysToTravel(player.getCurrentIsland());	//Minimum days to travel
 		float moneyNeededToTravel = player.getShip().getCrewTravelCost(minDays);	//Travel cost for minimum days
+		if (player.getShip().getDamageState()) {
+			moneyNeededToTravel += 50;
+		}
 		float hypotheticalMoneyFromStore = player.getShip().getGoodsValue(player.getCurrentIsland().getStore());	//Checks the total value of player's inventory at current island store
 		return moneyNeededToTravel > player.getMoney() + hypotheticalMoneyFromStore;	//Checks if player has enough wealth including goods to sail anywhere
 	}

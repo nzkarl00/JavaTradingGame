@@ -218,22 +218,31 @@ public class Ship {
 		Map<Item, Integer> inventory = getInventory();
 		for (Map.Entry<Item, Integer> entry : inventory.entrySet()) {
 			Item item = entry.getKey();
-			if (item instanceof UpgradeItem) {
+
+			if (item instanceof UpgradeItem) { //Island stores don't buy upgrade items, so don't try to sell it
 				continue;
 			}
+
 			int playerQuantity = entry.getValue();
 			int price = 0;
-			if (store != null) {
+
+			if (store != null) { //if want to check against a specific store
 				int storeQuantity = store.getItemQuantity(item);  
 				int priceMod = storeQuantity;
-				while (priceMod > 0) {
-					price += store.getModifiablePrice(item, priceMod, true);
-					priceMod -= 1;
+
+				//calculate new amount of money player will get if they sell this item to this store
+				//store's inventory will go up and player's inventory will go down as item is "sold"
+				//need to take this into account as the quantities change buy/sell prices
+				while (playerQuantity > 0) {
+					price += store.getModifiablePrice(item, priceMod, false);
+					priceMod += 1;
+					playerQuantity -= 1;
 				}
-			} else {
+			} else { //otherwise just get generic value of item
 				price = (int)item.getBaseValue();
 				price *= playerQuantity;
 			}
+
 			totalValue += price;
 		}
 

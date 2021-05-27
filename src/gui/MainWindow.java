@@ -384,6 +384,7 @@ public class MainWindow {
 					updateCapacity();
 				updateStores();
 				updatePrices();
+				checkGameEnd();
 				}
 			}
 		});
@@ -414,6 +415,7 @@ public class MainWindow {
 					updateCapacity();
 				updateStores();
 				updatePrices();
+				checkGameEnd();
 				}
 			}
 		});
