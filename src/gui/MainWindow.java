@@ -384,6 +384,7 @@ public class MainWindow {
 					updateCapacity();
 				updateStores();
 				updatePrices();
+				checkGameEnd();
 				}
 			}
 		});
@@ -414,6 +415,7 @@ public class MainWindow {
 					updateCapacity();
 				updateStores();
 				updatePrices();
+				checkGameEnd();
 				}
 			}
 		});
@@ -436,6 +438,7 @@ public class MainWindow {
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
 					updatePrices();
+					checkGameEnd();
 					btnCannon1.setEnabled(false);
 				}
 			}
@@ -453,6 +456,7 @@ public class MainWindow {
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
 					updatePrices();
+					checkGameEnd();
 					btnCannon2.setEnabled(false);
 				}
 			}
@@ -470,6 +474,7 @@ public class MainWindow {
 					txtrStoreOutput.append(transaction + "\n");
 					updateMoney();
 					updatePrices();
+					checkGameEnd();
 					btnCannon3.setEnabled(false);
 				}
 			}
@@ -572,6 +577,7 @@ public class MainWindow {
 					updateMoney();
 					btnRepairShip.setEnabled(false);
 					updateHealth();
+					checkGameEnd();
 				}
 			}
 		});
