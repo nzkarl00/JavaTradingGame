@@ -124,7 +124,7 @@ class ShipTest {
 		store.addItem(itemB, 1);
 
 		int val = ship.getGoodsValue(store);
-		assertEquals(val, 4);
+		assertEquals(val, 3);
 	}
 
 }
